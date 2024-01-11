@@ -1,1 +1,1 @@
-﻿# Github Conflict Resolution
+Let's try another. Github Conflict Resolution
