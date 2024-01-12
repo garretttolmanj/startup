@@ -16,5 +16,13 @@ Muscle Genius is a lifting app designed for people who love working out. The mai
 + Ability to view the user's stats \(Example: Max weight lifted on Bench Press)
 + Ability to view realtime data input from friends including their stats and workout-calendar \(users may only view not edit their friend's calendars)
 ### Technologies
++ HTML - I will use HTML to create the structure/backbone of my calendar application. There should be two HTML pages, one for login and one for the workout-calendar.
++ CSS - I will use CSS to style my calendar, title, tables, pop-ups, and dropdowns.
++ JavaScript - I will use JavaScript to make the entire workout calendar interactive including dropdown tables, pop-ups, and other icons.
++ Web service - I will use a web service to store and retrieve login information, workout data for the user's calendar and stats, list and interact with the user's friends. 
++ Authentication - I will use authentication technology for creating user accounts and logging in.
++ Database persistence - I will use database technology for storing user and friend's calendar data and for saving login information. I will also use a database for default exercises and a user's added personal exercises.
++ WebSocket - As each user inputs information, their stats and workout information are displayed to other users/friends.
++ Web framework - I will set up my app to use the React web framework. I want to make my application compatible with a laptop or a smartphone.
 
 [NOTES](https://github.com/garretttolmanj/startup/blob/main/notes.md)
