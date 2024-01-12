@@ -3,7 +3,7 @@
 ### Elevator Pitch
 Muscle Genius is a lifting app designed for people who love working out. The main feature is the interactive calendar which allows you to plan workouts and track your progress seamlessly. To start, simply select a day on the calendar and choose from a list of exercises. When an exercise has been chosen, enter how many sets and reps you plan to do. Capture every set, rep, and weight while working out to share your achievements and workout plans with your lifting buddies. Your heaviest weight lifted will be recorded in your personal stats! Get ready to lift some weights!
 ### Design
-<img src="https://github.com/garretttolmanj/startup/assets/135668991/a15c7556-80dc-4cf7-8668-73da52949681" width="100"> 
+<img src="https://github.com/garretttolmanj/startup/assets/135668991/a15c7556-80dc-4cf7-8668-73da52949681" width="800"> 
 
 ### Key Features
 + Secure login over HTTPS
