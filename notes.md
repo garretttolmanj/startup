@@ -18,3 +18,5 @@
 + Things to use: "\<table>", "<\button>", "\<svg>"
 + Install "Live Server Extension for VSCode
 + When I'm ready to deploy my script, I will use a .sh file called "deployFiles.sh"
+
+How to connect to my webserver via ssh: ssh -i garrett422.pem ubuntu@18.209.80.42
