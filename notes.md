@@ -19,4 +19,6 @@
 + Install "Live Server Extension for VSCode
 + When I'm ready to deploy my script, I will use a .sh file called "deployFiles.sh"
 
-How to connect to my webserver via ssh: ssh -i garrett422.pem ubuntu@18.209.80.42
++ How to connect to my webserver via ssh: ssh -i garrett422.pem ubuntu@18.209.80.42
++ I can use a Domain name using a Domain Name System \(DNS) server to navigate to my web application. The domain name I'm using for my application is musclegenius.link
++ Caddy service acts like a middleman for my web server.
