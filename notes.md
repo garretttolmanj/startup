@@ -28,3 +28,5 @@ Caddy service acts like a middleman for my web server.
 + I should use the "\<Table>" element when creating my calendar. For rows use "\<tr>"
 + How to include links: "\<a href="https://www.byu.edu/">BYU\</a>"
 + How to include images: "\<img src="link_to_image">
++ I should use the "\<select>" and "\<optgroup>" input for categorizing the different exercises available for selection.
++ 
