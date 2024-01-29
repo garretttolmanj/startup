@@ -19,6 +19,12 @@
 + Install "Live Server Extension for VSCode
 + When I'm ready to deploy my script, I will use a .sh file called "deployFiles.sh"
 
-+ How to connect to my webserver via ssh: ssh -i garrett422.pem ubuntu@18.209.80.42
-+ I can use a Domain name using a Domain Name System \(DNS) server to navigate to my web application. The domain name I'm using for my application is musclegenius.link
-+ Caddy service acts like a middleman for my web server.
+How to connect to my webserver via ssh: ssh -i garrett422.pem ubuntu@18.209.80.42
+I can use a Domain name using a Domain Name System \(DNS) server to navigate to my web application. The domain name I'm using for my application is musclegenius.link
+Caddy service acts like a middleman for my web server.
+
+## HTML
++ When writing in HTML I always need to include the "<!DOCTYPE html>" at the top
++ I should use the "\<Table>" element when creating my calendar. For rows use "\<tr>"
++ How to include links: "\<a href="https://www.byu.edu/">BYU\</a>"
++ How to include images: "\<img src="link_to_image">
