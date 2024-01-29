@@ -24,7 +24,7 @@ I can use a Domain name using a Domain Name System \(DNS) server to navigate to 
 Caddy service acts like a middleman for my web server.
 
 ## HTML
-+ When writing in HTML I always need to include the "<!DOCTYPE html>" at the top
++ When writing in HTML I always need to include the "\<!DOCTYPE html>" at the top
 + I should use the "\<Table>" element when creating my calendar. For rows use "\<tr>"
 + How to include links: "\<a href="https://www.byu.edu/">BYU\</a>"
 + How to include images: "\<img src="link_to_image">
