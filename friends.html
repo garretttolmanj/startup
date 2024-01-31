@@ -5,12 +5,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Muscle Genius</title>
     </head>
+
     <body>
         <header>
             <h1>Muscle Genius</h1>
             <nav>
                 <menu>
-                    <li><a href="index.html">Home</a></li>
+                    <label for="user">(User)</label>
+                    <li id="user"><a href="index.html">Logout</a></li>
                     <li><a href="calendar.html">Calendar</a></li>
                     <li><a href="stats.html">My stats</a></li>
                     <li><a href="friends.html">Friends</a></li>
@@ -19,18 +21,16 @@
 
             <hr />
         </header>
-        <main>
-            <h2>Login</h2>
-            <form method="get" action="calendar.html">
-                <label for="username">Username</label>
-                <input type="text" id="username" placeholder="Username"/>
-                <hb>
-                <label for="password">Password</label>
-                <input type="password" id="password" placeholder="Password">
-                <button type="submit">Login</button>
-            </form>
-        </main>
 
+        <main>
+            <ul>
+                <li>Friend 1</li>
+                <li>Friend 2</li>
+                <li>Friend 3</li>
+            </ul>
+            <label for="searchbar">Find Friends: </label>
+            <input type="search" placeholder="search username" id="searchbar">
+        </main>
         <footer>
             <hr />
             <span>Garrett Johnson</span>
