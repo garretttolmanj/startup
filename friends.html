@@ -23,16 +23,32 @@
         </header>
 
         <main>
-            <ul>
-                <li>Friend 1</li>
-                <li>Friend 2</li>
-                <li>Friend 3</li>
-            </ul>
+            <div>
+                <h2>My friends</h2>
+                <ul>
+                    <li><a href="friend_view.html">Friend 1</a></li>
+                    <li><a href="friend_view.html">Friend 2</a></li>
+                    <li><a href="friend_view.html">Friend 3</a></li>
+                </ul>
+            </div>
             <div class="search">
                 <label for="searchbar">Find Friends: </label>
                 <input type="search" placeholder="search username" id="searchbar">
                 <button type="submit">Send friend request</button>
             </div>
+            <fieldset>
+                <legend>Friend Requests</legend>
+                <ul>
+                    <li>
+                        <label for="checkbox1">Friend1</label>
+                        <input type="checkbox" id="checkbox1" name="varCheckbox" value="checkbox1" />
+                    </li>
+                    <li>
+                        <label for="checkbox2">Friend2</label>
+                        <input type="checkbox" id="checkbox2" name="varCheckbox" value="checkbox2"/>
+                    </li>
+                </ul>
+              </fieldset>
         </main>
         <footer>
             <hr />
