@@ -25,4 +25,16 @@ Muscle Genius is a lifting app designed for people who love working out. The mai
 + WebSocket - As each user inputs information, their stats and workout information are displayed to other users/friends.
 + Web framework - I will set up my app to use the React web framework. I want to make my application compatible with a laptop or a smartphone.
 
+## HTML Deliverable
+In this deliverable I used HTML to build the structure of my startup application
++ **HTML Pages**- I created 5 HTML pages that represent the following: Logging in, the main page/interactive calendar, the stats database, interacting with friends, viewing friends' workout calendar.
++ **HTML tags**- On each page I used HTML tags including BODY, NAV, MAIN, HEADER, FOOTER.
++ **Links**- In the NAV section of each page I inculded links between the different HTML pages. The Login button links directly to the main calendar page. Clicking on the friend placeholders directs the users to the friend_view html page.
++ **Application textual content**- Each page includes textual content including the header and placeholder text for the other technologies.
++ **3rd party service calls**- The quote on the login index.html is a placeholder for 3rd party service calls that will provide motivational quotes.
++ **Images**- I included a Muscle Genius Logo image on each html page as well as an image of some weights on the the login page.
++ **Login**- On the index.html page I included a login placeholder with both username and password inputs. 
++ **Database**- The login placeholder, the interactive calendar, exercise selection, and the personal record information on the stats page represent where database will be used.
++ **WebSocket**- the friends_view.html contains a placeholder message center that will be used for realtime messaging between users. To navigate to this placeholder select one of the friends on the friends.html page.
+
 [NOTES](https://github.com/garretttolmanj/startup/blob/main/notes.md)
