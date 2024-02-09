@@ -5,102 +5,124 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Muscle Genius</title>
         <link rel="icon" href="/Favicon-32x32.jpeg" type="image/x-icon">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <link href="https://getbootstrap.com/docs/5.1/assets/css/docs.css" rel="stylesheet">
     </head>
-    <body>
-        <header>
-            <h1>Muscle Genius</h1>
-            <div id="logo" class="picture_box"><img src="main-logo.jpeg" width="200" alt="logo"></div>
-            <nav>
-                <menu>
-                    <p id="user">(Username Here)</p>
-                    <li><a href="index.html">Logout</a></li>
-                    <li><a href="calendar.html">Calendar</a></li>
-                    <li><a href="stats.html">My stats</a></li>
-                    <li><a href="friends.html">Friends</a></li>
-                    <div class="popup">Exercises
-                        <select type="menu" id="myPopup"><option>Popup Placeholder</option></select>
-                    </div>
-                </menu>
-            </nav>
-
-            <hr />
-        </header>
-        <main>
-          
-          <div>
-                <h2>January 2024</h2>
-                
-                <table>
-                  <thead>
-                  
-                    <th>Sunday</th>
-                    <th>Monday</th>
-                    <th>Tuesday</th>
-                    <th>Wednesday</th>
-                    <th>Thursday</th>
-                    <th>Friday</th>
-                    <th>Saturday</th>
-                  
-                  </thead>
-        
-                  <tbody>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td><button type="menu">1</button></td>
-                      <td><button type="menu">2</button></td>
-                      <td><button type="menu">3</button></td>
-                      <td><button type="menu">4</button></td>
-                      <td><button type="menu">5</button></td>
-                    </tr>
-                    <tr>
-                      <td><button type="menu">6</button></td>
-                      <td><button type="menu">7</button></td>
-                      <td><button type="menu">8</button></td>
-                      <td><button type="menu">9</button></td>
-                      <td><button type="menu">10</button></td>
-                      <td><button type="menu">11</button></td>
-                      <td><button type="menu">12</button></td>
-                    </tr>
-                    <tr>
-                      <td><button type="menu">13</button></td>
-                      <td><button type="menu">14</button></td>
-                      <td><button type="menu">15</button></td>
-                      <td><button type="menu">16</button></td>
-                      <td><button type="menu">17</button></td>
-                      <td><button type="menu">18</button></td>
-                      <td><button type="menu">19</button></td>
-                    </tr>
-                    <tr>
-                      <td><button type="menu">20</button></td>
-                      <td><button type="menu">21</button></td>
-                      <td><button type="menu">22</button></td>
-                      <td><button type="menu">23</button></td>
-                      <td><button type="menu">24</button></td>
-                      <td><button type="menu">25</button></td>
-                      <td><button type="menu">26</button></td>
-                      </tr>
-                      <tr>
-                        <td><button type="menu">27</button></td>
-                        <td><button type="menu">28</button></td>
-                        <td><button type="menu">29</button></td>
-                        <td><button type="menu">30</button></td>
-                        <td><button type="menu">31</button></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
-                  </tbody>
-        
-                </table>
+    <body class="container-fluid bg-dark text-light">
+      
+      <header class="container-fluid">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="calendar.html">Muscle Genius</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+                <ul class="navbar-nav">
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Navigate
+                    </a>
+                    <menu class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                      <li><a class="dropdown-item" href="index.html">(Username) Logout</a></li>
+                      <li><a class="dropdown-item" href="calendar.html">Calendar</a></li>
+                      <li><a class="dropdown-item" href="stats.html">My stats</a></li>
+                      <li><a class="dropdown-item" href="friends.html">Friends</a></li>
+                      <li>
+                        <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                          Exercises
+                        </button>
+                      </li>
+                    </menu>
+                  </li>
+                </ul>
               </div>
+            </div>
+          </nav>              
+        <!-- <div id="logo" class="picture_box"><img src="main-logo.jpeg" width="200" alt="logo"></div> -->
+        <hr />
+      </header>  
+      <main>
+        <div class="container">
+          <h1>Muscle Genius</h1>
+          <div class="grid-calendar">
 
-        </main>
+          </div>
+        </div>
+        <div>
+              <h2>January 2024</h2>
+              
+              <table>
+                <thead>
+                
+                  <th>Sunday</th>
+                  <th>Monday</th>
+                  <th>Tuesday</th>
+                  <th>Wednesday</th>
+                  <th>Thursday</th>
+                  <th>Friday</th>
+                  <th>Saturday</th>
+                
+                </thead>
+      
+                <tbody>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td><button type="menu">1</button></td>
+                    <td><button type="menu">2</button></td>
+                    <td><button type="menu">3</button></td>
+                    <td><button type="menu">4</button></td>
+                    <td><button type="menu">5</button></td>
+                  </tr>
+                  <tr>
+                    <td><button type="menu">6</button></td>
+                    <td><button type="menu">7</button></td>
+                    <td><button type="menu">8</button></td>
+                    <td><button type="menu">9</button></td>
+                    <td><button type="menu">10</button></td>
+                    <td><button type="menu">11</button></td>
+                    <td><button type="menu">12</button></td>
+                  </tr>
+                  <tr>
+                    <td><button type="menu">13</button></td>
+                    <td><button type="menu">14</button></td>
+                    <td><button type="menu">15</button></td>
+                    <td><button type="menu">16</button></td>
+                    <td><button type="menu">17</button></td>
+                    <td><button type="menu">18</button></td>
+                    <td><button type="menu">19</button></td>
+                  </tr>
+                  <tr>
+                    <td><button type="menu">20</button></td>
+                    <td><button type="menu">21</button></td>
+                    <td><button type="menu">22</button></td>
+                    <td><button type="menu">23</button></td>
+                    <td><button type="menu">24</button></td>
+                    <td><button type="menu">25</button></td>
+                    <td><button type="menu">26</button></td>
+                    </tr>
+                    <tr>
+                      <td><button type="menu">27</button></td>
+                      <td><button type="menu">28</button></td>
+                      <td><button type="menu">29</button></td>
+                      <td><button type="menu">30</button></td>
+                      <td><button type="menu">31</button></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                </tbody>
+      
+              </table>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+      </main>
 
-        <footer>
-            <hr />
-            <span>Garrett Johnson</span>
-            <br />
-            <a href="https://github.com/garretttolmanj/startup">GitHub</a>
-        </footer>
+      <footer class="container-fluid fixed-bottom">
+          <hr />
+          <span>Garrett Johnson</span>
+          <br />
+          <a href="https://github.com/garretttolmanj/startup">GitHub</a>
+      </footer>
     </body>
 </html>
