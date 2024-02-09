@@ -39,11 +39,14 @@
     .calendar-week .grid-cell {
       background-color: #f6f6f6;
       border: 1px solid #fff;
+      width: calc(100% / 7);
     }
   
-    .calendar-week-header .grid-cell > div {
+    .calendar-week-header .grid-cell {
       padding-bottom: 10px;
       height: auto;
+      display: flex;
+      align-items: center;
     }
     
     .grid-cell {
@@ -60,7 +63,7 @@
       }
       
       &.next-month {
-        background-color: #a6a6a6;
+        color: #a6a6a6;
       }
       
       > div {
@@ -74,3 +77,15 @@
       }
     }
   }
+
+
+
+.calendar-week-header .grid-cell div::after {
+    content: attr(data-short-name); 
+}
+
+@media (min-width: 576px) {
+    .calendar-week-header .grid-cell div::after {
+        content: attr(data-full-name);
+    }
+}
