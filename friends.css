@@ -1,0 +1,60 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+img {
+    border-radius: 50%;
+  }  
+
+header {
+    margin: 0px;
+}
+
+.requests {
+    background-color: #212529;
+    color: white;
+
+    padding: 0.75em;
+    border-radius: 10px;
+    flex: 0 30%;
+}
+
+.friends {
+    flex: 1;
+    margin: 1em;
+}
+
+.find-friends {
+    margin-top: 1em;
+}
+
+footer {
+    display: flex;
+    background-color: #212529;
+    color: white;
+    align-items: top;
+    flex: 0 10px;
+    justify-content: center;
+  }
+
+.author {
+    margin-right: 1em;
+}
+
+hr {
+    margin-left: 0.75em;
+    margin-right: 0.75em;
+}
+
+main {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
+@media (max-width: 800px) {
+    main {
+        flex-direction: column;
+    }
+}
