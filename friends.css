@@ -1,3 +1,6 @@
+*{
+    font-family:Impact;
+}
 body {
     display: flex;
     flex-direction: column;

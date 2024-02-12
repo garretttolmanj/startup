@@ -37,4 +37,15 @@ In this deliverable I used HTML to build the structure of my startup application
 + **Database**- The login placeholder, the interactive calendar, exercise selection, and the personal record information on the stats page represent where database will be used.
 + **WebSocket**- the friends_view.html contains a placeholder message center that will be used for realtime messaging between users. To navigate to this placeholder select one of the friends on the friends.html page.
 
+## CSS Deliverable
++ -done- Simon CSS deployed to the production environment.
++ -done- A link to this GitHub startup repository prominently display on the application's home page.
++ -done- Notes in this startup Github repository README.md.
++ -done- 30% Header, fotter, and main content body. I used flex to layout each section.
++ -done- 20% Navigation elements. I used Bootstrap to create a navbar on each page.
++ -done- 10% Responsive design. Each page resizes for according to the screen size. I used some @media queries to shift elements around on phone screens.
++ -done- 20% Application elements: I used bootstrap grid to create the calendar as well as style all the input sections.
++ -done- 10% Application text content: The text is displayed using the Impact font.
++ -done- 10% Application images. I added a new logo designed by my sister Lauren Johnson. I rounded the images' edges in the Navbar.
+
 [NOTES](https://github.com/garretttolmanj/startup/blob/main/notes.md)
