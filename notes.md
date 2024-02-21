@@ -62,3 +62,6 @@ Property	Value	Example	Discussion
 + width	unit	25vmin	Sets the width of the box
 + z-index	number	100	Controls the positioning of the element on the z axis
 + Animation commands: use ease-in-out for transitioning. TranlateX and Translate Y can be used for moving objects. I can make popups with by changing size of elements in from and to.
+
+## Javascript
++ 
