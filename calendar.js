@@ -102,3 +102,5 @@ document.getElementById('next-month').addEventListener('click', () => {
     }
     updateCalendar(newYear, newMonth);
 });
+
+
