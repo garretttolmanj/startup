@@ -9,9 +9,9 @@ const weekdays = {
     6: ["Saturday", "Sat"]
 };
 
-const currentDate = new Date();
-let currentMonth = currentDate.getMonth();
-let currentYear = currentDate.getFullYear();
+const actualDate = new Date();
+let currentMonth = actualDate.getMonth();
+let currentYear = actualDate.getFullYear();
 
 function updateCalendar(year, month) {
     currentMonth = month;
@@ -29,7 +29,7 @@ function updateCalendar(year, month) {
     calendarBody.innerHTML = '';
 
     const firstDayOfMonth = new Date(year, Month, 1).getDay();
-    const lastDayOfLastMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0).getDate();
+    const lastDayOfLastMonth = new Date(actualDate.getFullYear(), actualDate.getMonth(), 0).getDate();
     const lastDayOfMonth = new Date(year, Month + 1, 0).getDate();
 
     const totalDays = firstDayOfMonth + lastDayOfMonth;
@@ -58,6 +58,9 @@ function updateCalendar(year, month) {
                 row.classList.add('calendar-week');
                 const day = document.createElement('div');
                 day.textContent = date;
+                if (date === actualDate.getDate() && currentMonth === actualDate.getMonth() && currentYear === actualDate.getFullYear()) {
+                    day.classList.add('today');
+                }
                 cell.appendChild(day);
                 date++;
             } else if (date > lastDayOfMonth) {

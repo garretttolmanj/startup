@@ -71,11 +71,14 @@
         </div>
         <div class="container">
           
-          <div class="d-flex justify-content-center align-items-center">
-            <button class="changeMonth"id="prev-month">&lt;</button>
-            <span id="Month" class="Month"></span>
-            <span id="Year" class="Year"></span>
-            <button id="changeMonth">&gt;</button>
+          <div class="calendarHeader">
+            <button class="prevMonth"id="prev-month">&lt;</button>
+            <div class="d-flex flex-row">
+              <span id="Month" class="Month"></span>
+              <span id="Year" class="Year"></span>
+            </div>
+            <button class="nextMonth" id="next-month">&gt;</button>
+            
           </div>
           
           <div id="calendar-body" class="grid-calendar">

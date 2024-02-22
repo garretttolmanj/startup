@@ -17,9 +17,6 @@
     margin-right: auto;
     padding: 1em;
   }
-  .Month {
-    padding: 1em;
-  }
   .row:before {
     display: table;
     content: " ";
@@ -59,7 +56,6 @@
       padding: 0;
       position: relative;
       width: calc(100% / 7);
-  
       &.previous-month {
         color: #a6a6a6;
       }
@@ -79,9 +75,35 @@
       }
     }
   }
+.calendarHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content:space-between; 
+  align-items: center;
+  > div > span {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+  }
+}
+.nextMonth {
+  background-color: #fff;
+  border: none;
+  font-size: 2em;
+  font-family: 'Courier New', Courier, monospace;
+  margin-right: 20px; 
+}
 
-
-
+.prevMonth {
+  background-color: #fff;
+  border: none;
+  font-size: 2em;
+  font-family: 'Courier New', Courier, monospace;
+  margin-left: 20px;
+}
+.today {
+  color: #2121e4;
+  background-color: #eeab07;
+}
 .calendar-week-header .grid-cell div::after {
     content: attr(data-short-name); 
 }
