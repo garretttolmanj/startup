@@ -64,4 +64,5 @@ Property	Value	Example	Discussion
 + Animation commands: use ease-in-out for transitioning. TranlateX and Translate Y can be used for moving objects. I can make popups with by changing size of elements in from and to.
 
 ## Javascript
-+ 
++ Timer: console.time\('demo time'); some code that takes a long time. console.timeEnd\('demo time');
++ Proper syntax for adding javascript to html: \<script src="javascript.js"></script>
