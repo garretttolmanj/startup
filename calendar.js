@@ -53,6 +53,10 @@ function updateCalendar(year, month) {
                 const day = document.createElement('div');
                 day.textContent = lastDayOfLastMonth - firstDayOfMonth + j + 1;
                 cell.classList.add('previous-month');
+                cell.addEventListener('click', () => {
+                    const modal = document.getElementById('calendarModal');
+                    openItem(modal);
+                })
                 cell.appendChild(day);
             } else if (date <= lastDayOfMonth) {
                 row.classList.add('calendar-week');
@@ -61,6 +65,10 @@ function updateCalendar(year, month) {
                 if (date === actualDate.getDate() && currentMonth === actualDate.getMonth() && currentYear === actualDate.getFullYear()) {
                     day.classList.add('today');
                 }
+                cell.addEventListener('click', () => {
+                    const modal = document.getElementById('calendarModal');
+                    openItem(modal);
+                })
                 cell.appendChild(day);
                 date++;
             } else if (date > lastDayOfMonth) {
@@ -68,6 +76,10 @@ function updateCalendar(year, month) {
                 const day = document.createElement('div');
                 day.textContent = nextMonthDate;
                 cell.classList.add('previous-month');
+                cell.addEventListener('click', () => {
+                    const modal = document.getElementById('calendarModal');
+                    openItem(modal);
+                })
                 cell.appendChild(day);
                 nextMonthDate++;
             }
@@ -77,7 +89,6 @@ function updateCalendar(year, month) {
         }
         calendarBody.appendChild(row);
     }
-    
 }
 
 
@@ -135,6 +146,12 @@ document.getElementById('openExerciseModal').addEventListener('click', function(
 
 document.getElementsByClassName("close")[0].addEventListener('click', () => {
     const modal = document.getElementById('ExerciseModal');
+    document.getElementById('addExerciseButton').style.display = "flex";
+    inputBar = document.getElementById('addExercise').style.display = "none";
+    closeItem(modal);
+} );
+document.getElementsByClassName("close")[1].addEventListener('click', () => {
+    const modal = document.getElementById('calendarModal');
     closeItem(modal);
 } );
 
@@ -149,24 +166,38 @@ window.addEventListener('click', function(event) {
     const modal = document.getElementById('ExerciseModal');
     if (event.target === modal) {
         closeItem(modal);
+        document.getElementById('addExerciseButton').style.display = "flex";
+        inputBar = document.getElementById('addExercise').style.display = "none";
     }
 });
-document.getElementById('button-addon2').addEventListener('click', () => { // Add event listener to the "Add" button
-    const exerciseInput = document.getElementById('button-addon2').previousElementSibling; // Get the input element
-    const newExercise = exerciseInput.value.trim(); // Get the value and remove leading/trailing spaces
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('calendarModal');
+    if (event.target === modal) {
+        closeItem(modal);
+    }
+});
 
-    if (newExercise !== '') { // Ensure the input is not empty
-        let exerciseList = JSON.parse(localStorage.getItem('exercise_list')) || []; // Retrieve or initialize exercise list from localStorage
-        exerciseList.push(newExercise); // Add the new exercise
+document.getElementById('button-addon2').addEventListener('click', () => {
+    const exerciseInput = document.getElementById('button-addon2').previousElementSibling;
+    const newExercise = exerciseInput.value.trim();
+    const btn = document.getElementById('addExerciseButton');
+    const inputBar = document.getElementById('addExercise'); 
+    exercise_list = JSON.parse(localStorage.getItem('exercise_list'));
+    if (newExercise !== '' && !exercise_list.includes(newExercise)) {
+        let exerciseList = JSON.parse(localStorage.getItem('exercise_list')) || [];
+        exerciseList.push(newExercise);
         localStorage.setItem('exercise_list', JSON.stringify(exerciseList)); // Update localStorage
-
-        // Update the displayed list of exercises in the modal
+        document.getElementById('ExerciseList').innerHTML = "";
         loadExercises();
 
         // Reset input field and hide input bar
         exerciseInput.value = '';
-        const inputBar = document.getElementById('addExercise');
         inputBar.style.display = "none";
+        btn.style.display = 'flex';
+    } else {
+        exerciseInput.value = '';
+        inputBar.style.display = "none";
+        btn.style.display = 'flex';
     }
 });
 
