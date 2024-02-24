@@ -103,4 +103,72 @@ document.getElementById('next-month').addEventListener('click', () => {
     updateCalendar(newYear, newMonth);
 });
 
+// Exercise Modal
+function openItem(item) {
+    item.style.display = "block";
+}
 
+function closeItem(item) {
+    item.style.display = "none";
+}
+
+function loadExercises() {
+    if (localStorage.getItem('exercise_list') === null) {
+        exercise_list = ['Squats', 'Bench', 'Deadlift'];
+        localStorage.setItem('exercise_list', JSON.stringify(exercise_list));
+    }
+    exercise_list = JSON.parse(localStorage.getItem('exercise_list'));
+
+    list = document.getElementById('ExerciseList');
+    for (const exercise of exercise_list) {
+        const item = document.createElement('li');
+        item.textContent = exercise;
+        list.appendChild(item);
+    }
+
+}
+
+document.getElementById('openExerciseModal').addEventListener('click', function() {
+    const modal = document.getElementById('ExerciseModal');
+    openItem(modal);
+});
+
+document.getElementsByClassName("close")[0].addEventListener('click', () => {
+    const modal = document.getElementById('ExerciseModal');
+    closeItem(modal);
+} );
+
+document.getElementById('addExerciseButton').addEventListener('click', () => {
+    const btn = document.getElementById('addExerciseButton');
+    const inputBar = document.getElementById('addExercise');
+    closeItem(btn);
+    inputBar.style.display = "flex";
+})
+
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('ExerciseModal');
+    if (event.target === modal) {
+        closeItem(modal);
+    }
+});
+document.getElementById('button-addon2').addEventListener('click', () => { // Add event listener to the "Add" button
+    const exerciseInput = document.getElementById('button-addon2').previousElementSibling; // Get the input element
+    const newExercise = exerciseInput.value.trim(); // Get the value and remove leading/trailing spaces
+
+    if (newExercise !== '') { // Ensure the input is not empty
+        let exerciseList = JSON.parse(localStorage.getItem('exercise_list')) || []; // Retrieve or initialize exercise list from localStorage
+        exerciseList.push(newExercise); // Add the new exercise
+        localStorage.setItem('exercise_list', JSON.stringify(exerciseList)); // Update localStorage
+
+        // Update the displayed list of exercises in the modal
+        loadExercises();
+
+        // Reset input field and hide input bar
+        exerciseInput.value = '';
+        const inputBar = document.getElementById('addExercise');
+        inputBar.style.display = "none";
+    }
+});
+
+
+loadExercises();

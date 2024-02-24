@@ -10,6 +10,7 @@
         <link href="https://getbootstrap.com/docs/5.1/assets/css/docs.css" rel="stylesheet">
         
         <link rel="stylesheet" href="main.css" />
+        <link rel="stylesheet" href="calendar.css" />
     </head>
     <body>
       
@@ -29,46 +30,32 @@
                 <a class="nav-link active" aria-current="page" href="calendar.html">Calendar</a>
                 <a class="nav-link" href="stats.html">My stats</a>
                 <a class="nav-link" href="friends.html">Friends</a>
+                <a class="nav-link" id="openExerciseModal">Exercises</a>
 
-                                <!-- Button trigger modal -->
-                <a class="nav-link" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                  Exercises
-                </a>
-
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Exercise List</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body">
-                        <ul class="list-group list-group-flush">
-                          <li class="list-group-item">Squats</li>
-                          <li class="list-group-item">Bench</li>
-                          <li class="list-group-item">Deadlift</li>
-                        </ul>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
+              
               </div>
-            </div>
           </div>
         </nav>
       </header>
       <hr />
       <main class="d-flex justify-content-center align-items-center flex-column">
-        <link rel="stylesheet" href="calendar.css" />
         <div>
           <h1>Muscle Genius <span><img src="image_123650291.JPG" width="80" alt="logo"></span></h1>
         </div>
+
+        <div class="ExerciseModal" id="ExerciseModal">
+          <div class="ExerciseModal-content">
+            <span><span class="close">&times;</span></span>
+            <h2>Exercise List</h2>
+            <ul id="ExerciseList"></ul>
+            <button id="addExerciseButton" type="button" class="btn btn-primary">Add Exercise</button>
+            <div id="addExercise" class="input-group mb-3">
+              <input type="text" class="form-control" placeholder="New Exercise" aria-label="Recipient's username" aria-describedby="button-addon2">
+              <button class="btn btn-outline-secondary" type="button" id="button-addon2">Add</button>
+            </div>
+          </div>
+        </div>
+
         <div class="container">
           
           <div class="calendarHeader">
