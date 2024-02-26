@@ -1,3 +1,43 @@
+class User {
+    constructor(username, password) {
+        this.username = username;
+        this.password = password;
+        this.exercise_list = ["Squat", "Bench", "Deadlift"]
+        this.calendar = {};
+    }
+    
+    addExercise(exercise) {
+        this.exercise_list.push(exercise);
+        this.save();
+    }
+
+    addWorkout(date, exercise) {
+        if (!this.calendar[date]) {
+            this.calendar[date] = [];
+        }
+        this.calendar[date].push(exercise);
+        this.save();
+    }
+  
+    save() {
+        localStorage.setItem(this.username, JSON.stringify(this));
+    }
+  
+    static load(username) {
+        const userData = localStorage.getItem(username);
+        return userData ? JSON.parse(userData) : null;
+    }
+  }
+  
+  function getUserName() {
+    return localStorage.getItem('username');
+} 
+
+username = getUserName();
+current_user = User.load(username);
+current_user.addExercise("Curls");
+console.log(current_user);
+
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const weekdays = {
     0: ["Sunday", "Sun"],
@@ -128,7 +168,7 @@ function loadExercises() {
         exercise_list = ['Squats', 'Bench', 'Deadlift'];
         localStorage.setItem('exercise_list', JSON.stringify(exercise_list));
     }
-    exercise_list = JSON.parse(localStorage.getItem('exercise_list'));
+    exercise_list = current_user.exercise_list;
 
     list = document.getElementById('ExerciseList');
     for (const exercise of exercise_list) {
@@ -182,15 +222,12 @@ document.getElementById('button-addon2').addEventListener('click', () => {
     const newExercise = exerciseInput.value.trim();
     const btn = document.getElementById('addExerciseButton');
     const inputBar = document.getElementById('addExercise'); 
-    exercise_list = JSON.parse(localStorage.getItem('exercise_list'));
+    exercise_list = current_user.exercise_list;
     if (newExercise !== '' && !exercise_list.includes(newExercise)) {
-        let exerciseList = JSON.parse(localStorage.getItem('exercise_list')) || [];
-        exerciseList.push(newExercise);
-        localStorage.setItem('exercise_list', JSON.stringify(exerciseList)); // Update localStorage
+        console.log(current_user);
+        console.log(exercise_list);
         document.getElementById('ExerciseList').innerHTML = "";
         loadExercises();
-
-        // Reset input field and hide input bar
         exerciseInput.value = '';
         inputBar.style.display = "none";
         btn.style.display = 'flex';
