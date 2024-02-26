@@ -24,19 +24,19 @@ class User {
     }
   
     static load(username) {
-        const userData = localStorage.getItem(username);
-        return userData ? JSON.parse(userData) : null;
+        const userData = JSON.parse(localStorage.getItem(username)); 
+        return userData;
     }
   }
   
-  function getUserName() {
+function getUserName() {
     return localStorage.getItem('username');
 } 
 
-username = getUserName();
-current_user = User.load(username);
-current_user.addExercise("Curls");
-console.log(current_user);
+const username = localStorage.getItem('username');
+const password = localStorage.getItem('password');
+const current_user = new User(username, password);
+current_user.save();
 
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const weekdays = {
@@ -224,8 +224,7 @@ document.getElementById('button-addon2').addEventListener('click', () => {
     const inputBar = document.getElementById('addExercise'); 
     exercise_list = current_user.exercise_list;
     if (newExercise !== '' && !exercise_list.includes(newExercise)) {
-        console.log(current_user);
-        console.log(exercise_list);
+        current_user.addExercise(newExercise);
         document.getElementById('ExerciseList').innerHTML = "";
         loadExercises();
         exerciseInput.value = '';

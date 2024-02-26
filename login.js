@@ -1,9 +1,10 @@
 function login() {
     const username = document.getElementById('Username').value;
     const password = document.getElementById('Password').value;
+
     const user = new User(username, password);
     localStorage.setItem("username", username);
-    user.save();
+    localStorage.setItem("password", password);
     window.location.href = "calendar.html";
 }
 
@@ -36,7 +37,7 @@ class User {
   }
 
   static load(username) {
-      const userData = localStorage.getItem(username);
-      return userData ? JSON.parse(userData) : null;
+      const userData = JSON.parse(localStorage.getItem(username));
+      return userData;
   }
 } 
