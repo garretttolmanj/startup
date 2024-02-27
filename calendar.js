@@ -25,11 +25,22 @@ class User {
     save() {
         localStorage.setItem(this.username, JSON.stringify(this));
     }
-  
+
     static load(username) {
-        const userData = JSON.parse(localStorage.getItem(username)); 
-        return userData;
+        const userData = localStorage.getItem(username);
+        if (userData) {
+            const userDataObject = JSON.parse(userData);
+            // Create a new instance of the User class
+            const user = new User(userDataObject.username, userDataObject.password);
+            // Populate exercise list and calendar data
+            user.exercise_list = userDataObject.exercise_list;
+            user.calendar = userDataObject.calendar;
+            return user;
+        } else {
+            return null;
+        }
     }
+    
   }
   
 function setUserName(username) {
@@ -41,16 +52,18 @@ function setUserName(username) {
 
 const username = localStorage.getItem('username');
 const password = localStorage.getItem('password');
-const current_user = new User(username, password);
 
-const setsData = [
-    { weight: 100, completedReps: 8 },
-    { weight: 100, completedReps: 8 },
-    { weight: 100, completedReps: 8 }
-];
+let current_user;
 
-current_user.addWorkout('February 27 2024', 'Squats', 5, 8, setsData);
-console.log(current_user.calendar);
+if (localStorage.getItem(username)) {
+    current_user = User.load(username);
+} else {
+    current_user = new User(username, password);
+}
+
+
+
+console.log(current_user.exercise_list);
 current_user.save();
 setUserName(username);
 
@@ -321,7 +334,7 @@ function updateDay(month, day, year) {
                   listItem.remove();
                 }
                 current_user.calendar[date].splice(i, i+4);
-                console.log(current_user.calendar[date]);
+                current_user.save();
               });
             new_workout.appendChild(header);
             new_workout.appendChild(btn);
@@ -470,8 +483,8 @@ document.getElementById('button-addon3').addEventListener('click', function() {
     // Get values from input fields
     const exerciseSelect = document.getElementById('inputGroupSelect01');
     const exercise = exerciseSelect.options[exerciseSelect.selectedIndex].text;
-    const sets = document.getElementById('setsInput').value;
-    const reps = document.getElementById('repsInput').value;
+    const sets = Number(document.getElementById('setsInput').value);
+    const reps = Number(document.getElementById('repsInput').value);
     const setData = [];
 
     // Check if any input field is empty
