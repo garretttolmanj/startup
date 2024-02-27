@@ -11,13 +11,14 @@ class User {
         this.save();
     }
 
-    addWorkout(date, exercise, sets, reps) {
+    addWorkout(date, exercise, sets, reps, setsData) {
         if (!this.calendar[date]) {
             this.calendar[date] = [];
         }
         this.calendar[date].push(exercise);
         this.calendar[date].push(sets);
         this.calendar[date].push(reps);
+        this.calendar[date].push(setsData);
         this.save();
     }
   
@@ -37,11 +38,18 @@ function setUserName(username) {
 } 
 
 
+
 const username = localStorage.getItem('username');
 const password = localStorage.getItem('password');
 const current_user = new User(username, password);
-current_user.addWorkout("February 27 2024", "Squats", 5, 8);
-current_user.addWorkout("February 27 2024", "Bench", 4, 10);
+
+const setsData = [
+    { weight: 100, completedReps: 8 },
+    { weight: 100, completedReps: 8 },
+    { weight: 100, completedReps: 8 }
+];
+
+current_user.addWorkout('February 27 2024', 'Squats', 5, 8, setsData);
 console.log(current_user.calendar);
 current_user.save();
 setUserName(username);
@@ -266,6 +274,7 @@ function addExercise() {
 
 
 function updateDay(month, day, year) {
+    
     const date_section = document.getElementById('Date');
     date_section.innerHTML = '';
     const correct_date = document.createElement('h2');
@@ -289,19 +298,33 @@ function updateDay(month, day, year) {
         new_option.innerText = item;
         inputBar.appendChild(new_option);
     }
-
+    const workout = document.getElementById('workout');
+    workout.innerHTML = '';
     // update the workout list
     if (date in current_user.calendar) {
-        const workout = document.getElementById('workout')
-        for (let i=0; i < current_user.calendar[date].length; i+=3) {
+        for (let i=0; i < current_user.calendar[date].length; i+=4) {
             const exercise = current_user.calendar[date][i];
             const sets = current_user.calendar[date][i + 1];
             const reps = current_user.calendar[date][i + 2];
-            
+            const set_Data = current_user.calendar[date][i + 3];
             const new_workout = document.createElement('li');
             const header = document.createElement('h3');
+            const btn = document.createElement('button');
             header.innerText = exercise + " " + sets + " Sets " + reps + " Reps";
+
+            btn.textContent = 'Remove';
+            btn.classList.add('btn', 'btn-outline-danger', 'btn-sm', 'remove-btn');
+            btn.addEventListener('click', function() {
+                // Get the parent li element and remove it
+                const listItem = btn.closest('li');
+                if (listItem) {
+                  listItem.remove();
+                }
+                current_user.calendar[date].splice(i, i+4);
+                console.log(current_user.calendar[date]);
+              });
             new_workout.appendChild(header);
+            new_workout.appendChild(btn);
             const new_table = document.createElement('table');
             // for each workout create the first row then the next row
             const row1 = document.createElement('tr');
@@ -309,22 +332,134 @@ function updateDay(month, day, year) {
             weight_header.innerText = "Weight";
             row1.appendChild(weight_header);
             for (let j=0; j < sets; j++) {
-                const new_cell = document.createElement('td');
-                row1.appendChild(new_cell);
+                if (j < set_Data.length) {
+                    const new_cell = document.createElement('td');
+                    new_cell.textContent = set_Data[j].weight;
+
+                    new_cell.addEventListener('click', ()=> {
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.value = new_cell.textContent.trim();
+                        new_cell.innerHTML = '';
+                        new_cell.appendChild(input);
+                        input.focus();
+                        input.addEventListener('blur', function() {
+                            new_cell.textContent = input.value;
+                            if (!current_user.calendar[date][i + 3][j]) {
+                                current_user.calendar[date][i + 3].push({weight: input.value});
+                                current_user.save();
+                            } else {
+                                current_user.calendar[date][i + 3][j].weight = input.value;
+                                current_user.save();
+                            }
+                        });
+                        input.addEventListener('keypress', function(event) {
+                            if (event.key === 'Enter') {
+                                input.blur();
+                            }
+                        });
+                    })
+
+                    row1.appendChild(new_cell);
+                } else {
+                    const new_cell = document.createElement('td');
+                    new_cell.addEventListener('click', ()=> {
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.value = new_cell.textContent.trim();
+                        new_cell.innerHTML = '';
+                        new_cell.appendChild(input);
+                        input.focus();
+                        input.addEventListener('blur', function() {
+                            new_cell.textContent = input.value;
+                            if (!current_user.calendar[date][i + 3][j]) {
+                                current_user.calendar[date][i + 3].push({weight: input.value});
+                                current_user.save();
+                            } else {
+                                current_user.calendar[date][i + 3][j].weight = input.value;
+                                current_user.save();
+                            }
+                        });
+                        input.addEventListener('keypress', function(event) {
+                            if (event.key === 'Enter') {
+                                input.blur();
+                            }
+                        });
+                    })
+                    row1.appendChild(new_cell); 
+                }
             }
             const row2 = document.createElement('tr');
             const reps_header = document.createElement('th');
-            reps_header.innerText = "Completed Reps";
+            reps_header.innerText = "Reps";
             row2.appendChild(reps_header);
             for (let j=0; j < sets; j++) {
-                const new_cell = document.createElement('td');
-                row2.appendChild(new_cell);
+                if (j < set_Data.length) {
+                    const new_cell = document.createElement('td');
+                    new_cell.textContent = set_Data[j].completedReps;
+                    
+                    new_cell.addEventListener('click', ()=> {
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.value = new_cell.textContent.trim();
+                        new_cell.innerHTML = '';
+                        new_cell.appendChild(input);
+                        input.focus();
+                        input.addEventListener('blur', function() {
+                            new_cell.textContent = input.value;
+                            if (!current_user.calendar[date][i + 3][j]) {
+                                current_user.calendar[date][i + 3].push({completedReps: input.value});
+                                current_user.save();
+                            } else {
+                                current_user.calendar[date][i + 3][j].completedReps = input.value;
+                                current_user.save();
+                            }
+                        });
+                        input.addEventListener('keypress', function(event) {
+                            if (event.key === 'Enter') {
+                                input.blur();
+                            }
+                        });
+                    })
+                    row2.appendChild(new_cell);
+                    
+                } else {
+                    const new_cell = document.createElement('td');
+                    
+                    new_cell.addEventListener('click', ()=> {
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.value = new_cell.textContent.trim();
+                        new_cell.innerHTML = '';
+                        new_cell.appendChild(input);
+                        input.focus();
+                        input.addEventListener('blur', function() {
+                            new_cell.textContent = input.value;
+                            if (!current_user.calendar[date][i + 3][j]) {
+                                current_user.calendar[date][i + 3].push({completedReps: input.value});
+                                current_user.save();
+                            } else {
+                                current_user.calendar[date][i + 3][j].completedReps = input.value;
+                                current_user.save();
+                            }
+                        });
+                        input.addEventListener('keypress', function(event) {
+                            if (event.key === 'Enter') {
+                                input.blur();
+                            }
+                        });
+                    })
+
+                    row2.appendChild(new_cell); 
+                }
             }
             new_table.appendChild(row1);
             new_table.appendChild(row2);
 
             new_workout.appendChild(new_table);
             workout.appendChild(new_workout);
+
+            const tdElements = document.querySelectorAll('td');
         }
     } else {
         console.log(false);
@@ -337,6 +472,7 @@ document.getElementById('button-addon3').addEventListener('click', function() {
     const exercise = exerciseSelect.options[exerciseSelect.selectedIndex].text;
     const sets = document.getElementById('setsInput').value;
     const reps = document.getElementById('repsInput').value;
+    const setData = [];
 
     // Check if any input field is empty
     if (exercise === 'Exercise' || sets === '' || reps === '') {
@@ -350,16 +486,48 @@ document.getElementById('button-addon3').addEventListener('click', function() {
     const dateText = h2Element.textContent;
 
     // Call addWorkout function
-    current_user.addWorkout(dateText, exercise, sets, reps);
+    current_user.addWorkout(dateText, exercise, sets, reps, setData);
 
     // Optional: Clear input fields
     exerciseSelect.selectedIndex = 0;
     document.getElementById('setsInput').value = '';
     document.getElementById('repsInput').value = '';
 
-    // Optional: Display success message or perform other actions
-    alert('Workout added successfully!');
+    const current_date = dateText.split(' ');
+    const month = monthNames.indexOf(current_date[0]);
+    const day = Number(current_date[1]);
+    const year = Number(current_date[2]);
+
+    updateDay(month, day, year);
+
 });
+
+
+// Get all the td elements
+const tdElements = document.querySelectorAll('td');
+
+// Add event listener to each td element
+tdElements.forEach(td => {
+    td.addEventListener('click', () => {
+        // Create an input element
+        const input = document.createElement('input');
+        input.type = 'text';
+        // Set the value of the input to the current text content of the td
+        input.value = td.textContent.trim();
+        // Replace the content of the td with the input element
+        td.innerHTML = '';
+        td.appendChild(input);
+        // Focus on the input element
+        input.focus();
+
+        // Add event listener to input element to save changes on blur
+        input.addEventListener('blur', () => {
+            // Replace the content of the td with the new value from the input
+            td.textContent = input.value.trim();
+        });
+    });
+});
+
 
 
 loadExercises();

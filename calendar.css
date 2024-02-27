@@ -224,28 +224,33 @@
   display: flex;
   flex-direction: column;
   list-style: none;
+  padding-left: 0px;
 }
 
 .workout > li {
   display: flex;
   flex-direction: column;
+  flex: 1; /* Fill the available vertical space */
 }
 
 .workout > li > table {
-  flex: 1;
-  width: auto; /* Allow th elements to be as wide as their content */
+  width: 100%; /* Expand to fill the width of the container */
+  border-collapse: collapse; /* Combine table borders */
 }
 
-.workout > li > table td {
+.workout > li > table td,
+.workout > li > table th {
   border: 1px solid #dddddd;
   text-align: center;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding: 10px; /* Adjust padding as needed */
+}
+
+.workout > li > table td:hover {
+  background-color: #bababa;
+  cursor: pointer;
 }
 
 .workout > li > table th {
-  border: 1px solid #dddddd;
-  text-align: left;
   font-weight: lighter;
-  width: auto; /* Ensure th elements are only as wide as their content */
+  text-align: left;
 }
