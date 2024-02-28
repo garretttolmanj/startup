@@ -19,12 +19,14 @@
               <img src="image_123650291.JPG" width="30" class="d-inline-block align-text-top">
               Muscle Genius
             </a>
+            <!-- <span class="userID" id="userID">(Username)</span> -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
               <div class="navbar-nav">
-                <a class="nav-link active" aria-current="page" href="friends.html">Back</a>>
+                <!-- Nav links inside the collapsed navbar -->
+                <a class="nav-link" href="friends.html">Back</a>
               </div>
             </div>
           </div>
@@ -38,10 +40,65 @@
         <div>
           <h1>Muscle Genius <span><img src="image_123650291.JPG" width="80" alt="logo"></span></h1>
         </div>
+        
+        <div class="calendarModal" id="calendarModal">
+          <div class="calendarModal-content">
+            <div class="close">&times;</div>
+            <div id="Date"><h2>Date</h2></div>
+            <ul class="workout" id="workout">
+              <!-- <li>
+                <h3>Squats 5 sets 8 reps</h3>
+                <table>
+                  <tr>
+                    <th>Weight</th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <th>Completed Reps</th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </table>
+              </li> -->
+            </ul>
+            <!-- <div class="input-group mb-3">
+              <label class="input-group-text" for="inputGroupSelect01">Exercise</label>
+              <select class="form-select" id="inputGroupSelect01">
+                <option selected>Exercise</option>
+                <option value="1">Squats</option>
+                <option value="2">Bench</option>
+                <option value="3">Deadlift</option>
+              </select>            
+              <span class="input-group-text">Sets</span>
+              <input type="number" class="form-control" id="setsInput">
+              <span class="input-group-text">Reps</span>
+              <input type="number" class="form-control" id="repsInput">
+              <button class="btn btn-outline-secondary" type="button" id="button-addon3">Add</button>
+            </div> -->
+            
+                      
+          </div>
+        </div>
+        
         <div class="container">
           
-          <div class="d-flex justify-content-center align-items-center"><span class="Month"><h2>January</h2></span><span class="Year"><h2>2024</h2></span></div>
-          <div class="grid-calendar">
+          <div class="calendarHeader">
+            <button class="prevMonth"id="prev-month">&lt;</button>
+            <div class="d-flex flex-row">
+              <span id="Month" class="Month"></span>
+              <span id="Year" class="Year"></span>
+            </div>
+            <button class="nextMonth" id="next-month">&gt;</button>
+            
+          </div>
+          <div id="calendar-body" class="grid-calendar">
             <div class="row calendar-week-header">
               <div class="col-xs-1 grid-cell"><div data-full-name="Sunday" data-short-name="Sun"></div></div>
               <div class="col-xs-1 grid-cell"><div data-full-name="Monday" data-short-name="Mon"></div></div>
@@ -101,10 +158,6 @@
               <div class="col-xs-1 grid-cell next-month"><div>3</div></div>
             </div>
         </div>
-        <div class="input-group">
-          <span class="input-group-text">Message</span>
-          <textarea class="form-control" aria-label="With textarea"></textarea>
-        </div>
       </main>
       <hr />
       <footer>
@@ -114,5 +167,6 @@
           <a href="https://github.com/garretttolmanj/startup">GitHub</a>
       </footer>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+      <script src="friend_view.js"></script>
     </body>
 </html>

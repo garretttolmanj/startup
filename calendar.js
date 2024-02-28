@@ -40,9 +40,7 @@ class User {
         const userData = localStorage.getItem(username);
         if (userData) {
             const userDataObject = JSON.parse(userData);
-            // Create a new instance of the User class
             const user = new User(userDataObject.username, userDataObject.password);
-            // Populate exercise list and calendar data
             user.exercise_list = userDataObject.exercise_list;
             user.calendar = userDataObject.calendar;
             return user;
@@ -251,6 +249,7 @@ document.getElementById('addExerciseButton').addEventListener('click', () => {
     inputBar.style.display = "flex";
 })
 
+// calendar modal
 window.addEventListener('click', function(event) {
     const modal = document.getElementById('ExerciseModal');
     if (event.target === modal) {
@@ -271,7 +270,7 @@ document.getElementById('button-addon2').addEventListener('click', addExercise);
 // Add event listener for 'keydown' event on the exercise input field
 const exerciseInput = document.getElementById('button-addon2').previousElementSibling;
 exerciseInput.addEventListener('keydown', function(event) {
-    if (event.key === 'Enter') { // Check if the key pressed is 'Enter'
+    if (event.key === 'Enter') { 
         addExercise();
     }
 });
@@ -338,7 +337,6 @@ function updateDay(month, day, year) {
             btn.textContent = 'Remove';
             btn.classList.add('btn', 'btn-outline-danger', 'btn-sm', 'remove-btn');
             btn.addEventListener('click', function() {
-                // Get the parent li element and remove it
                 const listItem = btn.closest('li');
                 if (listItem) {
                   listItem.remove();
@@ -481,8 +479,6 @@ function updateDay(month, day, year) {
 
             new_workout.appendChild(new_table);
             workout.appendChild(new_workout);
-
-            const tdElements = document.querySelectorAll('td');
         }
     } else {
         console.log(false);
@@ -490,28 +486,24 @@ function updateDay(month, day, year) {
 }
 
 document.getElementById('button-addon3').addEventListener('click', function() {
-    // Get values from input fields
+
     const exerciseSelect = document.getElementById('inputGroupSelect01');
     const exercise = exerciseSelect.options[exerciseSelect.selectedIndex].text;
     const sets = document.getElementById('setsInput').value;
     const reps = document.getElementById('repsInput').value;
     const setData = [];
 
-    // Check if any input field is empty
     if (exercise === 'Exercise' || sets === '' || reps === '') {
         alert('Please fill out all fields');
         return;
     }
 
-    // Get current date
     const dateDiv = document.getElementById('Date');
     const h2Element = dateDiv.querySelector('h2');
     const dateText = h2Element.textContent;
 
-    // Call addWorkout function
     current_user.addWorkout(dateText, exercise, Number(sets), Number(reps), setData);
 
-    // Optional: Clear input fields
     exerciseSelect.selectedIndex = 0;
     document.getElementById('setsInput').value = '';
     document.getElementById('repsInput').value = '';
@@ -525,31 +517,6 @@ document.getElementById('button-addon3').addEventListener('click', function() {
 
 });
 
-
-// Get all the td elements
-const tdElements = document.querySelectorAll('td');
-
-// Add event listener to each td element
-tdElements.forEach(td => {
-    td.addEventListener('click', () => {
-        // Create an input element
-        const input = document.createElement('input');
-        input.type = 'text';
-        // Set the value of the input to the current text content of the td
-        input.value = td.textContent.trim();
-        // Replace the content of the td with the input element
-        td.innerHTML = '';
-        td.appendChild(input);
-        // Focus on the input element
-        input.focus();
-
-        // Add event listener to input element to save changes on blur
-        input.addEventListener('blur', () => {
-            // Replace the content of the td with the new value from the input
-            td.textContent = input.value.trim();
-        });
-    });
-});
 
 
 

@@ -49,3 +49,13 @@ In this deliverable I used HTML to build the structure of my startup application
 + -done- 10% Application images. I added a new logo designed by my sister Lauren Johnson. I rounded the images' edges in the Navbar.
 
 [NOTES](https://github.com/garretttolmanj/startup/blob/main/notes.md)
+
+## Javascript Deliverable
++ -done- Simon Javascript deployed to the production environment
++ -done- A link to this GitHub startup repository prominently display on the application's home page.
++ -done- Notes in this startup Github repository README.md.
++ -done- More than 10 commits spread consistently through the assignment period.
++ -done- 20% JavaScript support for future login. Username is displayed in the header and is used to access a user's data from previous use.
++ -done- 20% JavaScript support for future database data. I created a User class that stores important data for each user including their username, password, exercise list, friend list, and calendar data.
++ -done- 20% JavaScript support for future WebSocket. I implemented some placeholders in the friends.html page that will allow users to accept or decline incoming friend requests. The user is also able to view the calendar of each friend.
++ -done- 40% JavaScript support for your application's interaction logic. The calendar is now completely interactive with the ability to toggle between months, add workouts to each calendar day, and log completed sets. The exercise list can be updated by pressing the Exercises button in the header and selecting the Add Exercise button. The javascript used in the stats file finds the user's highest weight used in a set for each exercise and adds it to the stats table.

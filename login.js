@@ -53,9 +53,7 @@ class User {
       const userData = localStorage.getItem(username);
       if (userData) {
           const userDataObject = JSON.parse(userData);
-          // Create a new instance of the User class
           const user = new User(userDataObject.username, userDataObject.password);
-          // Populate exercise list and calendar data
           user.exercise_list = userDataObject.exercise_list;
           user.calendar = userDataObject.calendar;
           return user;

@@ -40,9 +40,7 @@ class User {
         const userData = localStorage.getItem(username);
         if (userData) {
             const userDataObject = JSON.parse(userData);
-            // Create a new instance of the User class
             const user = new User(userDataObject.username, userDataObject.password);
-            // Populate exercise list and calendar data
             user.exercise_list = userDataObject.exercise_list;
             user.calendar = userDataObject.calendar;
             return user;
@@ -100,27 +98,20 @@ const friendRequests = document.getElementById('friendRequests');
 
 document.querySelectorAll('.accept-btn').forEach(function(button) {
     button.addEventListener('click', function() {
-        // Get the friend name from the closest .list-group-item
         const listItem = button.closest('.list-group-item');
         const friendName = listItem.querySelector('.friend-name').textContent.trim();
-        // Add the friend to the current_user.friends list
         current_user.addFriend(friendName);
-        // Remove the list item
         listItem.remove();
-        // Refresh the list of friends
         refreshFriendList();
     });
 });
 
-// Add event listeners to all decline buttons
 document.querySelectorAll('.decline-btn').forEach(function(button) {
     button.addEventListener('click', function() {
-        // Remove the list item
         button.closest('.list-group-item').remove();
     });
 });
 
-// Function to refresh the list of friends
 function refreshFriendList() {
     const myFriends = document.getElementById('myFriends');
     myFriends.innerHTML = '';
