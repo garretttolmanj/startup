@@ -4,10 +4,20 @@ class User {
         this.password = password;
         this.exercise_list = ["Squat", "Bench", "Deadlift"]
         this.calendar = {};
+        this.friends = [];
     }
     
     addExercise(exercise) {
         this.exercise_list.push(exercise);
+        this.save();
+    }
+
+    addFriend(friend) {
+        this.friends.push(friend);
+        this.save();
+    }
+    removeFriend(friend)  {
+        this.friends = this.friends.filter(item => item !== friend);
         this.save();
     }
 
@@ -483,8 +493,8 @@ document.getElementById('button-addon3').addEventListener('click', function() {
     // Get values from input fields
     const exerciseSelect = document.getElementById('inputGroupSelect01');
     const exercise = exerciseSelect.options[exerciseSelect.selectedIndex].text;
-    const sets = Number(document.getElementById('setsInput').value);
-    const reps = Number(document.getElementById('repsInput').value);
+    const sets = document.getElementById('setsInput').value;
+    const reps = document.getElementById('repsInput').value;
     const setData = [];
 
     // Check if any input field is empty
@@ -499,7 +509,7 @@ document.getElementById('button-addon3').addEventListener('click', function() {
     const dateText = h2Element.textContent;
 
     // Call addWorkout function
-    current_user.addWorkout(dateText, exercise, sets, reps, setData);
+    current_user.addWorkout(dateText, exercise, Number(sets), Number(reps), setData);
 
     // Optional: Clear input fields
     exerciseSelect.selectedIndex = 0;

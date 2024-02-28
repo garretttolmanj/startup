@@ -49,3 +49,19 @@ footer {
 .author {
     margin-right: 1em;
 }
+
+.scroll-container {
+    max-height: 300px; /* Set maximum height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    display: flex; /* Use flexbox */
+    justify-content: center;
+}
+
+.table {
+    width: 70%; /* Make the table take full width */
+    table-layout: fixed; /* Fix the table layout */
+}
+.table td,
+.table th {
+    text-align: center; /* Center align content within table cells */
+}

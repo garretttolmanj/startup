@@ -56,6 +56,12 @@ main {
     flex: 1;
 }
 
+.userID {
+    color: aliceblue;
+    padding-right: .75em;
+    margin-left: auto;
+}
+
 @media (max-width: 800px) {
     main {
         flex-direction: column;
