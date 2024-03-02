@@ -87,21 +87,25 @@
                 </table>
               </li> -->
             </ul>
-            <div class="input-group mb-3">
-              <label class="input-group-text" for="inputGroupSelect01">Exercise</label>
-              <select class="form-select" id="inputGroupSelect01">
-                <option selected>Exercise</option>
-                <option value="1">Squats</option>
-                <option value="2">Bench</option>
-                <option value="3">Deadlift</option>
-              </select>            
-              <span class="input-group-text">Sets</span>
-              <input type="number" class="form-control" id="setsInput">
-              <span class="input-group-text">Reps</span>
-              <input type="number" class="form-control" id="repsInput">
-              <button class="btn btn-outline-secondary" type="button" id="button-addon3">Add</button>
+            <div class="addWorkout">
+              <div class="input-group mb-3 inputExercise">
+                <label class="input-group-text special" for="inputGroupSelect01">Exercise</label>
+                <select class="form-select special" id="inputGroupSelect01">
+                  <option selected>Exercise</option>
+                  <option value="1">Squats</option>
+                  <option value="2">Bench</option>
+                  <option value="3">Deadlift</option>
+                </select>
+              </div>            
+              <div class="input-group mb-3 inputSet">
+                <span class="input-group-text">Sets</span>
+                <input type="number" class="form-control" id="setsInput">
+                <span class="input-group-text">Reps</span>
+                <input type="number" class="form-control" id="repsInput">
+                <button class="btn btn-outline-secondary" type="button" id="button-addon3">Add</button>
+              </div>
             </div>
-            
+          
                       
           </div>
         </div>
