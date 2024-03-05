@@ -66,4 +66,11 @@ footer {
     text-align: center; /* Center align content within table cells */
 }
 
-
+.signin {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+.createAccount {
+    margin-left: 1em;
+}

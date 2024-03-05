@@ -51,10 +51,15 @@ class User {
     
   }
   
-// function setUserName(username) {
-//     const userID = document.getElementById('userID');
-//     userID.innerText = "- " + username + " -";
-// } 
+function setUserName(username) {
+    const userID = document.getElementById('userID');
+    userID.innerText = "- " + username + " -";
+}
+
+function setFriendID(friend_name) {
+    const friend_ID = document.getElementById('openStatModal');
+    friend_ID.innerText = "View " + friend_name + "'s Stats";
+}
 
 const username = localStorage.getItem('username');
 const password = localStorage.getItem('password')
@@ -62,10 +67,11 @@ const password = localStorage.getItem('password')
 const friend_name = localStorage.getItem('current_friend')
 const friend_password = "";
 let current_user;
+
 if (localStorage.getItem(username)) {
     current_user = User.load(username);
 } else {
-    current_friend = new User(username, password);
+    current_user = new User(username, password);
 }
 
 let current_friend;
@@ -76,9 +82,78 @@ if (localStorage.getItem(friend_name)) {
     current_friend = new User(friend_name, friend_password);
 }
 
-console.log(current_friend.exercise_list);
 current_friend.save();
-// setUserName(friend_name);
+setUserName(username);
+setFriendID(friend_name)
+
+// Added functionality to transfer workouts made by your friends to your own calendar.
+function copyWorkout(date){
+    const workout = current_friend.calendar[date]
+    for (let i = 0; i < workout.length; i+=4) {
+        const exercise = workout[i];
+        if (!current_user.exercise_list.includes(exercise)) {
+            current_user.addExercise(exercise);
+        }
+        const sets = workout[i+1];
+        const reps = workout[i+2];
+        current_user.addWorkout(date, exercise, sets, reps, [])
+    }
+}
+
+document.getElementById('copyWorkout').addEventListener('click', () => {
+    const date = document.getElementById('Date').innerText;
+    const btn = document.getElementById('copyWorkout').innerText = 'Transferred!'
+    console.log(date);
+    copyWorkout(date);
+});
+
+
+// functionality to display your friend's stats.
+const stats_dict = {}
+for (exercise of current_friend.exercise_list) {
+    stats_dict[exercise] = 0;
+}
+
+for (key in current_friend.calendar) {
+    for (let i=0; i < current_friend.calendar[key].length; i+=4) {
+        const exercise = current_friend.calendar[key][i];
+        const data = current_friend.calendar[key][i + 3];
+        for (item of data) {
+            if (Number(item.weight) > stats_dict[exercise]) {
+                stats_dict[exercise] = Number(item.weight);
+            }
+        }
+    }
+}
+
+console.log(stats_dict)
+
+const stats_table = document.getElementById('stats_table');
+stats_table.innerHTML = '';
+const thead = document.createElement('thead');
+const tbody = document.createElement('tbody');
+const row_head = document.createElement('tr');
+const lift = document.createElement('th');
+const Max = document.createElement('th');
+lift.innerText = 'Lift';
+Max.innerText = 'Max';
+row_head.appendChild(lift);
+row_head.appendChild(Max);
+thead.appendChild(row_head);
+stats_table.appendChild(thead);
+
+for (exercise in stats_dict) {
+    const row_body = document.createElement('tr');
+    const lift_stat = document.createElement('td');
+    const weight_stat = document.createElement('td');
+    lift_stat.innerText = exercise;
+    weight_stat.innerText = stats_dict[exercise];
+
+    row_body.appendChild(lift_stat);
+    row_body.appendChild(weight_stat);
+    tbody.appendChild(row_body);
+}
+stats_table.appendChild(tbody);
 
 //I still need to Add some functionality to display your friends stats and be able to copy your friend's workouts to your day.
 
@@ -215,6 +290,33 @@ function openItem(item) {
 function closeItem(item) {
     item.style.display = "none";
 }
+
+
+document.getElementById('openStatModal').addEventListener('click', function() {
+    const modal = document.getElementById('statModal');
+    openItem(modal);
+});
+
+document.getElementsByClassName("close")[0].addEventListener('click', () => {
+    const modal = document.getElementById('statModal');
+    closeItem(modal);
+} );
+
+document.getElementsByClassName("close")[1].addEventListener('click', () => {
+    const modal = document.getElementById('calendarModal');
+    closeItem(modal);
+} );
+
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('statModal');
+    if (event.target === modal) {
+        closeItem(modal);
+    }
+});
+
+
+
+
 // calendar modal
 window.addEventListener('click', function(event) {
     const modal = document.getElementById('ExerciseModal');
