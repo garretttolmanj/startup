@@ -11,6 +11,22 @@ document.getElementById('signinBtn').addEventListener('click', function() {
     login();
 });
 
+async function getquote() {
+    // Fetch a random quote from the Quotable API
+    const response = await fetch('https://api.quotable.io/quotes/random?tags=athletics|competition|health|inspirational|motivational|pain|perseverance|sports|success|war|work');
+    const data = await response.json();
+    const quote = document.getElementById('quote');
+    const author = document.getElementById('author');
+    if (response.ok) {
+        quote.innerText = data[0].content;
+        author.innerText = data[0].author;
+    } else {
+        quote.innerText = "YEAH BUDDY!!!!!"
+        author.innerText = "Ronnie Coleman";
+    }
+  }
+//   athletics|competition|health|inspirational|motivational|pain|perseverance|sports|success|war|work  /quotes/random?tags=athletics
+getquote();
 class User {
   constructor(username, password) {
       this.username = username;
