@@ -2,6 +2,10 @@
 async function login() {
     const username = document.getElementById('Username').value;
     const password = document.getElementById('Password').value;
+    if (username === '' || password === '') {
+        window.alert('Username or password cannot be empty');
+        return;
+    }
     const response = await fetch('/api/login', {
         method: 'POST',
         headers: {

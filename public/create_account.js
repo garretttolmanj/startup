@@ -7,6 +7,7 @@ async function register() {
         document.getElementById('Password').value = '';
         document.getElementById('confirmPassword').value = '';
         window.alert("Passwords don't match!");
+        return;
     }
 
     const response = await fetch('/api/register', {
@@ -16,11 +17,28 @@ async function register() {
         },
         body: JSON.stringify({ username, password })
     });
+    const data = await response.json()
+    console.log(response);
+
     if (response.ok) {
         localStorage.setItem("username", username);
         localStorage.setItem("password", password);
+        // Redirect user to calendar page or handle as needed
         window.location.href = "calendar.html";
     } else {
-        window.alert('Username has been taken! Please choose another');
+        // Handle error messages
+        window.alert("Failed to register: " + data.message);
+        return;
     }
 }
+
+
+document.getElementById('confirmPassword').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        register();
+    }
+});
+
+document.getElementById('createAccountBtn').addEventListener('click', function() {
+    register();
+});
