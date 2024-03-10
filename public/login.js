@@ -1,10 +1,21 @@
-function login() {
+
+async function login() {
     const username = document.getElementById('Username').value;
     const password = document.getElementById('Password').value;
-
-    localStorage.setItem("username", username);
-    localStorage.setItem("password", password);
-    window.location.href = "calendar.html";
+    const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+    });
+    if (response.ok) {
+        localStorage.setItem("username", username);
+        localStorage.setItem("password", password);
+        window.location.href = "calendar.html";
+    } else {
+        window.alert('Username and Password not recognized')
+    }
 }
 
 document.getElementById('signinBtn').addEventListener('click', function() {
