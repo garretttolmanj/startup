@@ -11,12 +11,20 @@ app.use(`/api`, apiRouter);
 // Serve index.html for all routes
 
 
-const User = require('./User');
+
 let users = {};
+class User {
+  constructor(username, password) {
+      this.username = username;
+      this.password = password;
+      this.exercise_list = ["Squat", "Bench", "Deadlift"]
+      this.calendar = {};
+      this.friends = [];
+  }
+}
 
 // Function to add a new user
 function addUser(username, password) {
-  console.log('Adding user:', username, password);
   if (username === '' || password === '') {
       return 'empty';
   } else if (users.hasOwnProperty(username)) {
@@ -34,22 +42,14 @@ function getUser(username) {
 
 // Register a new user
 app.post('/api/register', (req, res, next) => {
-  try {
-    console.log('Received registration request:', req.body);
-    const { username, password } = req.body;
-    const result = addUser(username, password);
-    if (result === true) {
-      console.log('User registered successfully:', username);
-      res.status(201).json({ message: 'User registered successfully' });
-    } else if (result === false) {
-      console.log('Username already taken:', username);
-      res.status(401).json({ message: 'Username has been taken' });
-    } else if (result === 'empty') {
-      console.log('Empty username or password');
-      res.status(400).json({ message: 'Username or password cannot be empty' });
-    }
-  } catch (error) {
-    next(error); // Pass error to error handling middleware
+  const { username, password } = req.body;
+  const result = addUser(username, password);
+  if (result === true) {
+    res.status(201).json({ message: 'User registered successfully' });
+  } else if (result === false) {
+    res.status(401).json({ message: 'Username has been taken' });
+  } else if (result === 'empty') {
+    res.status(400).json({ message: 'Username or password cannot be empty' });
   }
 });
 
@@ -64,15 +64,28 @@ apiRouter.post('/login', (req, res) => {
   }
 });
 
-apiRouter.get('/exercises', (req, res) => {
-  const { username } = req.query;
+apiRouter.post('/users', (req, res) => {
+  const { username } = req.body;
   const user = getUser(username);
   if (user) {
-      res.json({ exercises: user.exercises });
+      res.json(user);
   } else {
       res.status(404).json({ message: 'User not found' });
   }
 });
+
+apiRouter.post('/save', (req, res) => {
+  const { username, exercise_list, calendar, friends } = req.body;
+  const user = getUser(username);
+  if (user) {
+    user.exercise_list = exercise_list;
+    user.calendar = calendar;
+    user.friends = friends;
+    res.send('Saved');
+  } else {
+      res.status(404).json({message: 'User not found'})
+  }
+})
 
 
 app.use((err, req, res, next) => {

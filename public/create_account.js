@@ -18,11 +18,9 @@ async function register() {
         body: JSON.stringify({ username, password })
     });
     const data = await response.json()
-    console.log(response);
 
     if (response.ok) {
         localStorage.setItem("username", username);
-        localStorage.setItem("password", password);
         // Redirect user to calendar page or handle as needed
         window.location.href = "calendar.html";
     } else {

@@ -15,16 +15,28 @@ async function login() {
     });
     if (response.ok) {
         localStorage.setItem("username", username);
-        localStorage.setItem("password", password);
         window.location.href = "calendar.html";
     } else {
         window.alert('Username and Password not recognized')
     }
+
 }
+
+document.getElementById('Username').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        login();
+    }
+});
+document.getElementById('Password').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        login();
+    }
+});
 
 document.getElementById('signinBtn').addEventListener('click', function() {
     login();
 });
+
 
 async function getquote() {
     // Fetch a random quote from the Quotable API
@@ -40,7 +52,7 @@ async function getquote() {
         author.innerText = "Ronnie Coleman";
     }
   }
-//   athletics|competition|health|inspirational|motivational|pain|perseverance|sports|success|war|work  /quotes/random?tags=athletics
+
 getquote();
 class User {
   constructor(username, password) {
