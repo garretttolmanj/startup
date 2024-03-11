@@ -41,7 +41,7 @@ function getUser(username) {
 }
 
 // Register a new user
-app.post('/api/register', (req, res, next) => {
+apiRouter.post('/register', (req, res) => {
   const { username, password } = req.body;
   const result = addUser(username, password);
   if (result === true) {
@@ -75,6 +75,7 @@ apiRouter.post('/users', (req, res) => {
 });
 
 apiRouter.post('/save', (req, res) => {
+
   const { username, exercise_list, calendar, friends } = req.body;
   const user = getUser(username);
   if (user) {

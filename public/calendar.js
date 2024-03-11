@@ -60,11 +60,12 @@ class User {
             if (!response.ok) {
                 throw new Error('Failed to fetch user data');
             }
-    
+            
             const userDataObject = await response.json();
-            const user = new User(userDataObject.user.username, userDataObject.user.password);
-            user.exercise_list = userDataObject.user.exercise_list;
-            user.calendar = userDataObject.user.calendar;
+            console.log(userDataObject);
+            const user = new User(userDataObject.username, userDataObject.password);
+            user.exercise_list = userDataObject.exercise_list;
+            user.calendar = userDataObject.calendar;
             return user;
 
         } catch (error) {
@@ -86,16 +87,15 @@ let current_user;
 
 async function getUserAndSetUserName(username) {
     current_user = await User.load(username);
-    console.log(current_user);
-    console.log(current_user.exercise_list);
-    current_user.save();
     setUserName(username);
 }
 
 
 async function main() {
+
     const username = localStorage.getItem('username');
     await getUserAndSetUserName(username);
+
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const weekdays = {
         0: ["Sunday", "Sun"],
@@ -232,13 +232,9 @@ async function main() {
     }
 
     function loadExercises() {
-        if (localStorage.getItem('exercise_list') === null) {
-            exercise_list = ['Squats', 'Bench', 'Deadlift'];
-            localStorage.setItem('exercise_list', JSON.stringify(exercise_list));
-        }
         exercise_list = current_user.exercise_list;
-
         list = document.getElementById('ExerciseList');
+        list.innerHTML = '';
         for (const exercise of exercise_list) {
             const item = document.createElement('li');
             item.textContent = exercise;
@@ -249,6 +245,7 @@ async function main() {
 
     document.getElementById('openExerciseModal').addEventListener('click', function() {
         const modal = document.getElementById('ExerciseModal');
+        loadExercises();
         openItem(modal);
     });
 
@@ -317,7 +314,6 @@ async function main() {
 
 
     function updateDay(month, day, year) {
-        
         const date_section = document.getElementById('Date');
         date_section.innerHTML = '';
         const correct_date = document.createElement('h2');
