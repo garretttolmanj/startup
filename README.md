@@ -59,3 +59,14 @@ In this deliverable I used HTML to build the structure of my startup application
 + -done- 20% JavaScript support for future database data. I created a User class that stores important data for each user including their username, password, exercise list, friend list, and calendar data.
 + -done- 20% JavaScript support for future WebSocket. I implemented some placeholders in the friends.html page that will allow users to accept or decline incoming friend requests. The user is also able to view the calendar of each friend.
 + -done- 40% JavaScript support for your application's interaction logic. The calendar is now completely interactive with the ability to toggle between months, add workouts to each calendar day, and log completed sets. The exercise list can be updated by pressing the Exercises button in the header and selecting the Add Exercise button. The javascript used in the stats file finds the user's highest weight used in a set for each exercise and adds it to the stats table.
+
+## Service Deliverable
++ -done- Simon service deployed to the production environment
++ -done- A link to this Github startup repository prominently displayed on the application home page.
++ -done- Notes in this startup Github repository README.md.
++ -done- More than 10 commits spread consistently through the assignment period.
++ -done- 40% Created an HTTP service using Node.js and Express
++ -done- 10% Frontend served up using Express static middleware
++ -done- 10% The frontend calls third party service endpoints as displayed by the motivational quotes on the main page.
++ -done- 20% The backend provides service endpoints. I still need to add some more functionality to the friends page but everything else is working smoothly. 
++ -done- 20% The frontend calls service endpoints.
