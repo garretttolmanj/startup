@@ -41,11 +41,11 @@ async function createUser(username, password) {
     return user;
 }
 
-async function saveUser(token, exercise_list, calendar, friends) {
-    const filter = { token: token }; // Define filter criteria
+async function saveUser(username, exercise_list, calendar, friends) {
+    const filter = { username: username }; // Define filter criteria
     const update = {
         $set: { // Use $set to update specific fields
-            exercise_list: exercises,
+            exercise_list: exercise_list,
             calendar: calendar,
             friends: friends
         }
@@ -53,7 +53,6 @@ async function saveUser(token, exercise_list, calendar, friends) {
 
     try {
         const result = await userCollection.updateOne(filter, update);
-        console.log(`${result.modifiedCount} document(s) updated`);
         return result;
     } catch (error) {
         console.error('Error updating document:', error);

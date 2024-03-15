@@ -59,28 +59,41 @@ apiRouter.delete('/auth/logout', (_req, res) => {
 });
 
 apiRouter.get('/users/:username', async (req, res) => {
-  console.log("made it here")
   const user = await DB.getUser(req.params.username);
   if (user) {
       const token = req.cookies.token;
       res.json({ user: user, authenticated: token === user.token });
       return;
   }
-  console.log("point 2")
+
   res.status(404).send({ message: 'Unknown' });
 });
 
-
 apiRouter.post('/save', async (req, res) => {
   try {
-    const { token, exercise_list, calendar, friends } = req.body;
-    await DB.saveUser(token, exercise_list, calendar, friends);
-    res.send('Saved');
+    const { username, exercise_list, calendar, friends } = req.body;
+    const user = await DB.getUser(username);
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+    
+    // Check if the token in the request matches the user's token
+    const token = req.cookies.token;
+    if (token !== user.token) {
+      return res.status(401).send({ message: 'Not authenticated!' });
+    }
+    
+    // Save the user's data
+    await DB.saveUser(username, exercise_list, calendar, friends);
+    
+    // Send a success response
+    res.status(200).send('User data saved successfully');
   } catch (error) {
     console.error('Error saving user:', error);
     res.status(500).send('Error saving user');
   }
 });
+
 
 var secureApiRouter = express.Router();
 apiRouter.use(secureApiRouter);
