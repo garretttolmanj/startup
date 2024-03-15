@@ -9,8 +9,11 @@ async function register() {
         window.alert("Passwords don't match!");
         return;
     }
+    if (username === '' || password === '' || password2 === '') {
+        window.alert('Username or Password cannot be empty!');
+    }
 
-    const response = await fetch('/api/register', {
+    const response = await fetch('/api/auth/create', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -21,7 +24,6 @@ async function register() {
 
     if (response.ok) {
         localStorage.setItem("username", username);
-        // Redirect user to calendar page or handle as needed
         window.location.href = "calendar.html";
     } else {
         // Handle error messages

@@ -49,12 +49,11 @@ class User {
 
     static async load(username) {
         try {
-            const response = await fetch('/api/users', {
-                method: 'POST',
+            const response = await fetch(`/api/users?username=${username}`, {
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username })
+                }
             });
     
             if (!response.ok) {
@@ -67,12 +66,13 @@ class User {
             user.exercise_list = userDataObject.exercise_list;
             user.calendar = userDataObject.calendar;
             return user;
-
+    
         } catch (error) {
             console.error('Error loading user:', error);
             return null;
         }
     }
+    
     
     
   }

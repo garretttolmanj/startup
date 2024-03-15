@@ -7,7 +7,7 @@ const DB = require('./database.js');
 const authCookieName = 'token';
 
 // The service port may be set on the command line
-const port = process.argv.length > 2 ? process.argv[2] : 3000;
+const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
 // JSON body parsing using built-in middleware
 app.use(express.json());
@@ -25,91 +25,92 @@ app.set('trust proxy', true);
 var apiRouter = express.Router();
 app.use(`/api`, apiRouter);
 
-let users = {};
-class User {
-  constructor(username, password) {
-      this.username = username;
-      this.password = password;
-      this.exercise_list = ["Squat", "Bench", "Deadlift"]
-      this.calendar = {};
-      this.friends = [];
-  }
-}
-
-// Function to add a new user
-function addUser(username, password) {
-  if (username === '' || password === '') {
-      return 'empty';
-  } else if (users.hasOwnProperty(username)) {
-      return false; 
+// CreateAuth token for a new user
+apiRouter.post('/auth/create', async (req, res) => {
+  if (await DB.getUser(req.body.username)) {
+    res.status(409).send({ message: 'Existing user' });
   } else {
-      users[username] = new User(username, password);
-      return true;
-  }
-}
+    const user = await DB.createUser(req.body.username, req.body.password);
+    console.log(user);
+    // Set the cookie
+    setAuthCookie(res, user.token);
 
-// Function to retrieve user by username
-function getUser(username) {
-  return users.hasOwnProperty(username) ? users[username] : null;
-}
-
-// Register a new user
-apiRouter.post('/register', (req, res) => {
-  const { username, password } = req.body;
-  const result = addUser(username, password);
-  if (result === true) {
-    res.status(201).json({ message: 'User registered successfully' });
-  } else if (result === false) {
-    res.status(401).json({ message: 'Username has been taken' });
-  } else if (result === 'empty') {
-    res.status(400).json({ message: 'Username or password cannot be empty' });
+    res.send({
+      id: user._id,
+    });
   }
 });
 
-
-apiRouter.post('/login', (req, res) => {
-  const { username, password } = req.body;
-  const user = getUser(username);
-  if (user && user.password === password) {  
-    res.json({ message: 'Login successful' });
-  } else {
-      res.status(401).json({ message: 'Invalid username or password' });
-  }
-});
-
-apiRouter.post('/users', (req, res) => {
-  const { username } = req.body;
-  const user = getUser(username);
+// GetAuth token for the provided credentials
+apiRouter.post('/auth/login', async (req, res) => {
+  const user = await DB.getUser(req.body.username);
   if (user) {
-      res.json(user);
-  } else {
-      res.status(404).json({ message: 'User not found' });
+    if (await bcrypt.compare(req.body.password, user.password)) {
+      setAuthCookie(res, user.token);
+      res.send({ id: user._id });
+      return;
+    }
   }
+  res.status(401).send({ message: 'Unauthorized' });
 });
 
-apiRouter.post('/save', (req, res) => {
+apiRouter.delete('/auth/logout', (_req, res) => {
+  res.clearCookie(authCookieName);
+  res.status(204).end();
+});
 
-  const { username, exercise_list, calendar, friends } = req.body;
-  const user = getUser(username);
+apiRouter.get('/users:username', async (req, res) => {
+  const user = await DB.getUser(req.params.username);
   if (user) {
-    user.exercise_list = exercise_list;
-    user.calendar = calendar;
-    user.friends = friends;
+    const token = req?.cookies.token;
+    res.json( {user: user, authenticated: token === user.token} );
+    return;
+  }
+  res.status(404).send({ message: 'Unknown' });
+});
+
+apiRouter.post('/save', async (req, res) => {
+  try {
+    const { token, exercise_list, calendar, friends } = req.body;
+    await DB.saveUser(token, exercise_list, calendar, friends);
     res.send('Saved');
-  } else {
-      res.status(404).json({message: 'User not found'})
+  } catch (error) {
+    console.error('Error saving user:', error);
+    res.status(500).send('Error saving user');
   }
-})
-
-
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Something went wrong!');
 });
 
+var secureApiRouter = express.Router();
+apiRouter.use(secureApiRouter);
+
+secureApiRouter.use(async (req, res, next) => {
+  authToken = req.cookies[authCookieName];
+  const user = await DB.getUserByToken(authToken);
+  if (user) {
+    next();
+  } else {
+    res.status(401).send({ msg: 'Unauthorized' });
+  }
+});
+
+// Default error handler
+app.use(function (err, req, res, next) {
+  res.status(500).send({ type: err.name, message: err.message });
+});
+
+// Return the application's default page if the path is unknown
 app.use((_req, res) => {
   res.sendFile('index.html', { root: 'public' });
 });
+
+// setAuthCookie in the HTTP response
+function setAuthCookie(res, authToken) {
+  res.cookie(authCookieName, authToken, {
+    secure: true,
+    httpOnly: true,
+    sameSite: 'strict',
+  });
+}
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);

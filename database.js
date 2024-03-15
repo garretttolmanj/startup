@@ -40,8 +40,31 @@ async function createUser(username, password) {
 
     return user;
 }
+
+async function saveUser(token, exercise_list, calendar, friends) {
+    const filter = { token: token }; // Define filter criteria
+    const update = {
+        $set: { // Use $set to update specific fields
+            exercise_list: exercises,
+            calendar: calendar,
+            friends: friends
+        }
+    };
+
+    try {
+        const result = await userCollection.updateOne(filter, update);
+        console.log(`${result.modifiedCount} document(s) updated`);
+        return result;
+    } catch (error) {
+        console.error('Error updating document:', error);
+        throw error; // Rethrow the error to handle it in the caller function
+    }
+}
+
+
 module.exports = {
     getUser,
     getUserByToken,
     createUser,
+    saveUser
   };
