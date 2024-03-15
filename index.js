@@ -31,7 +31,6 @@ apiRouter.post('/auth/create', async (req, res) => {
     res.status(409).send({ message: 'Existing user' });
   } else {
     const user = await DB.createUser(req.body.username, req.body.password);
-    console.log(user);
     // Set the cookie
     setAuthCookie(res, user.token);
 
@@ -59,15 +58,18 @@ apiRouter.delete('/auth/logout', (_req, res) => {
   res.status(204).end();
 });
 
-apiRouter.get('/users:username', async (req, res) => {
+apiRouter.get('/users/:username', async (req, res) => {
+  console.log("made it here")
   const user = await DB.getUser(req.params.username);
   if (user) {
-    const token = req?.cookies.token;
-    res.json( {user: user, authenticated: token === user.token} );
-    return;
+      const token = req.cookies.token;
+      res.json({ user: user, authenticated: token === user.token });
+      return;
   }
+  console.log("point 2")
   res.status(404).send({ message: 'Unknown' });
 });
+
 
 apiRouter.post('/save', async (req, res) => {
   try {
@@ -89,7 +91,7 @@ secureApiRouter.use(async (req, res, next) => {
   if (user) {
     next();
   } else {
-    res.status(401).send({ msg: 'Unauthorized' });
+    res.status(401).send({ message: 'Unauthorized' });
   }
 });
 

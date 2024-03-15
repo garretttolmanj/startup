@@ -49,29 +49,34 @@ class User {
 
     static async load(username) {
         try {
-            const response = await fetch(`/api/users?username=${username}`, {
+            const response = await fetch(`/api/users/${username}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
-    
+            
             if (!response.ok) {
                 throw new Error('Failed to fetch user data');
             }
-            
             const userDataObject = await response.json();
-            console.log(userDataObject);
-            const user = new User(userDataObject.username, userDataObject.password);
-            user.exercise_list = userDataObject.exercise_list;
-            user.calendar = userDataObject.calendar;
-            return user;
+    
+            // Check if user is authenticated
+            if (userDataObject.authenticated) {
+                const user = new User(userDataObject.user.username, userDataObject.user.password);
+                user.exercise_list = userDataObject.user.exercise_list;
+                user.calendar = userDataObject.user.calendar;
+                return user;
+            } else {
+                console.log('User is not authenticated');
+            }
     
         } catch (error) {
             console.error('Error loading user:', error);
             return null;
         }
     }
+    
     
     
     
@@ -497,8 +502,6 @@ async function main() {
                 new_workout.appendChild(new_table);
                 workout.appendChild(new_workout);
             }
-        } else {
-            console.log(false);
         }
     }
 
