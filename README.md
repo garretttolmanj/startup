@@ -70,3 +70,14 @@ In this deliverable I used HTML to build the structure of my startup application
 + -done- 10% The frontend calls third party service endpoints as displayed by the motivational quotes on the main page.
 + -done- 20% The backend provides service endpoints. I still need to add some more functionality to the friends page but everything else is working smoothly. 
 + -done- 20% The frontend calls service endpoints.
+
+## Login Deliverable
++ -done- Simon Login deployed to the production environment
++ -done- A link to this GitHub startup repository prominently displayed on your application's home page
++ -done- Notes in this startup Git repository README.md file.
++ -done- 10 git commits spread consistently throughout the assignment period.
++ -done- 20% Supports new user registration
++ -done- 20% Supports existing user authentication
++ -done- 20% Stores application data in MongoDB
++ -done- 20% Stores and retrieves credentials in MongoDB
++ -done- 20% Restricts application functionality based upon authentication
