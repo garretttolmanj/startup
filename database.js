@@ -47,7 +47,7 @@ async function createUser(username, password) {
 }
 
 async function saveUser(username, exercise_list, calendar, friends, friend_requests) {
-    const filter = { username: username }; // Define filter criteria
+    const filter = { username: username };
     const update = {
         $set: { // Use $set to update specific fields
             exercise_list: exercise_list,
@@ -62,7 +62,7 @@ async function saveUser(username, exercise_list, calendar, friends, friend_reque
         return result;
     } catch (error) {
         console.error('Error updating document:', error);
-        throw error; // Rethrow the error to handle it in the caller function
+        throw error;
     }
 }
 
@@ -70,18 +70,17 @@ async function getAllUsers(currentUsername) {
     try {
         // Query the database to find all users except the current user
         const users = await userCollection.find({ username: { $ne: currentUsername } }).toArray();
-        // Extract only the usernames from the user objects
         const usernames = users.map(user => user.username);
         return usernames;
     } catch (error) {
         console.error('Error getting all users:', error);
-        throw error; // Rethrow the error to handle it in the caller function
+        throw error;
     }
 }
 
 async function sendFriendRequest(senderUsername, recipientUsername) {
     try {
-        // Find the sender and recipient user objects in the database
+
         const recipientUser = await getUser(recipientUsername);
         console.log(recipientUser);
         // Update the recipient's friend_requests array
@@ -95,7 +94,7 @@ async function sendFriendRequest(senderUsername, recipientUsername) {
         return true; 
     } catch (error) {
         console.error('Error sending friend request:', error);
-        return false; // Indicate failure
+        return false;
     }
 }
 

@@ -148,17 +148,17 @@ let current_friend;
 async function getUserAndSetUserName(username, friend_name) {
     current_user = await User.load(username);
     current_friend = await Friend.load(friend_name);
-    // This is temporary, I need to fix this.
     setFriendID(friend_name);
     setUserName(username);
 }
+// I want to add functionality to remove friends
 
 
 async function main() {
 
 
     
-    const username = localStorage.getItem('username');
+    const username = document.cookie.match(/(?:(?:^|.*;\s*)username\s*=\s*([^;]*).*$)|^.*$/)[1];
     const friend_name = document.cookie.match(/(?:(?:^|.*;\s*)current_user\s*=\s*([^;]*).*$)|^.*$/)[1];
     await getUserAndSetUserName(username, friend_name);
 
@@ -424,21 +424,7 @@ async function main() {
         date_section.appendChild(correct_date);
 
         const exercise_list = current_friend.exercise_list;
-        // const inputBar = document.getElementById('inputGroupSelect01');
-        // inputBar.innerHTML = '';
 
-        // const placeholderOption = document.createElement('option');
-        // placeholderOption.value = '';
-        // placeholderOption.disabled = true;
-        // placeholderOption.selected = true;
-        // placeholderOption.hidden = true;
-        // placeholderOption.textContent = 'Select Exercise';
-        // inputBar.appendChild(placeholderOption);
-        // for (item of exercise_list) {
-        //     const new_option = document.createElement('option');
-        //     new_option.innerText = item;
-        //     inputBar.appendChild(new_option);
-        // }
         const workout = document.getElementById('workout');
         workout.innerHTML = '';
         // update the workout list
@@ -450,22 +436,9 @@ async function main() {
                 const set_Data = current_friend.calendar[date][i + 3];
                 const new_workout = document.createElement('li');
                 const header = document.createElement('h3');
-                // const btn = document.createElement('button');
                 header.innerText = exercise + " " + sets + " Sets " + reps + " Reps";
 
-                // btn.textContent = 'Remove';
-                // btn.classList.add('btn', 'btn-outline-danger', 'btn-sm', 'remove-btn');
-                // btn.addEventListener('click', function() {
-                //     // Get the parent li element and remove it
-                //     const listItem = btn.closest('li');
-                //     if (listItem) {
-                //       listItem.remove();
-                //     }
-                //     current_friend.calendar[date].splice(i, i+4);
-                //     current_friend.save();
-                //   });
                 new_workout.appendChild(header);
-                // new_workout.appendChild(btn);
                 const new_table = document.createElement('table');
                 // for each workout create the first row then the next row
                 const row1 = document.createElement('tr');
@@ -477,56 +450,9 @@ async function main() {
                         const new_cell = document.createElement('td');
                         new_cell.textContent = set_Data[j].weight;
 
-                        // new_cell.addEventListener('click', ()=> {
-                        //     const input = document.createElement('input');
-                        //     input.type = 'text';
-                        //     input.value = new_cell.textContent.trim();
-                        //     new_cell.innerHTML = '';
-                        //     new_cell.appendChild(input);
-                        //     input.focus();
-                        //     input.addEventListener('blur', function() {
-                        //         new_cell.textContent = input.value;
-                        //         if (!current_friend.calendar[date][i + 3][j]) {
-                        //             current_friend.calendar[date][i + 3].push({weight: input.value});
-                        //             current_friend.save();
-                        //         } else {
-                        //             current_friend.calendar[date][i + 3][j].weight = input.value;
-                        //             current_friend.save();
-                        //         }
-                        //     });
-                        //     input.addEventListener('keypress', function(event) {
-                        //         if (event.key === 'Enter') {
-                        //             input.blur();
-                        //         }
-                        //     });
-                        // })
-
                         row1.appendChild(new_cell);
                     } else {
                         const new_cell = document.createElement('td');
-                        // new_cell.addEventListener('click', ()=> {
-                        //     const input = document.createElement('input');
-                        //     input.type = 'text';
-                        //     input.value = new_cell.textContent.trim();
-                        //     new_cell.innerHTML = '';
-                        //     new_cell.appendChild(input);
-                        //     input.focus();
-                        //     input.addEventListener('blur', function() {
-                        //         new_cell.textContent = input.value;
-                        //         if (!current_friend.calendar[date][i + 3][j]) {
-                        //             current_friend.calendar[date][i + 3].push({weight: input.value});
-                        //             current_friend.save();
-                        //         } else {
-                        //             current_friend.calendar[date][i + 3][j].weight = input.value;
-                        //             current_friend.save();
-                        //         }
-                        //     });
-                        //     input.addEventListener('keypress', function(event) {
-                        //         if (event.key === 'Enter') {
-                        //             input.blur();
-                        //         }
-                        //     });
-                        // })
                         row1.appendChild(new_cell); 
                     }
                 }
@@ -539,57 +465,11 @@ async function main() {
                         const new_cell = document.createElement('td');
                         new_cell.textContent = set_Data[j].completedReps;
                         
-                        // new_cell.addEventListener('click', ()=> {
-                        //     const input = document.createElement('input');
-                        //     input.type = 'text';
-                        //     input.value = new_cell.textContent.trim();
-                        //     new_cell.innerHTML = '';
-                        //     new_cell.appendChild(input);
-                        //     input.focus();
-                        //     input.addEventListener('blur', function() {
-                        //         new_cell.textContent = input.value;
-                        //         if (!current_friend.calendar[date][i + 3][j]) {
-                        //             current_friend.calendar[date][i + 3].push({completedReps: input.value});
-                        //             current_friend.save();
-                        //         } else {
-                        //             current_friend.calendar[date][i + 3][j].completedReps = input.value;
-                        //             current_friend.save();
-                        //         }
-                        //     });
-                        //     input.addEventListener('keypress', function(event) {
-                        //         if (event.key === 'Enter') {
-                        //             input.blur();
-                        //         }
-                        //     });
-                        // })
                         row2.appendChild(new_cell);
                         
                     } else {
                         const new_cell = document.createElement('td');
                         
-                        // new_cell.addEventListener('click', ()=> {
-                        //     const input = document.createElement('input');
-                        //     input.type = 'text';
-                        //     input.value = new_cell.textContent.trim();
-                        //     new_cell.innerHTML = '';
-                        //     new_cell.appendChild(input);
-                        //     input.focus();
-                        //     input.addEventListener('blur', function() {
-                        //         new_cell.textContent = input.value;
-                        //         if (!current_friend.calendar[date][i + 3][j]) {
-                        //             current_friend.calendar[date][i + 3].push({completedReps: input.value});
-                        //             current_friend.save();
-                        //         } else {
-                        //             current_friend.calendar[date][i + 3][j].completedReps = input.value;
-                        //             current_friend.save();
-                        //         }
-                        //     });
-                        //     input.addEventListener('keypress', function(event) {
-                        //         if (event.key === 'Enter') {
-                        //             input.blur();
-                        //         }
-                        //     });
-                        // })
 
                         row2.appendChild(new_cell); 
                     }

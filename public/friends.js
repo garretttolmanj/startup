@@ -73,8 +73,6 @@ class User {
                 user.exercise_list = userDataObject.user.exercise_list;
                 user.calendar = userDataObject.user.calendar;
                 user.friends = userDataObject.user.friends;
-                console.log(userDataObject.friends);
-                console.log(userDataObject.friend_requests)
                 user.friend_requests = userDataObject.user.friend_requests;
                 return user;
             } else {
@@ -110,7 +108,7 @@ async function getUserAndSetUserName(username) {
 
 async function main() {
 
-    const username = localStorage.getItem('username');
+    const username = document.cookie.match(/(?:(?:^|.*;\s*)username\s*=\s*([^;]*).*$)|^.*$/)[1];
 
     await getUserAndSetUserName(username);
     const searchInput = document.getElementById('searchInput');
@@ -118,7 +116,7 @@ async function main() {
     const searchResults = document.getElementById('searchResults');
     
     searchInput.addEventListener('input', function() {
-        const query = this.value.trim(); // Trim whitespace from the input
+        const query = this.value.trim();
     
         // Clear previous search results
         searchResults.innerHTML = '';
@@ -158,12 +156,10 @@ async function main() {
             const resultItem = document.createElement('a');
             resultItem.classList.add('dropdown-item');
             resultItem.textContent = username;
-            resultItem.href = '#'; // Add a link if you want to navigate to user profile
             const searchButton = document.getElementById('searchButton');
             const requestButton = document.getElementById('sendRequest');
             resultItem.addEventListener('click', function(event) {
                 event.preventDefault(); // Prevent default link behavior
-                // Handle click on a search result (e.g., send friend request)
                 hideDropdown();
                 searchButton.classList.add('hide');
                 requestButton.classList.remove('hide');
@@ -216,59 +212,6 @@ async function main() {
         const friend = inputBar.value;
         sendFriendRequest(current_user.username, friend);
     })
-    // displayFriends();
-
-    // Fetch all usernames except the current user's from the backend
-    // const allUsernames = await getAllUsernames(username);
-    // console.log(allUsernames);
-
-    // displayUsernamesInSearchBar(allUsernames);
-
-    // async function getAllUsernames(currentUser) {
-    //     try {
-    //         // Fetch all usernames from the backend
-    //         const response = await fetch(`/api/users?username=${currentUser}`);
-    //         if (!response.ok) {
-    //             throw new Error('Failed to fetch usernames');
-    //         }
-    //         const data = await response.json();
-    //         return data.usernames.filter(username => username !== currentUser);
-    //     } catch (error) {
-    //         console.error('Error fetching usernames:', error);
-    //         return [];
-    //     }
-    // }
-
-    // function displayUsernamesInSearchBar(usernames) {
-
-    //     const searchInput = document.querySelector('.form-control');
-
-
-    //     searchInput.value = '';
-
-    //     usernames.forEach(username => {
-    //         const option = document.createElement('option');
-    //         option.value = username;
-    //         searchInput.appendChild(option);
-    //     });
-    // }
-
-    // async function displayFriends() {
-    //     const myFriends = document.getElementById('myFriends');
-    //     myFriends.innerHTML = '';
-    //     current_user.friends.forEach(friend => {
-    //         const new_friend = document.createElement('a');
-    //         new_friend.setAttribute('href', 'friend_view.html');
-    //         new_friend.setAttribute('class', 'list-group-item list-group-item-action');
-    //         new_friend.textContent = friend;
-    //         new_friend.addEventListener('click', function(friend) {
-    //             return function() {
-    //                 localStorage.setItem('current_friend', friend);
-    //             };
-    //         }(friend));
-    //         myFriends.appendChild(new_friend);
-    //     });
-    // }
 
     
     const friendRequestsList = document.getElementById('friendRequests');

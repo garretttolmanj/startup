@@ -83,10 +83,9 @@ apiRouter.get('/friends/:friend', async (req, res) => {
 apiRouter.get('/users', async (req, res) => {
   const query = req.query.query;
   const currentUser = req.query.currentUser;
-  // console.log(query);
-  // Perform a search in your database for usernames matching the query pattern
+
   let usernames = await DB.getAllUsers(currentUser);
-  const regexPattern = new RegExp(query, 'i'); // 'i' flag for case-insensitive matching
+  const regexPattern = new RegExp(query, 'i');
   // Filter usernames based on the regex pattern
   const matchingUsers = usernames.filter(user => regexPattern.test(user));
 
@@ -111,8 +110,7 @@ apiRouter.post('/save', async (req, res) => {
     
     // Save the user's data
     await DB.saveUser(username, exercise_list, calendar, friends, friend_requests);
-    
-    // Send a success response
+
     res.status(200).send('User data saved successfully');
   } catch (error) {
     console.error('Error saving user:', error);
@@ -128,7 +126,6 @@ apiRouter.post('/friendRequest', async (req, res) => {
       return res.status(404).send({ message: 'Error sending friend request' });
     };
     
-    // Send a success response
     res.status(200).send('User data saved successfully');
   } catch (error) {
     console.error('Error:', error);

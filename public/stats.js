@@ -73,8 +73,6 @@ class User {
                 user.exercise_list = userDataObject.user.exercise_list;
                 user.calendar = userDataObject.user.calendar;
                 user.friends = userDataObject.user.friends;
-                console.log(userDataObject.friends);
-                console.log(userDataObject.friend_requests)
                 user.friend_requests = userDataObject.user.friend_requests;
                 return user;
             } else {
@@ -108,7 +106,7 @@ async function getUserAndSetUserName(username) {
 
 
 async function main() {
-    const username = localStorage.getItem('username');
+    const username = document.cookie.match(/(?:(?:^|.*;\s*)username\s*=\s*([^;]*).*$)|^.*$/)[1];
     await getUserAndSetUserName(username);
 
     const stats_dict = {}
