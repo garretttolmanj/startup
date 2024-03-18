@@ -24,6 +24,11 @@ function getUserByToken(token) {
     return userCollection.findOne({ token: token });
 }
 
+// function getFriend(username) {
+//     user = userCollection.findOne( {username: username });
+//     console.log(user);
+//     return user;
+// }
 async function createUser(username, password) {
 // Hash the password before we insert it into the database
     const passwordHash = await bcrypt.hash(password, 10);
@@ -41,13 +46,14 @@ async function createUser(username, password) {
     return user;
 }
 
-async function saveUser(username, exercise_list, calendar, friends) {
+async function saveUser(username, exercise_list, calendar, friends, friend_requests) {
     const filter = { username: username }; // Define filter criteria
     const update = {
         $set: { // Use $set to update specific fields
             exercise_list: exercise_list,
             calendar: calendar,
-            friends: friends
+            friends: friends,
+            friend_requests: friend_requests
         }
     };
 
@@ -60,10 +66,25 @@ async function saveUser(username, exercise_list, calendar, friends) {
     }
 }
 
+async function getAllUsers(currentUsername) {
+    try {
+        // Query the database to find all users except the current user
+        const users = await userCollection.find({ username: { $ne: currentUsername } }).toArray();
+        // Extract only the usernames from the user objects
+        const usernames = users.map(user => user.username);
+        return usernames;
+    } catch (error) {
+        console.error('Error getting all users:', error);
+        throw error; // Rethrow the error to handle it in the caller function
+    }
+}
+
+
 
 module.exports = {
     getUser,
     getUserByToken,
     createUser,
+    getAllUsers,
     saveUser
   };

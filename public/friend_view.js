@@ -5,6 +5,7 @@ class User {
         this.exercise_list = ["Squat", "Bench", "Deadlift"]
         this.calendar = {};
         this.friends = [];
+        this.friend_requests = [];
     }
     
     addExercise(exercise) {
@@ -14,6 +15,12 @@ class User {
 
     addFriend(friend) {
         this.friends.push(friend);
+        this.removeRequest(friend);
+        this.save();
+    }
+    
+    removeRequest(friend) {
+        this.friend_requests = this.friend_requests.filter(item => item !== friend);
         this.save();
     }
     
@@ -40,7 +47,7 @@ class User {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ username: this.username, exercise_list: this.exercise_list, calendar: this.calendar, friends: this.friends })
+                body: JSON.stringify({ username: this.username, exercise_list: this.exercise_list, calendar: this.calendar, friends: this.friends, friend_requests: this.friend_requests })
             });
         } catch (error) {
             window.alert("Error saving user");
@@ -49,30 +56,35 @@ class User {
 
     static async load(username) {
         try {
-            const response = await fetch('/api/users', {
-                method: 'POST',
+            const response = await fetch(`/api/users/${username}`, {
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username })
+                }
             });
-    
+            
             if (!response.ok) {
                 throw new Error('Failed to fetch user data');
             }
-            
             const userDataObject = await response.json();
-            console.log(userDataObject);
-            const user = new User(userDataObject.username, userDataObject.password);
-            user.exercise_list = userDataObject.exercise_list;
-            user.calendar = userDataObject.calendar;
-            return user;
-
+    
+            // Check if user is authenticated
+            if (userDataObject.authenticated) {
+                const user = new User(userDataObject.user.username, userDataObject.user.password);
+                user.exercise_list = userDataObject.user.exercise_list;
+                user.calendar = userDataObject.user.calendar;
+                return user;
+            } else {
+                console.log('User is not authenticated');
+            }
+    
         } catch (error) {
             console.error('Error loading user:', error);
             return null;
         }
     }
+    
+    
     
     
   }
@@ -93,7 +105,7 @@ let current_friend;
 
 async function getUserAndSetUserName(username, friend_name) {
     current_user = await User.load(username);
-    current_friend = await User.load(friend_name);
+    current_friend = await User.loadFriend(friend_name);
     // This is temporary, I need to fix this.
     if (!current_friend) {
         current_friend = new User(friend_name, "password")

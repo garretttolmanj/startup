@@ -42,23 +42,29 @@
                 <div>
                     <h2>My friends</h2>
                     <ul class="list-group" id="myFriends">
-                        <a href="friend_view.html" class="list-group-item list-group-item-action">Friend 1</a>
-                        <a href="friend_view.html" class="list-group-item list-group-item-action">Friend 2</a>
-                        <a href="friend_view.html" class="list-group-item list-group-item-action">Friend 3</a>
-                        <a href="friend_view.html" class="list-group-item list-group-item-action">Friend 4</a>
                     </ul>
                 </div>
                 <div class="find-friends">
-                    <form class="d-flex">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="searchInput" placeholder="Find Friends...">
+                        <div class="input-group-append">
+                          <button class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
+                        </div>
+                      </div>
+                      
+                      <div class="dropdown">
+                        <div id="searchResults" class="dropdown-menu" aria-labelledby="dropdownMenuButton"></div>
+                      </div>
+                    <!-- <form class="d-flex">
                         <input class="form-control me-2" type="search" placeholder="Find Friends" aria-label="Find Friends">
                         <button class="btn btn-primary" type="submit">Search</button>
-                    </form>
+                    </form> -->
                 </div>    
             </div>    
             <div class="requests">
                 <legend>Friend Requests</legend>
                 <ul class="list-group list-group-flush bg-dark text-light" id="friendRequests">
-                    <li class="list-group-item list-group-item-dark">
+                    <!-- <li class="list-group-item list-group-item-dark">
                         <span class="friend-name">Friend 1</span>
                         <button type="button" class="btn btn-outline-success btn-sm accept-btn">Accept</button>
                         <button type="button" class="btn btn-outline-danger btn-sm decline-btn">Decline</button>
@@ -72,7 +78,7 @@
                         <span class="friend-name">Friend 3</span>
                         <button type="button" class="btn btn-outline-success btn-sm accept-btn">Accept</button>
                         <button type="button" class="btn btn-outline-danger btn-sm decline-btn">Decline</button>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </main>

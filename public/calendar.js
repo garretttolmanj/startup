@@ -5,6 +5,7 @@ class User {
         this.exercise_list = ["Squat", "Bench", "Deadlift"]
         this.calendar = {};
         this.friends = [];
+        this.friend_requests = [];
     }
     
     addExercise(exercise) {
@@ -14,6 +15,12 @@ class User {
 
     addFriend(friend) {
         this.friends.push(friend);
+        this.removeRequest(friend);
+        this.save();
+    }
+    
+    removeRequest(friend) {
+        this.friend_requests = this.friend_requests.filter(item => item !== friend);
         this.save();
     }
     
@@ -40,7 +47,7 @@ class User {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ username: this.username, exercise_list: this.exercise_list, calendar: this.calendar, friends: this.friends })
+                body: JSON.stringify({ username: this.username, exercise_list: this.exercise_list, calendar: this.calendar, friends: this.friends, friend_requests: this.friend_requests })
             });
         } catch (error) {
             window.alert("Error saving user");

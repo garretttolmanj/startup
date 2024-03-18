@@ -5,6 +5,7 @@ class User {
         this.exercise_list = ["Squat", "Bench", "Deadlift"]
         this.calendar = {};
         this.friends = [];
+        this.friend_requests = [];
     }
     
     addExercise(exercise) {
@@ -14,6 +15,12 @@ class User {
 
     addFriend(friend) {
         this.friends.push(friend);
+        this.removeRequest(friend);
+        this.save();
+    }
+    
+    removeRequest(friend) {
+        this.friend_requests = this.friend_requests.filter(item => item !== friend);
         this.save();
     }
     
@@ -40,7 +47,7 @@ class User {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ username: this.username, exercise_list: this.exercise_list, calendar: this.calendar, friends: this.friends })
+                body: JSON.stringify({ username: this.username, exercise_list: this.exercise_list, calendar: this.calendar, friends: this.friends, friend_requests: this.friend_requests })
             });
         } catch (error) {
             window.alert("Error saving user");
@@ -49,30 +56,35 @@ class User {
 
     static async load(username) {
         try {
-            const response = await fetch('/api/users', {
-                method: 'POST',
+            const response = await fetch(`/api/users/${username}`, {
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username })
+                }
             });
-    
+            
             if (!response.ok) {
                 throw new Error('Failed to fetch user data');
             }
-            
             const userDataObject = await response.json();
-            console.log(userDataObject);
-            const user = new User(userDataObject.username, userDataObject.password);
-            user.exercise_list = userDataObject.exercise_list;
-            user.calendar = userDataObject.calendar;
-            return user;
-
+    
+            // Check if user is authenticated
+            if (userDataObject.authenticated) {
+                const user = new User(userDataObject.user.username, userDataObject.user.password);
+                user.exercise_list = userDataObject.user.exercise_list;
+                user.calendar = userDataObject.user.calendar;
+                return user;
+            } else {
+                console.log('User is not authenticated');
+            }
+    
         } catch (error) {
             console.error('Error loading user:', error);
             return null;
         }
     }
+    
+    
     
     
   }
@@ -91,65 +103,206 @@ async function getUserAndSetUserName(username) {
 }
 
 
+
+
 async function main() {
 
     const username = localStorage.getItem('username');
+
     await getUserAndSetUserName(username);
+    const searchInput = document.getElementById('searchInput');
 
-    current_user.addFriend('Garrett');
-    current_user.addFriend('johnny');
-    console.log(current_user.friends);
+    const searchResults = document.getElementById('searchResults');
+    
+    searchInput.addEventListener('input', function() {
+        const query = this.value.trim(); // Trim whitespace from the input
+    
+        // Clear previous search results
+        searchResults.innerHTML = '';
+    
+        // If the query is empty, hide the dropdown
+        if (!query) {
+            hideDropdown();
+            return;
+        }
+    
+        // Fetch matching usernames from the server
+        fetchUsernames(query, username)
+            .then(usernames => {
+                // Display search results
+                displaySearchResults(usernames);
+            })
+            .catch(error => {
+                console.error('Error fetching usernames:', error);
+            });
+    });
 
-    let myFriends = document.getElementById('myFriends');
-    myFriends.innerHTML = '';
-
-    for (let item of current_user.friends) {
-        const new_friend = document.createElement('a');
-        new_friend.setAttribute('href', 'friend_view.html');
-        new_friend.setAttribute('class', 'list-group-item list-group-item-action');
-        new_friend.textContent = item;
-        new_friend.addEventListener('click', function(friend) {
-            return function() {
-                localStorage.setItem('current_friend', friend);
-            };
-        }(item));
-        myFriends.appendChild(new_friend);
+    async function fetchUsernames(query, currentUser) {
+        try {
+            const response = await fetch(`/api/users?query=${query}&currentUser=${currentUser}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch usernames');
+            }
+            const data = await response.json();
+            return data.usernames;
+        } catch (error) {
+            throw error;
+        }
     }
+    
+    function displaySearchResults(usernames) {
+        usernames.forEach(username => {
+            const resultItem = document.createElement('a');
+            resultItem.classList.add('dropdown-item');
+            resultItem.textContent = username;
+            resultItem.href = '#'; // Add a link if you want to navigate to user profile
+            resultItem.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent default link behavior
+                // Handle click on a search result (e.g., send friend request)
+                sendFriendRequest(username);
+                // Clear search results
+                searchResults.innerHTML = '';
+                // Clear search input
+                searchInput.value = '';
+            });
+            searchResults.appendChild(resultItem);
+        });
+    
+        // Show the dropdown
+        showDropdown();
+    }
+    
+    function showDropdown() {
+        searchResults.classList.add('show');
+    }
+    
+    // Function to hide the dropdown
+    function hideDropdown() {
+        searchResults.classList.remove('show');
+    }
+    
+    // Function to simulate sending a friend request (replace with actual implementation)
+    function sendFriendRequest(username) {
+        console.log('Sending friend request to:', username);
+    }
+    // displayFriends();
 
-    const friendRequests = document.getElementById('friendRequests');
+    // Fetch all usernames except the current user's from the backend
+    // const allUsernames = await getAllUsernames(username);
+    // console.log(allUsernames);
+
+    // displayUsernamesInSearchBar(allUsernames);
+
+    // async function getAllUsernames(currentUser) {
+    //     try {
+    //         // Fetch all usernames from the backend
+    //         const response = await fetch(`/api/users?username=${currentUser}`);
+    //         if (!response.ok) {
+    //             throw new Error('Failed to fetch usernames');
+    //         }
+    //         const data = await response.json();
+    //         return data.usernames.filter(username => username !== currentUser);
+    //     } catch (error) {
+    //         console.error('Error fetching usernames:', error);
+    //         return [];
+    //     }
+    // }
+
+    // function displayUsernamesInSearchBar(usernames) {
+
+    //     const searchInput = document.querySelector('.form-control');
 
 
-    document.querySelectorAll('.accept-btn').forEach(function(button) {
-        button.addEventListener('click', function() {
-            const listItem = button.closest('.list-group-item');
+    //     searchInput.value = '';
+
+    //     usernames.forEach(username => {
+    //         const option = document.createElement('option');
+    //         option.value = username;
+    //         searchInput.appendChild(option);
+    //     });
+    // }
+
+    // async function displayFriends() {
+    //     const myFriends = document.getElementById('myFriends');
+    //     myFriends.innerHTML = '';
+    //     current_user.friends.forEach(friend => {
+    //         const new_friend = document.createElement('a');
+    //         new_friend.setAttribute('href', 'friend_view.html');
+    //         new_friend.setAttribute('class', 'list-group-item list-group-item-action');
+    //         new_friend.textContent = friend;
+    //         new_friend.addEventListener('click', function(friend) {
+    //             return function() {
+    //                 localStorage.setItem('current_friend', friend);
+    //             };
+    //         }(friend));
+    //         myFriends.appendChild(new_friend);
+    //     });
+    // }
+
+    
+    const friendRequestsList = document.getElementById('friendRequests');
+    friendRequestsList.innerHTML = '';
+
+    current_user.friend_requests.forEach(friendName => {
+
+        const listItem = document.createElement('li');
+        listItem.classList.add('list-group-item', 'list-group-item-dark');
+
+        const friendNameSpan = document.createElement('span');
+        friendNameSpan.classList.add('friend-name');
+        friendNameSpan.textContent = friendName;
+
+        const acceptBtn = document.createElement('button');
+        acceptBtn.type = 'button';
+        acceptBtn.classList.add('btn', 'btn-outline-success', 'btn-sm', 'accept-btn');
+        acceptBtn.textContent = 'Accept';
+
+        const declineBtn = document.createElement('button');
+        declineBtn.type = 'button';
+        declineBtn.classList.add('btn', 'btn-outline-danger', 'btn-sm', 'decline-btn');
+        declineBtn.textContent = 'Decline';
+
+        listItem.appendChild(friendNameSpan);
+        listItem.appendChild(acceptBtn);
+        listItem.appendChild(declineBtn);
+
+        friendRequestsList.appendChild(listItem);
+
+        acceptBtn.addEventListener('click', async function() {
+            const listItem = acceptBtn.closest('.list-group-item');
             const friendName = listItem.querySelector('.friend-name').textContent.trim();
-            current_user.addFriend(friendName);
+            await current_user.addFriend(friendName);
+            await current_user.removeRequest(friendName);
             listItem.remove();
             refreshFriendList();
         });
-    });
 
-    document.querySelectorAll('.decline-btn').forEach(function(button) {
-        button.addEventListener('click', function() {
-            button.closest('.list-group-item').remove();
+        // Add event listener for decline button
+        declineBtn.addEventListener('click', async function() {
+            const listItem = declineBtn.closest('.list-group-item');
+            const friendName = listItem.querySelector('.friend-name').textContent.trim();
+            await current_user.removeRequest(friendName);
+            listItem.remove();
         });
+
     });
 
+    // Function to refresh the friend list after accepting a friend request
     function refreshFriendList() {
         const myFriends = document.getElementById('myFriends');
         myFriends.innerHTML = '';
-        for (const item of current_user.friends) {
+        current_user.friends.forEach(friend => {
             const new_friend = document.createElement('a');
             new_friend.setAttribute('href', 'friend_view.html');
             new_friend.setAttribute('class', 'list-group-item list-group-item-action');
-            new_friend.textContent = item;
+            new_friend.textContent = friend;
             new_friend.addEventListener('click', function(friend) {
                 return function() {
                     localStorage.setItem('current_friend', friend);
                 };
-            }(item));
+            }(friend));
             myFriends.appendChild(new_friend);
-        }
+        });
     }
 }
 

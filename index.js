@@ -69,9 +69,47 @@ apiRouter.get('/users/:username', async (req, res) => {
   res.status(404).send({ message: 'Unknown' });
 });
 
+// apiRouter.get('/users', async (req, res) => {
+//   try {
+//       const currentUsername = req.query.username; // Assuming the username is provided in the query parameter
+
+//       // Call the getAllUsers function to retrieve all usernames
+//       const usernames = await DB.getAllUsers(currentUsername);
+//       console.log(usernames);
+//       // Send the list of usernames to the frontend
+//       res.json({ usernames });
+//   } catch (error) {
+//       console.error('Error getting users:', error);
+//       res.status(500).send('Error getting users');
+//   }
+// });
+apiRouter.get('/users', async (req, res) => {
+  const query = req.query.query;
+  const currentUser = req.query.currentUser;
+
+  // Perform a search in your database for usernames matching the query pattern
+  let usernames = await DB.getAllUsers(currentUser);
+  console.log(usernames);
+  // Create a regex pattern to match usernames containing the query string
+  const regexPattern = new RegExp(query, 'i'); // 'i' flag for case-insensitive matching
+
+  // Filter usernames based on the regex pattern
+  const matchingUsers = usernames.filter(user => regexPattern.test(user.username));
+  console.log(matchingUsers);
+  res.json({ usernames: matchingUsers.map(user => user.username) });
+});
+
+
+
+apiRouter.get('/friends/:friend', async (req, res) => {
+  const user = await DB.getFriend(req.params.friend)
+  res.json(user);
+  return;
+})
+
 apiRouter.post('/save', async (req, res) => {
   try {
-    const { username, exercise_list, calendar, friends } = req.body;
+    const { username, exercise_list, calendar, friends, friend_requests } = req.body;
     const user = await DB.getUser(username);
     if (!user) {
       return res.status(404).send({ message: 'User not found' });
@@ -84,7 +122,7 @@ apiRouter.post('/save', async (req, res) => {
     }
     
     // Save the user's data
-    await DB.saveUser(username, exercise_list, calendar, friends);
+    await DB.saveUser(username, exercise_list, calendar, friends, friend_requests);
     
     // Send a success response
     res.status(200).send('User data saved successfully');
