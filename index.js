@@ -69,43 +69,31 @@ apiRouter.get('/users/:username', async (req, res) => {
   res.status(404).send({ message: 'Unknown' });
 });
 
-// apiRouter.get('/users', async (req, res) => {
-//   try {
-//       const currentUsername = req.query.username; // Assuming the username is provided in the query parameter
+apiRouter.get('/friends/:friend', async (req, res) => {
+  const { username, exercise_list, calendar } = await DB.getFriend(req.params.friend)
+  if (username) {
+    res.json({ username: username, exercise_list: exercise_list, calendar: calendar});
+    return;
+  }
+  res.status(404).send({ message: 'Unknown' });
+  return;
+})
 
-//       // Call the getAllUsers function to retrieve all usernames
-//       const usernames = await DB.getAllUsers(currentUsername);
-//       console.log(usernames);
-//       // Send the list of usernames to the frontend
-//       res.json({ usernames });
-//   } catch (error) {
-//       console.error('Error getting users:', error);
-//       res.status(500).send('Error getting users');
-//   }
-// });
+
 apiRouter.get('/users', async (req, res) => {
   const query = req.query.query;
   const currentUser = req.query.currentUser;
-
+  // console.log(query);
   // Perform a search in your database for usernames matching the query pattern
   let usernames = await DB.getAllUsers(currentUser);
-  console.log(usernames);
-  // Create a regex pattern to match usernames containing the query string
   const regexPattern = new RegExp(query, 'i'); // 'i' flag for case-insensitive matching
-
   // Filter usernames based on the regex pattern
-  const matchingUsers = usernames.filter(user => regexPattern.test(user.username));
-  console.log(matchingUsers);
-  res.json({ usernames: matchingUsers.map(user => user.username) });
+  const matchingUsers = usernames.filter(user => regexPattern.test(user));
+
+  res.json( {matchingUsers} );
 });
 
 
-
-apiRouter.get('/friends/:friend', async (req, res) => {
-  const user = await DB.getFriend(req.params.friend)
-  res.json(user);
-  return;
-})
 
 apiRouter.post('/save', async (req, res) => {
   try {
@@ -131,6 +119,22 @@ apiRouter.post('/save', async (req, res) => {
     res.status(500).send('Error saving user');
   }
 });
+
+apiRouter.post('/friendRequest', async (req, res) => {
+  try {
+    const { senderUsername, recipientUsername } = req.body;
+    const result = await DB.sendFriendRequest(senderUsername, recipientUsername);
+    if (!result) {
+      return res.status(404).send({ message: 'Error sending friend request' });
+    };
+    
+    // Send a success response
+    res.status(200).send('User data saved successfully');
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).send('Error sending friend Request');
+  }
+})
 
 
 var secureApiRouter = express.Router();

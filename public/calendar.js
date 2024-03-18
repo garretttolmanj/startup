@@ -16,7 +16,6 @@ class User {
     addFriend(friend) {
         this.friends.push(friend);
         this.removeRequest(friend);
-        this.save();
     }
     
     removeRequest(friend) {
@@ -73,6 +72,9 @@ class User {
                 const user = new User(userDataObject.user.username, userDataObject.user.password);
                 user.exercise_list = userDataObject.user.exercise_list;
                 user.calendar = userDataObject.user.calendar;
+                user.friends = userDataObject.user.friends;
+                user.friend_requests = userDataObject.user.friend_requests;
+
                 return user;
             } else {
                 console.log('User is not authenticated');
@@ -105,7 +107,7 @@ async function getUserAndSetUserName(username) {
 
 async function main() {
 
-    const username = localStorage.getItem('username');
+    const username = document.cookie.match(/(?:(?:^|.*;\s*)username\s*=\s*([^;]*).*$)|^.*$/)[1];
     await getUserAndSetUserName(username);
 
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];

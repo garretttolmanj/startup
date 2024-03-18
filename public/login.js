@@ -1,4 +1,3 @@
-
 async function login() {
     const username = document.getElementById('Username').value;
     const password = document.getElementById('Password').value;
@@ -14,13 +13,15 @@ async function login() {
         body: JSON.stringify({ username, password })
     });
     if (response.ok) {
-        localStorage.setItem("username", username);
+        // Set the username in a cookie
+        document.cookie = `username=${username}; path=/`;
         window.location.href = "calendar.html";
     } else {
         window.alert('Username and Password not recognized')
     }
-
 }
+
+
 
 document.getElementById('Username').addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {

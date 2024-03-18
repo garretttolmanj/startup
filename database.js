@@ -24,11 +24,11 @@ function getUserByToken(token) {
     return userCollection.findOne({ token: token });
 }
 
-// function getFriend(username) {
-//     user = userCollection.findOne( {username: username });
-//     console.log(user);
-//     return user;
-// }
+async function getFriend(friend) {
+    user = await userCollection.findOne( {username: friend });
+    return {username: user.username, exercise_list: user.exercise_list, calendar: user.calendar};
+}
+
 async function createUser(username, password) {
 // Hash the password before we insert it into the database
     const passwordHash = await bcrypt.hash(password, 10);
@@ -79,12 +79,35 @@ async function getAllUsers(currentUsername) {
     }
 }
 
+async function sendFriendRequest(senderUsername, recipientUsername) {
+    try {
+        // Find the sender and recipient user objects in the database
+        const recipientUser = await getUser(recipientUsername);
+        console.log(recipientUser);
+        // Update the recipient's friend_requests array
+        if (!recipientUser.friend_requests.includes(recipientUsername)) {
+            recipientUser.friend_requests.push(senderUsername);
+        }
+        console.log(recipientUser);
+        // Save the updated recipient user object back to the database
+        await saveUser(recipientUsername, recipientUser.exercise_list, recipientUser.calendar, recipientUser.friends, recipientUser.friend_requests);
+        
+        return true; 
+    } catch (error) {
+        console.error('Error sending friend request:', error);
+        return false; // Indicate failure
+    }
+}
+
+  
 
 
 module.exports = {
     getUser,
     getUserByToken,
+    getFriend,
     createUser,
     getAllUsers,
-    saveUser
+    saveUser,
+    sendFriendRequest
   };

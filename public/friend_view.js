@@ -16,7 +16,6 @@ class User {
     addFriend(friend) {
         this.friends.push(friend);
         this.removeRequest(friend);
-        this.save();
     }
     
     removeRequest(friend) {
@@ -73,6 +72,8 @@ class User {
                 const user = new User(userDataObject.user.username, userDataObject.user.password);
                 user.exercise_list = userDataObject.user.exercise_list;
                 user.calendar = userDataObject.user.calendar;
+                user.friends = userDataObject.user.friends;
+                user.friend_requests = userDataObject.user.friend_requests;
                 return user;
             } else {
                 console.log('User is not authenticated');
@@ -85,9 +86,50 @@ class User {
     }
     
     
-    
-    
   }
+
+  class Friend {
+    constructor(username) {
+        this.username = username;
+        this.exercise_list = ["Squat", "Bench", "Deadlift"]
+        this.calendar = {};
+    }
+    
+    addExercise(exercise) {
+        this.exercise_list.push(exercise);
+        this.save();
+    }
+
+    static async load(username) {
+        try {
+            const response = await fetch(`/api/friends/${username}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to fetch user data');
+            }
+            const userDataObject = await response.json();
+    
+            if (userDataObject) {
+                const user = new Friend(userDataObject.username);
+                user.exercise_list = userDataObject.exercise_list;
+                user.calendar = userDataObject.calendar;
+                return user;
+            } else {
+                console.log('Error retrieving user');
+            }
+    
+        } catch (error) {
+            console.error('Error loading friend:', error);
+            return null;
+        }
+    }
+    
+  }  
 
 
 function setUserName(username) {
@@ -105,11 +147,8 @@ let current_friend;
 
 async function getUserAndSetUserName(username, friend_name) {
     current_user = await User.load(username);
-    current_friend = await User.loadFriend(friend_name);
+    current_friend = await Friend.load(friend_name);
     // This is temporary, I need to fix this.
-    if (!current_friend) {
-        current_friend = new User(friend_name, "password")
-    }
     setFriendID(friend_name);
     setUserName(username);
 }
@@ -118,32 +157,31 @@ async function getUserAndSetUserName(username, friend_name) {
 async function main() {
 
 
-
-
+    
     const username = localStorage.getItem('username');
-    const friend_name = localStorage.getItem('current_friend');
-    const friend_password = "";
+    const friend_name = document.cookie.match(/(?:(?:^|.*;\s*)current_user\s*=\s*([^;]*).*$)|^.*$/)[1];
     await getUserAndSetUserName(username, friend_name);
 
 
     // Added functionality to transfer workouts made by your friends to your own calendar.
     function copyWorkout(date){
-        const workout = current_friend.calendar[date]
-        for (let i = 0; i < workout.length; i+=4) {
-            const exercise = workout[i];
-            if (!current_user.exercise_list.includes(exercise)) {
-                current_user.addExercise(exercise);
+        const workout = current_friend.calendar[date];
+        if (workout) {
+            for (let i = 0; i < workout.length; i+=4) {
+                const exercise = workout[i];
+                if (!current_user.exercise_list.includes(exercise)) {
+                    current_user.addExercise(exercise);
+                }
+                const sets = workout[i+1];
+                const reps = workout[i+2];
+                current_user.addWorkout(date, exercise, sets, reps, [])
             }
-            const sets = workout[i+1];
-            const reps = workout[i+2];
-            current_user.addWorkout(date, exercise, sets, reps, [])
         }
     }
 
     document.getElementById('copyWorkout').addEventListener('click', () => {
         const date = document.getElementById('Date').innerText;
         const btn = document.getElementById('copyWorkout').innerText = 'Transferred!'
-        console.log(date);
         copyWorkout(date);
     });
 
@@ -166,7 +204,6 @@ async function main() {
         }
     }
 
-    console.log(stats_dict)
 
     const stats_table = document.getElementById('stats_table');
     stats_table.innerHTML = '';
@@ -563,8 +600,6 @@ async function main() {
                 new_workout.appendChild(new_table);
                 workout.appendChild(new_workout);
             }
-        } else {
-            console.log(false);
         }
     }
 }

@@ -23,7 +23,7 @@ async function register() {
     const data = await response.json()
 
     if (response.ok) {
-        localStorage.setItem("username", username);
+        document.cookie = `username=${username}; path=/`;
         window.location.href = "calendar.html";
     } else {
         // Handle error messages

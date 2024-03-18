@@ -16,7 +16,6 @@ class User {
     addFriend(friend) {
         this.friends.push(friend);
         this.removeRequest(friend);
-        this.save();
     }
     
     removeRequest(friend) {
@@ -73,6 +72,10 @@ class User {
                 const user = new User(userDataObject.user.username, userDataObject.user.password);
                 user.exercise_list = userDataObject.user.exercise_list;
                 user.calendar = userDataObject.user.calendar;
+                user.friends = userDataObject.user.friends;
+                console.log(userDataObject.friends);
+                console.log(userDataObject.friend_requests)
+                user.friend_requests = userDataObject.user.friend_requests;
                 return user;
             } else {
                 console.log('User is not authenticated');
@@ -144,7 +147,7 @@ async function main() {
                 throw new Error('Failed to fetch usernames');
             }
             const data = await response.json();
-            return data.usernames;
+            return data.matchingUsers;
         } catch (error) {
             throw error;
         }
@@ -156,14 +159,16 @@ async function main() {
             resultItem.classList.add('dropdown-item');
             resultItem.textContent = username;
             resultItem.href = '#'; // Add a link if you want to navigate to user profile
+            const searchButton = document.getElementById('searchButton');
+            const requestButton = document.getElementById('sendRequest');
             resultItem.addEventListener('click', function(event) {
                 event.preventDefault(); // Prevent default link behavior
                 // Handle click on a search result (e.g., send friend request)
-                sendFriendRequest(username);
-                // Clear search results
-                searchResults.innerHTML = '';
+                hideDropdown();
+                searchButton.classList.add('hide');
+                requestButton.classList.remove('hide');
                 // Clear search input
-                searchInput.value = '';
+                searchInput.value = username;
             });
             searchResults.appendChild(resultItem);
         });
@@ -181,10 +186,36 @@ async function main() {
         searchResults.classList.remove('show');
     }
     
-    // Function to simulate sending a friend request (replace with actual implementation)
-    function sendFriendRequest(username) {
-        console.log('Sending friend request to:', username);
+    
+    const inputBar = document.getElementById('searchInput');
+    const searchButton = document.getElementById('searchButton');
+    const requestButton = document.getElementById('sendRequest');
+    
+    async function sendFriendRequest(username, friend) {
+        try {
+            await fetch('/api/friendRequest', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ senderUsername: username, recipientUsername: friend })
+            });
+        } catch (error) {
+            window.alert("Error sending Request");
+        }
     }
+    console.log(current_user);
+    inputBar.addEventListener('click', () => {
+        showDropdown();
+        searchButton.classList.remove('hide');
+        requestButton.classList.add('hide');
+        requestButton.innerText = "Send Friend Request";
+    })
+    requestButton.addEventListener('click', () => {
+        requestButton.innerText = 'Sent!';
+        const friend = inputBar.value;
+        sendFriendRequest(current_user.username, friend);
+    })
     // displayFriends();
 
     // Fetch all usernames except the current user's from the backend
@@ -296,14 +327,16 @@ async function main() {
             new_friend.setAttribute('href', 'friend_view.html');
             new_friend.setAttribute('class', 'list-group-item list-group-item-action');
             new_friend.textContent = friend;
-            new_friend.addEventListener('click', function(friend) {
+            new_friend.addEventListener('click', function(clickedFriend) {
                 return function() {
-                    localStorage.setItem('current_friend', friend);
+                    document.cookie = `current_user=${clickedFriend}; path=/`;
                 };
             }(friend));
             myFriends.appendChild(new_friend);
         });
     }
+    
+    refreshFriendList();
 }
 
 main();
