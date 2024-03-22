@@ -39,6 +39,7 @@ async function createUser(username, password) {
         token: uuid.v4(),
         exercise_list: ["Squat", "Bench", "Deadlift"],
         friends: [],
+        friend_requests: [],
         calendar: {}
     };
     await userCollection.insertOne(user);

@@ -86,12 +86,23 @@ apiRouter.get('/users', async (req, res) => {
 
   let usernames = await DB.getAllUsers(currentUser);
   const regexPattern = new RegExp(query, 'i');
-  // Filter usernames based on the regex pattern
+
   const matchingUsers = usernames.filter(user => regexPattern.test(user));
 
   res.json( {matchingUsers} );
 });
 
+socket.onmessage = async (event) => {
+  const text = await event.data.text();
+  const chat = JSON.parse(text);
+  appendMsg('friend', chat.name, chat.msg);
+};
+
+socket.onclose = (event) => {
+  appendMsg('system', 'websocket', 'disconnected');
+  document.querySelector('#name-controls').disabled = true;
+  document.querySelector('#chat-controls').disabled = true;
+};
 
 
 apiRouter.post('/save', async (req, res) => {
