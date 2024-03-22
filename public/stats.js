@@ -117,6 +117,9 @@ async function main() {
     for (key in current_user.calendar) {
         for (let i=0; i < current_user.calendar[key].length; i+=4) {
             const exercise = current_user.calendar[key][i];
+            if (!stats_dict.hasOwnProperty(exercise)) {
+                continue;
+            }
             const data = current_user.calendar[key][i + 3];
             for (item of data) {
                 if (Number(item.weight) > stats_dict[exercise]) {

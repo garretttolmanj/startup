@@ -12,6 +12,13 @@ class User {
         this.exercise_list.push(exercise);
         this.save();
     }
+    
+    removeExercise(exercise) {
+        console.log(exercise);
+        this.exercise_list = this.exercise_list.filter(item => item !== exercise);
+        console.log(this.exercise_list);
+        this.save();
+    }
 
     addFriend(friend) {
         this.friends.push(friend);
@@ -251,11 +258,51 @@ async function main() {
         list.innerHTML = '';
         for (const exercise of exercise_list) {
             const item = document.createElement('li');
-            item.textContent = exercise;
+            item.classList.add('exercise-item');
+    
+            // Create exercise text
+            const exerciseText = document.createElement('span');
+            exerciseText.textContent = exercise;
+            item.appendChild(exerciseText);
+            item.classList.add('exercise');
+            // Create remove button
+            const removeButton = document.createElement('button');
+            removeButton.textContent = 'Remove';
+            removeButton.classList.add('btn', 'btn-outline-danger', 'btn-sm', 'remove-btn');
+            removeButton.style.display = 'none'; // Hide remove button initially
+    
+            removeButton.addEventListener('click', function(event) {
+                event.stopPropagation(); // Prevent the click event from bubbling to the item
+                removeExercise(exercise);
+            });
+    
+            item.appendChild(removeButton);
+    
+            // Toggle remove button visibility when clicking on the item
+            item.addEventListener('click', function() {
+                // Hide all other remove buttons
+                const allRemoveButtons = document.querySelectorAll('.remove-btn');
+                allRemoveButtons.forEach(btn => {
+                    if (btn !== removeButton) {
+                        btn.style.display = 'none';
+                    }
+                });
+    
+                // Toggle visibility of the remove button
+                removeButton.style.display = removeButton.style.display === 'inline-block' ? 'none' : 'inline-block';
+            });
+    
             list.appendChild(item);
         }
-
     }
+    
+    
+    
+    function removeExercise(exercise) {
+        current_user.removeExercise(exercise);
+        loadExercises();
+    }
+    
 
     document.getElementById('openExerciseModal').addEventListener('click', function() {
         const modal = document.getElementById('ExerciseModal');
@@ -362,21 +409,39 @@ async function main() {
                 const set_Data = current_user.calendar[date][i + 3];
                 const new_workout = document.createElement('li');
                 const header = document.createElement('h3');
-                const btn = document.createElement('button');
+                const removebtn = document.createElement('button');
+                header.classList.add('exercise');
                 header.innerText = exercise + " " + sets + " Sets " + reps + " Reps";
-
-                btn.textContent = 'Remove';
-                btn.classList.add('btn', 'btn-outline-danger', 'btn-sm', 'remove-btn');
-                btn.addEventListener('click', function() {
-                    const listItem = btn.closest('li');
+                removebtn.style.display = 'none';
+                removebtn.textContent = 'Remove';
+                removebtn.classList.add('btn', 'btn-outline-danger', 'btn-sm', 'remove-btn');
+                
+                removebtn.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                    const listItem = removebtn.closest('li');
                     if (listItem) {
                     listItem.remove();
                     }
                     current_user.calendar[date].splice(i, i+4);
                     current_user.save();
                 });
+                header.appendChild(removebtn);
+
+                            // Toggle remove button visibility when clicking on the item
+                header.addEventListener('click', function() {
+                    // Hide all other remove buttons
+                    const allRemoveButtons = document.querySelectorAll('.remove-btn');
+                    allRemoveButtons.forEach(btn => {
+                        if (btn !== removebtn) {
+                            btn.style.display = 'none';
+                        }
+                    });
+        
+                    // Toggle visibility of the remove button
+                    removebtn.style.display = removebtn.style.display === 'inline-block' ? 'none' : 'inline-block';
+                });
+
                 new_workout.appendChild(header);
-                new_workout.appendChild(btn);
                 const new_table = document.createElement('table');
                 // for each workout create the first row then the next row
                 const row1 = document.createElement('tr');
