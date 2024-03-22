@@ -13,9 +13,20 @@ class User {
         this.save();
     }
 
-    addFriend(friend) {
+    async addFriend(friend) {
         this.friends.push(friend);
         this.removeRequest(friend);
+        try {
+            await fetch('/api/acceptedRequest', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username: this.username, friendName: friend})
+            });
+        } catch (error) {
+            console.log('Error saving friend data');
+        }
     }
     
     removeRequest(friend) {

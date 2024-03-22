@@ -92,17 +92,6 @@ apiRouter.get('/users', async (req, res) => {
   res.json( {matchingUsers} );
 });
 
-socket.onmessage = async (event) => {
-  const text = await event.data.text();
-  const chat = JSON.parse(text);
-  appendMsg('friend', chat.name, chat.msg);
-};
-
-socket.onclose = (event) => {
-  appendMsg('system', 'websocket', 'disconnected');
-  document.querySelector('#name-controls').disabled = true;
-  document.querySelector('#chat-controls').disabled = true;
-};
 
 
 apiRouter.post('/save', async (req, res) => {
@@ -141,6 +130,21 @@ apiRouter.post('/friendRequest', async (req, res) => {
   } catch (error) {
     console.error('Error:', error);
     res.status(500).send('Error sending friend Request');
+  }
+})
+
+apiRouter.post('/acceptedRequest', async (req, res) => {
+  try {
+    const { username, friendName } = req.body;
+    const result = await DB.acceptedFriendRequest(username, friendName);
+    if (!result) {
+      return res.status(404).send({ message: 'Error accepting friend request' })
+    }
+    
+    res.status(200).send('Friend data saved successfully');
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).send('Error accepting friend Request');
   }
 })
 

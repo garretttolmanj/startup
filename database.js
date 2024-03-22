@@ -81,17 +81,19 @@ async function getAllUsers(currentUsername) {
 
 async function sendFriendRequest(senderUsername, recipientUsername) {
     try {
-
+        const senderUser = await getUser(senderUsername);
         const recipientUser = await getUser(recipientUsername);
-        console.log(recipientUser);
+
         // Update the recipient's friend_requests array
-        if (!recipientUser.friend_requests.includes(recipientUsername)) {
+        if (!recipientUser.friend_requests.includes(senderUsername)) {
             recipientUser.friend_requests.push(senderUsername);
         }
-        console.log(recipientUser);
+        // if (!senderUser.friend_requests.includes(recipientUsername)) {
+        //     senderUser.friend_requests.push(recipientUsername);
+        // }
         // Save the updated recipient user object back to the database
         await saveUser(recipientUsername, recipientUser.exercise_list, recipientUser.calendar, recipientUser.friends, recipientUser.friend_requests);
-        
+        await saveUser(senderUsername, senderUser.exercise_list, senderUser.calendar, senderUser.friends, senderUser.friend_requests)
         return true; 
     } catch (error) {
         console.error('Error sending friend request:', error);
@@ -99,7 +101,20 @@ async function sendFriendRequest(senderUsername, recipientUsername) {
     }
 }
 
-  
+async function acceptedFriendRequest(username, friendName) {
+    try {
+        const friend = await getUser(friendName);
+        
+        if (!friend.friends.includes(username)) {
+            friend.friends.push(username);
+        }
+        await saveUser(friendName, friend.exercise_list, friend.calendar, friend.friends, friend.friend_requests);
+        return true;
+    }catch (error) {
+        console.error('Error in accepting friend request:', error);
+        return false;
+    }
+}
 
 
 module.exports = {
@@ -109,5 +124,6 @@ module.exports = {
     createUser,
     getAllUsers,
     saveUser,
-    sendFriendRequest
+    sendFriendRequest,
+    acceptedFriendRequest
   };
