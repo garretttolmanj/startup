@@ -71,3 +71,15 @@ main {
 .hide {
     display: none;
 }
+
+.scroll-container-friends {
+    max-height: 300px; /* Set maximum height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    display: flex; /* Use flexbox */
+    justify-content: center;
+}
+
+.myFriends {
+    display: flex;
+    flex: 1;
+}

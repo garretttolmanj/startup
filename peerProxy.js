@@ -19,16 +19,20 @@ function setupWebSocketServer(httpServer) {
         // Parse the URL from the request
         const parsedUrl = url.parse(request.url, true);
         // Extract the userID from the query parameters
-        const userId = parsedUrl.query.userID;
+        const userID = parsedUrl.query.userID;
         const connectionId = uuid.v4(); // Generate UUID for the connection
-        connections[connectionId] = { userId, ws, alive: true }; // Associate UUID with user ID and WebSocket connection
-        console.log(connections[connectionId]);
+        connections[connectionId] = { userID, ws, alive: true }; // Associate UUID with user ID and WebSocket connection
         
         ws.on('message', function message(data) {
             const messageObj = JSON.parse(data.toString('utf8')); // Parse the received data as JSON
             const { from, to, event } = messageObj;
-            console.log(`Received message from ${from} to ${to}, event= ${event}`);
-            sendMessageToUser(from, to, event);
+            if (to === "" ) {
+                sendUpdateMessage(from, event);
+            } else {
+                console.log(`Received message from ${from} to ${to}, event= ${event}`);
+                sendMessageToUser(from, to, event);
+            }
+
         });
         
 
@@ -50,12 +54,24 @@ function setupWebSocketServer(httpServer) {
             to: to,
             event: event
         }
-        const connection = Object.values(connections).find(conn => conn.userId === to);
+        const connection = Object.values(connections).find(conn => conn.userID === to);
         if (connection) {
             connection.ws.send(JSON.stringify(message)); // Send the message over the WebSocket connection
         } else {
             console.log(`User ${to} not found or not connected.`);
         }
+    }
+
+    function sendUpdateMessage(from, event) {
+        message = {
+            from: from,
+            event: event
+        }
+        Object.keys(connections).forEach(key => {
+            if (connections[key].userID !== from) {
+                connection[key].ws.send(JSON.stringify(message));
+            }
+        });
     }
 
     setInterval(() => {

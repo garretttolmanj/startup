@@ -116,7 +116,7 @@ async function main() {
 
     const username = document.cookie.match(/(?:(?:^|.*;\s*)username\s*=\s*([^;]*).*$)|^.*$/)[1];
     await getUserAndSetUserName(username);
-
+    const socket = await configureWebSocket(current_user.username);
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const weekdays = {
         0: ["Sunday", "Sun"],
@@ -133,6 +133,7 @@ async function main() {
     let currentYear = actualDate.getFullYear();
 
     function updateCalendar(year, month) {
+        
         currentMonth = month;
         currentYear = year;
         const Month = month;
@@ -375,6 +376,7 @@ async function main() {
 
 
     function updateDay(month, day, year) {
+        sendMessage(socket, current_user.username, "");
         const date_section = document.getElementById('Date');
         date_section.innerHTML = '';
         const correct_date = document.createElement('h2');
@@ -609,7 +611,38 @@ async function main() {
 
         updateDay(month, day, year);
 
+
     });
+    
+    async function configureWebSocket(userID) {
+        return new Promise((resolve, reject) => {
+            const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+            const socket = new WebSocket(`${protocol}://${window.location.host}/ws?userID=${userID}`);
+    
+            socket.onopen = () => {
+                console.log("WebSocket connection opened");
+                resolve(socket);
+            };
+    
+            socket.onclose = () => {
+                console.log("WebSocket connection closed");
+            };
+    
+            socket.onerror = (error) => {
+                console.error("WebSocket error:", error);
+                reject(error);
+            };
+        });
+    }
+
+    function sendMessage(socket, username, friendname) {
+        const event = {
+            from: username,
+            to: friendname,
+            event: "Updated Calendar"
+        };
+        socket.send(JSON.stringify(event));
+    }
 }
 
 main();

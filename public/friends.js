@@ -206,13 +206,14 @@ async function main() {
             window.alert("Error sending Request");
         }
     }
-    console.log(current_user);
+
     inputBar.addEventListener('click', () => {
         showDropdown();
         searchButton.classList.remove('hide');
         requestButton.classList.add('hide');
         requestButton.innerText = "Send Friend Request";
     })
+    
     requestButton.addEventListener('click', () => {
         requestButton.innerText = 'Sent!';
         const friend = inputBar.value;
@@ -279,7 +280,7 @@ async function main() {
             new_friend.textContent = friend;
             new_friend.addEventListener('click', function(clickedFriend) {
                 return function() {
-                    document.cookie = `current_user=${clickedFriend}; path=/`;
+                    document.cookie = `current_friend=${clickedFriend}; path=/`;
                 };
             }(friend));
             myFriends.appendChild(new_friend);

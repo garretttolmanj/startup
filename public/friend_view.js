@@ -159,7 +159,7 @@ async function main() {
 
     
     const username = document.cookie.match(/(?:(?:^|.*;\s*)username\s*=\s*([^;]*).*$)|^.*$/)[1];
-    const friend_name = document.cookie.match(/(?:(?:^|.*;\s*)current_user\s*=\s*([^;]*).*$)|^.*$/)[1];
+    const friend_name = document.cookie.match(/(?:(?:^|.*;\s*)current_friend\s*=\s*([^;]*).*$)|^.*$/)[1];
     await getUserAndSetUserName(username, friend_name);
 
 
@@ -187,51 +187,53 @@ async function main() {
 
 
     // functionality to display your friend's stats.
-    const stats_dict = {}
-    for (exercise of current_friend.exercise_list) {
-        stats_dict[exercise] = 0;
-    }
+    function updateStats() {
+        const stats_dict = {}
+        for (exercise of current_friend.exercise_list) {
+            stats_dict[exercise] = 0;
+        }
 
-    for (key in current_friend.calendar) {
-        for (let i=0; i < current_friend.calendar[key].length; i+=4) {
-            const exercise = current_friend.calendar[key][i];
-            const data = current_friend.calendar[key][i + 3];
-            for (item of data) {
-                if (Number(item.weight) > stats_dict[exercise]) {
-                    stats_dict[exercise] = Number(item.weight);
+        for (key in current_friend.calendar) {
+            for (let i=0; i < current_friend.calendar[key].length; i+=4) {
+                const exercise = current_friend.calendar[key][i];
+                const data = current_friend.calendar[key][i + 3];
+                for (item of data) {
+                    if (Number(item.weight) > stats_dict[exercise]) {
+                        stats_dict[exercise] = Number(item.weight);
+                    }
                 }
             }
         }
+    
+
+
+        const stats_table = document.getElementById('stats_table');
+        stats_table.innerHTML = '';
+        const thead = document.createElement('thead');
+        const tbody = document.createElement('tbody');
+        const row_head = document.createElement('tr');
+        const lift = document.createElement('th');
+        const Max = document.createElement('th');
+        lift.innerText = 'Lift';
+        Max.innerText = 'Max';
+        row_head.appendChild(lift);
+        row_head.appendChild(Max);
+        thead.appendChild(row_head);
+        stats_table.appendChild(thead);
+
+        for (exercise in stats_dict) {
+            const row_body = document.createElement('tr');
+            const lift_stat = document.createElement('td');
+            const weight_stat = document.createElement('td');
+            lift_stat.innerText = exercise;
+            weight_stat.innerText = stats_dict[exercise];
+
+            row_body.appendChild(lift_stat);
+            row_body.appendChild(weight_stat);
+            tbody.appendChild(row_body);
+        }
+        stats_table.appendChild(tbody);
     }
-
-
-    const stats_table = document.getElementById('stats_table');
-    stats_table.innerHTML = '';
-    const thead = document.createElement('thead');
-    const tbody = document.createElement('tbody');
-    const row_head = document.createElement('tr');
-    const lift = document.createElement('th');
-    const Max = document.createElement('th');
-    lift.innerText = 'Lift';
-    Max.innerText = 'Max';
-    row_head.appendChild(lift);
-    row_head.appendChild(Max);
-    thead.appendChild(row_head);
-    stats_table.appendChild(thead);
-
-    for (exercise in stats_dict) {
-        const row_body = document.createElement('tr');
-        const lift_stat = document.createElement('td');
-        const weight_stat = document.createElement('td');
-        lift_stat.innerText = exercise;
-        weight_stat.innerText = stats_dict[exercise];
-
-        row_body.appendChild(lift_stat);
-        row_body.appendChild(weight_stat);
-        tbody.appendChild(row_body);
-    }
-    stats_table.appendChild(tbody);
-
     //I still need to Add some functionality to display your friends stats and be able to copy your friend's workouts to your day.
 
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -482,5 +484,47 @@ async function main() {
             }
         }
     }
+    async function configureWebSocket(userID) {
+        return new Promise((resolve, reject) => {
+            const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+            const socket = new WebSocket(`${protocol}://${window.location.host}/ws?userID=${userID}`);
+    
+            socket.onopen = () => {
+                console.log("WebSocket connection opened");
+                resolve(socket);
+            };
+    
+            socket.onclose = () => {
+                console.log("WebSocket connection closed");
+            };
+    
+            socket.onerror = (error) => {
+                console.error("WebSocket error:", error);
+                reject(error);
+            };
+    
+            socket.onmessage = (event) => {
+                console.log('message received')
+                const message = JSON.parse(event.data);
+                if (message.from === current_friend.username) {
+                    if (message.event === "Updated Calendar") {
+                        updateCalendar(currentYear, currentMonth);
+                    }
+                }
+            };
+        });
+    }
+    
+    const socket = await configureWebSocket(current_user.username);
+
+    // function sendMessage(socket, username, friendName) {
+    //     const event = {
+    //         from: username,
+    //         to: friendName,
+    //         event: ""
+    //     };
+    //     socket.send(JSON.stringify(event));
+    // }
+
 }
 main();
