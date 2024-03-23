@@ -95,12 +95,7 @@ class User {
             return null;
         }
     }
-    
-    
-    
-    
-  }
-
+}
 
 function setUserName(username) {
     const userID = document.getElementById('userID');
@@ -256,6 +251,7 @@ async function main() {
         acceptBtn.addEventListener('click', async function() {
             const listItem = acceptBtn.closest('.list-group-item');
             const friendName = listItem.querySelector('.friend-name').textContent.trim();
+            sendMessage(socket, current_user.username, friendName);
             await current_user.addFriend(friendName);
             await current_user.removeRequest(friendName);
             listItem.remove();
@@ -290,39 +286,48 @@ async function main() {
         });
     }
     
+    
     async function configureWebSocket(userID) {
-        const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-        const socket = new WebSocket(`${protocol}://${window.location.host}/ws?userID=${userID}`);        
+        return new Promise((resolve, reject) => {
+            const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+            const socket = new WebSocket(`${protocol}://${window.location.host}/ws?userID=${userID}`);
     
-         socket.onopen = () => {
-            console.log("WebSocket connection opened");
-        };
+            socket.onopen = () => {
+                console.log("WebSocket connection opened");
+                resolve(socket);
+            };
     
-        socket.onclose = () => {
-            console.log("WebSocket connection closed");
-        };
+            socket.onclose = () => {
+                console.log("WebSocket connection closed");
+            };
     
-        socket.onerror = (error) => {
-            console.error("WebSocket error:", error);
-        };
+            socket.onerror = (error) => {
+                console.error("WebSocket error:", error);
+                reject(error);
+            };
     
-        socket.onmessage = (event) => {
-            console.log("Received message from WebSocket server:", event.data);
-            // Handle received messages here
-        };
-    
-        return socket; // Return the WebSocket object to use it elsewhere in your code
+            socket.onmessage = (event) => {
+                const message = JSON.parse(event.data)
+                console.log(message);
+                if (message.event === "Accepted Friend Request") {
+                    refreshFriendList();
+                    console.log('I did it!');
+                }
+                // Handle received messages here
+            };
+        });
     }
-
+    
     const socket = await configureWebSocket(current_user.username);
+
     function sendMessage(socket, username, friendName) {
         const event = {
             from: username,
             to: friendName,
+            event: "Accepted Friend Request"
         };
         socket.send(JSON.stringify(event));
     }
-    sendMessage(socket, current_user.username, current_user.username);
     
     refreshFriendList();
 }

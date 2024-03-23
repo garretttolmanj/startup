@@ -25,11 +25,12 @@ function setupWebSocketServer(httpServer) {
         console.log(connections[connectionId]);
         
         ws.on('message', function message(data) {
-            console.log(data);
-            const userID = data.userID;
-            const message = data.message;
-            sendMessageToUser(userID, message);
+            const messageObj = JSON.parse(data.toString('utf8')); // Parse the received data as JSON
+            const { from, to, event } = messageObj;
+            console.log(`Received message from ${from} to ${to}, event= ${event}`);
+            sendMessageToUser(from, to, event);
         });
+        
 
         ws.on('close', () => {
             // Remove the closed connection from the connections map
@@ -42,13 +43,18 @@ function setupWebSocketServer(httpServer) {
     });
 
     // When you need to send a message to a specific user
-    function sendMessageToUser(userId, message) {
+    function sendMessageToUser(from, to, event) {
         // Find the appropriate connection associated with the user ID
-        const connection = Object.values(connections).find(conn => conn.userId === userId);
+        message = {
+            from: from,
+            to: to,
+            event: event
+        }
+        const connection = Object.values(connections).find(conn => conn.userId === to);
         if (connection) {
-            connection.ws.send(message); // Send the message over the WebSocket connection
+            connection.ws.send(JSON.stringify(message)); // Send the message over the WebSocket connection
         } else {
-            console.log(`User ${userId} not found or not connected.`);
+            console.log(`User ${to} not found or not connected.`);
         }
     }
 
