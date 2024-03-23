@@ -22,6 +22,10 @@ header {
     border-radius: 10px;
     flex: 0 30%;
 }
+.accept {
+    margin-left: 1em;
+    margin-right: 1em;
+}
 
 .friends {
     flex: 1;

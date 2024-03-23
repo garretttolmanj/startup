@@ -222,9 +222,11 @@ async function main() {
     })
 
     function refreshFriendRequests() {
+        window.alert("It worked!")
+
         const friendRequestsList = document.getElementById('friendRequests');
         friendRequestsList.innerHTML = '';
-
+        console.log(friendRequestsList);
         current_user.friend_requests.forEach(friendName => {
 
             const listItem = document.createElement('li');
@@ -236,7 +238,7 @@ async function main() {
 
             const acceptBtn = document.createElement('button');
             acceptBtn.type = 'button';
-            acceptBtn.classList.add('btn', 'btn-outline-success', 'btn-sm', 'accept-btn');
+            acceptBtn.classList.add('btn', 'btn-outline-success', 'btn-sm', 'accept-btn', 'accept');
             acceptBtn.textContent = 'Accept';
 
             const declineBtn = document.createElement('button');
