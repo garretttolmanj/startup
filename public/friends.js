@@ -115,8 +115,8 @@ async function getUserAndSetUserName(username) {
 async function main() {
 
     const username = document.cookie.match(/(?:(?:^|.*;\s*)username\s*=\s*([^;]*).*$)|^.*$/)[1];
-
     await getUserAndSetUserName(username);
+    const socket = await configureWebSocket(current_user.username);
     const searchInput = document.getElementById('searchInput');
 
     const searchResults = document.getElementById('searchResults');
@@ -193,7 +193,7 @@ async function main() {
     const searchButton = document.getElementById('searchButton');
     const requestButton = document.getElementById('sendRequest');
     
-    async function sendFriendRequest(username, friend) {
+    async function sendFriendRequest(socket, username, friend) {
         try {
             await fetch('/api/friendRequest', {
                 method: 'POST',
@@ -202,6 +202,7 @@ async function main() {
                 },
                 body: JSON.stringify({ senderUsername: username, recipientUsername: friend })
             });
+            sendMessage(socket, username, friend, "Sent Friend Request");
         } catch (error) {
             window.alert("Error sending Request");
         }
@@ -213,62 +214,64 @@ async function main() {
         requestButton.classList.add('hide');
         requestButton.innerText = "Send Friend Request";
     })
-    
+
     requestButton.addEventListener('click', () => {
         requestButton.innerText = 'Sent!';
         const friend = inputBar.value;
-        sendFriendRequest(current_user.username, friend);
+        sendFriendRequest(socket, current_user.username, friend);
     })
 
+    function refreshFriendRequests() {
+        const friendRequestsList = document.getElementById('friendRequests');
+        friendRequestsList.innerHTML = '';
+
+        current_user.friend_requests.forEach(friendName => {
+
+            const listItem = document.createElement('li');
+            listItem.classList.add('list-group-item', 'list-group-item-dark');
+
+            const friendNameSpan = document.createElement('span');
+            friendNameSpan.classList.add('friend-name');
+            friendNameSpan.textContent = friendName;
+
+            const acceptBtn = document.createElement('button');
+            acceptBtn.type = 'button';
+            acceptBtn.classList.add('btn', 'btn-outline-success', 'btn-sm', 'accept-btn');
+            acceptBtn.textContent = 'Accept';
+
+            const declineBtn = document.createElement('button');
+            declineBtn.type = 'button';
+            declineBtn.classList.add('btn', 'btn-outline-danger', 'btn-sm', 'decline-btn');
+            declineBtn.textContent = 'Decline';
+
+            listItem.appendChild(friendNameSpan);
+            listItem.appendChild(acceptBtn);
+            listItem.appendChild(declineBtn);
+
+            friendRequestsList.appendChild(listItem);
+
+            acceptBtn.addEventListener('click', async function() {
+                const listItem = acceptBtn.closest('.list-group-item');
+                const friendName = listItem.querySelector('.friend-name').textContent.trim();
+                sendMessage(socket, current_user.username, friendName, "Accepted Friend Request");
+                await current_user.addFriend(friendName);
+                await current_user.removeRequest(friendName);
+                listItem.remove();
+                refreshFriendList();
+            });
+
+            // Add event listener for decline button
+            declineBtn.addEventListener('click', async function() {
+                const listItem = declineBtn.closest('.list-group-item');
+                const friendName = listItem.querySelector('.friend-name').textContent.trim();
+                await current_user.removeRequest(friendName);
+                listItem.remove();
+            });
+
+        });
+    }
+    refreshFriendRequests();
     
-    const friendRequestsList = document.getElementById('friendRequests');
-    friendRequestsList.innerHTML = '';
-
-    current_user.friend_requests.forEach(friendName => {
-
-        const listItem = document.createElement('li');
-        listItem.classList.add('list-group-item', 'list-group-item-dark');
-
-        const friendNameSpan = document.createElement('span');
-        friendNameSpan.classList.add('friend-name');
-        friendNameSpan.textContent = friendName;
-
-        const acceptBtn = document.createElement('button');
-        acceptBtn.type = 'button';
-        acceptBtn.classList.add('btn', 'btn-outline-success', 'btn-sm', 'accept-btn');
-        acceptBtn.textContent = 'Accept';
-
-        const declineBtn = document.createElement('button');
-        declineBtn.type = 'button';
-        declineBtn.classList.add('btn', 'btn-outline-danger', 'btn-sm', 'decline-btn');
-        declineBtn.textContent = 'Decline';
-
-        listItem.appendChild(friendNameSpan);
-        listItem.appendChild(acceptBtn);
-        listItem.appendChild(declineBtn);
-
-        friendRequestsList.appendChild(listItem);
-
-        acceptBtn.addEventListener('click', async function() {
-            const listItem = acceptBtn.closest('.list-group-item');
-            const friendName = listItem.querySelector('.friend-name').textContent.trim();
-            sendMessage(socket, current_user.username, friendName);
-            await current_user.addFriend(friendName);
-            await current_user.removeRequest(friendName);
-            listItem.remove();
-            refreshFriendList();
-        });
-
-        // Add event listener for decline button
-        declineBtn.addEventListener('click', async function() {
-            const listItem = declineBtn.closest('.list-group-item');
-            const friendName = listItem.querySelector('.friend-name').textContent.trim();
-            await current_user.removeRequest(friendName);
-            listItem.remove();
-        });
-
-    });
-
     // Function to refresh the friend list after accepting a friend request
     function refreshFriendList() {
         const myFriends = document.getElementById('myFriends');
@@ -286,7 +289,7 @@ async function main() {
             myFriends.appendChild(new_friend);
         });
     }
-    
+    refreshFriendList();
     
     async function configureWebSocket(userID) {
         return new Promise((resolve, reject) => {
@@ -312,25 +315,26 @@ async function main() {
                 console.log(message);
                 if (message.event === "Accepted Friend Request") {
                     refreshFriendList();
-                    console.log('I did it!');
+                }
+                if (message.event === "Sent Friend Request") {
+                    refreshFriendRequests();
                 }
                 // Handle received messages here
             };
         });
     }
     
-    const socket = await configureWebSocket(current_user.username);
 
-    function sendMessage(socket, username, friendName) {
-        const event = {
+    function sendMessage(socket, username, friendName, event) {
+        console.log("inside send Message function");
+        let message = {
             from: username,
             to: friendName,
-            event: "Accepted Friend Request"
+            event: event
         };
-        socket.send(JSON.stringify(event));
+        socket.send(JSON.stringify(message));
     }
     
-    refreshFriendList();
 }
 
 main();
