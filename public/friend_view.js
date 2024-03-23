@@ -161,6 +161,7 @@ async function main() {
     const username = document.cookie.match(/(?:(?:^|.*;\s*)username\s*=\s*([^;]*).*$)|^.*$/)[1];
     const friend_name = document.cookie.match(/(?:(?:^|.*;\s*)current_friend\s*=\s*([^;]*).*$)|^.*$/)[1];
     await getUserAndSetUserName(username, friend_name);
+    const socket = await configureWebSocket(current_user.username);
 
 
     // Added functionality to transfer workouts made by your friends to your own calendar.
@@ -234,6 +235,7 @@ async function main() {
         }
         stats_table.appendChild(tbody);
     }
+    updateStats();
     //I still need to Add some functionality to display your friends stats and be able to copy your friend's workouts to your day.
 
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -484,6 +486,7 @@ async function main() {
             }
         }
     }
+
     async function configureWebSocket(userID) {
         return new Promise((resolve, reject) => {
             const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
@@ -503,19 +506,17 @@ async function main() {
                 reject(error);
             };
     
-            socket.onmessage = (event) => {
+            socket.onmessage = async (event) => {
                 console.log('message received')
                 const message = JSON.parse(event.data);
-                if (message.from === current_friend.username) {
-                    if (message.event === "Updated Calendar") {
-                        updateCalendar(currentYear, currentMonth);
-                    }
+                if (message.from === current_friend.username && message.event === "Updated Calendar") {
+                    current_friend = await Friend.load(friend_name);
+                    updateCalendar(currentYear, currentMonth);
                 }
             };
         });
     }
     
-    const socket = await configureWebSocket(current_user.username);
 
     // function sendMessage(socket, username, friendName) {
     //     const event = {

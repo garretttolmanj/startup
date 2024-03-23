@@ -116,7 +116,9 @@ async function main() {
 
     const username = document.cookie.match(/(?:(?:^|.*;\s*)username\s*=\s*([^;]*).*$)|^.*$/)[1];
     await getUserAndSetUserName(username);
+    // connect to the web socket
     const socket = await configureWebSocket(current_user.username);
+
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const weekdays = {
         0: ["Sunday", "Sun"],

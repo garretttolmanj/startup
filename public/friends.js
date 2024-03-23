@@ -221,14 +221,13 @@ async function main() {
         sendFriendRequest(socket, current_user.username, friend);
     })
 
-    function refreshFriendRequests() {
-        window.alert("It worked!")
-
+    async function refreshFriendRequests() {
+        await current_user.save();
         const friendRequestsList = document.getElementById('friendRequests');
         friendRequestsList.innerHTML = '';
-        console.log(friendRequestsList);
-        current_user.friend_requests.forEach(friendName => {
 
+
+        current_user.friend_requests.forEach(friendName => {
             const listItem = document.createElement('li');
             listItem.classList.add('list-group-item', 'list-group-item-dark');
 
@@ -272,10 +271,12 @@ async function main() {
 
         });
     }
+
     refreshFriendRequests();
     
     // Function to refresh the friend list after accepting a friend request
-    function refreshFriendList() {
+    async function refreshFriendList() {
+        await current_user.save();
         const myFriends = document.getElementById('myFriends');
         myFriends.innerHTML = '';
         current_user.friends.forEach(friend => {
@@ -316,9 +317,11 @@ async function main() {
                 const message = JSON.parse(event.data)
                 console.log(message);
                 if (message.event === "Accepted Friend Request") {
+                    current_user.friends.push(message.from);
                     refreshFriendList();
                 }
                 if (message.event === "Sent Friend Request") {
+                    current_user.friend_requests.push(message.from);
                     refreshFriendRequests();
                 }
                 // Handle received messages here
