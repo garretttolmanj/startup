@@ -1,12 +1,14 @@
 const { WebSocketServer } = require('ws');
 const uuid = require('uuid');
+const url = require('url');
 
 function setupWebSocketServer(httpServer) {
-    const wss = new WebSocketServer({ /* configuration options */ });
+    const wss = new WebSocketServer({ noServer: true });
 
     httpServer.on('upgrade', (request, socket, head) => {
         wss.handleUpgrade(request, socket, head, function done(ws) {
             wss.emit('connection', ws, request);
+            console.log('upgraded to a Web Socket')
         });
     });
 
@@ -14,11 +16,16 @@ function setupWebSocketServer(httpServer) {
 
     // When a user establishes a WebSocket connection
     wss.on('connection', (ws, request) => {
-        const userId = getUserIdFromRequest(request); // Get user ID from request (e.g., authenticated user)
+        // Parse the URL from the request
+        const parsedUrl = url.parse(request.url, true);
+        // Extract the userID from the query parameters
+        const userId = parsedUrl.query.userID;
         const connectionId = uuid.v4(); // Generate UUID for the connection
         connections[connectionId] = { userId, ws, alive: true }; // Associate UUID with user ID and WebSocket connection
-
+        console.log(connections[connectionId]);
+        
         ws.on('message', function message(data) {
+            console.log(data);
             const userID = data.userID;
             const message = data.message;
             sendMessageToUser(userID, message);
@@ -60,4 +67,4 @@ function setupWebSocketServer(httpServer) {
     return wss;
 }
 
-module.exports = setupWebSocketServer;
+module.exports = { setupWebSocketServer };

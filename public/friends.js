@@ -290,6 +290,40 @@ async function main() {
         });
     }
     
+    async function configureWebSocket(userID) {
+        const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+        const socket = new WebSocket(`${protocol}://${window.location.host}/ws?userID=${userID}`);        
+    
+         socket.onopen = () => {
+            console.log("WebSocket connection opened");
+        };
+    
+        socket.onclose = () => {
+            console.log("WebSocket connection closed");
+        };
+    
+        socket.onerror = (error) => {
+            console.error("WebSocket error:", error);
+        };
+    
+        socket.onmessage = (event) => {
+            console.log("Received message from WebSocket server:", event.data);
+            // Handle received messages here
+        };
+    
+        return socket; // Return the WebSocket object to use it elsewhere in your code
+    }
+
+    const socket = await configureWebSocket(current_user.username);
+    function sendMessage(socket, username, friendName) {
+        const event = {
+            from: username,
+            to: friendName,
+        };
+        socket.send(JSON.stringify(event));
+    }
+    sendMessage(socket, current_user.username, current_user.username);
+    
     refreshFriendList();
 }
 
