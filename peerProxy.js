@@ -24,7 +24,6 @@ function setupWebSocketServer(httpServer) {
         connections[connectionId] = { userID, ws, alive: true }; // Associate UUID with user ID and WebSocket connection
         
         ws.on('message', function message(data) {
-            console.log('socket server received message')
             const messageObj = JSON.parse(data.toString('utf8')); // Parse the received data as JSON
             const { from, to, event } = messageObj;
             if (to === "" ) {
@@ -70,7 +69,7 @@ function setupWebSocketServer(httpServer) {
         }
         Object.keys(connections).forEach(key => {
             if (connections[key].userID !== from) {
-                connection[key].ws.send(JSON.stringify(message));
+                connections[key].ws.send(JSON.stringify(message));
             }
         });
     }

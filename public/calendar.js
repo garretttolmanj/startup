@@ -14,9 +14,7 @@ class User {
     }
     
     removeExercise(exercise) {
-        console.log(exercise);
         this.exercise_list = this.exercise_list.filter(item => item !== exercise);
-        console.log(this.exercise_list);
         this.save();
     }
 
@@ -354,6 +352,7 @@ async function main() {
     exerciseInput.addEventListener('keydown', function(event) {
         if (event.key === 'Enter') { 
             addExercise();
+            sendMessage(socket, current_user.username, "");
         }
     });
 
@@ -378,7 +377,6 @@ async function main() {
 
 
     function updateDay(month, day, year) {
-        sendMessage(socket, current_user.username, "");
         const date_section = document.getElementById('Date');
         date_section.innerHTML = '';
         const correct_date = document.createElement('h2');
@@ -428,6 +426,7 @@ async function main() {
                     }
                     current_user.calendar[date].splice(i, i+4);
                     current_user.save();
+                    sendMessage(socket, current_user.username, "");
                 });
                 header.appendChild(removebtn);
 
@@ -469,9 +468,11 @@ async function main() {
                                 if (!current_user.calendar[date][i + 3][j]) {
                                     current_user.calendar[date][i + 3].push({weight: input.value});
                                     current_user.save();
+                                    sendMessage(socket, current_user.username, "");
                                 } else {
                                     current_user.calendar[date][i + 3][j].weight = input.value;
                                     current_user.save();
+                                    sendMessage(socket, current_user.username, "");
                                 }
                             });
                             input.addEventListener('keypress', function(event) {
@@ -496,9 +497,11 @@ async function main() {
                                 if (!current_user.calendar[date][i + 3][j]) {
                                     current_user.calendar[date][i + 3].push({weight: input.value});
                                     current_user.save();
+                                    sendMessage(socket, current_user.username, "");
                                 } else {
                                     current_user.calendar[date][i + 3][j].weight = input.value;
                                     current_user.save();
+                                    sendMessage(socket, current_user.username, "");
                                 }
                             });
                             input.addEventListener('keypress', function(event) {
@@ -531,9 +534,11 @@ async function main() {
                                 if (!current_user.calendar[date][i + 3][j]) {
                                     current_user.calendar[date][i + 3].push({completedReps: input.value});
                                     current_user.save();
+                                    sendMessage(socket, current_user.username, "");
                                 } else {
                                     current_user.calendar[date][i + 3][j].completedReps = input.value;
                                     current_user.save();
+                                    sendMessage(socket, current_user.username, "");
                                 }
                             });
                             input.addEventListener('keypress', function(event) {
@@ -559,9 +564,11 @@ async function main() {
                                 if (!current_user.calendar[date][i + 3][j]) {
                                     current_user.calendar[date][i + 3].push({completedReps: input.value});
                                     current_user.save();
+                                    sendMessage(socket, current_user.username, "");
                                 } else {
                                     current_user.calendar[date][i + 3][j].completedReps = input.value;
                                     current_user.save();
+                                    sendMessage(socket, current_user.username, "");
                                 }
                             });
                             input.addEventListener('keypress', function(event) {
@@ -584,7 +591,6 @@ async function main() {
     }
 
     document.getElementById('button-addon3').addEventListener('click', function() {
-
         const exerciseSelect = document.getElementById('inputGroupSelect01');
         const exercise = exerciseSelect.options[exerciseSelect.selectedIndex].text;
         const sets = document.getElementById('setsInput').value;
@@ -599,8 +605,10 @@ async function main() {
         const dateDiv = document.getElementById('Date');
         const h2Element = dateDiv.querySelector('h2');
         const dateText = h2Element.textContent;
-
+        
         current_user.addWorkout(dateText, exercise, Number(sets), Number(reps), setData);
+        // send message to the websocket so your friends can see your updates in real time.
+        sendMessage(socket, current_user.username, "");
 
         exerciseSelect.selectedIndex = 0;
         document.getElementById('setsInput').value = '';
@@ -612,8 +620,6 @@ async function main() {
         const year = Number(current_date[2]);
 
         updateDay(month, day, year);
-
-
     });
     
     async function configureWebSocket(userID) {

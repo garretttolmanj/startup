@@ -314,8 +314,7 @@ async function main() {
             };
     
             socket.onmessage = (event) => {
-                const message = JSON.parse(event.data)
-                console.log(message);
+                const message = JSON.parse(event.data);
                 if (message.event === "Accepted Friend Request") {
                     current_user.friends.push(message.from);
                     refreshFriendList();
@@ -331,7 +330,6 @@ async function main() {
     
 
     function sendMessage(socket, username, friendName, event) {
-        console.log("inside send Message function");
         let message = {
             from: username,
             to: friendName,

@@ -507,11 +507,11 @@ async function main() {
             };
     
             socket.onmessage = async (event) => {
-                console.log('message received')
                 const message = JSON.parse(event.data);
                 if (message.from === current_friend.username && message.event === "Updated Calendar") {
                     current_friend = await Friend.load(friend_name);
                     updateCalendar(currentYear, currentMonth);
+                    updateStats();
                 }
             };
         });
