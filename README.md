@@ -81,3 +81,12 @@ In this deliverable I used HTML to build the structure of my startup application
 + -done- 20% Stores application data in MongoDB
 + -done- 20% Stores and retrieves credentials in MongoDB
 + -done- 20% Restricts application functionality based upon authentication
+
+## WebSocket Deliverable
++ -done- Simon WebSocket deployed to the production environment
++ -done- A link to this GitHub startup repository prominently displayed on the application's home page
++ -done- Prerequisite: Notes in this startup Git repository README.md file.
++ -done- 20% Backend listens for WebSocket connection in the peerProxy.js file.
++ -done- 20% Frontend makes WebSocket connection in the calendar.js, friend_view.js, and friends.js.
++ -done 30% Data sent over WebSocket connection: Friend Request events and calendar updates are sent over the WebSocket connection.
++ -done- 30%  WebSocket data displayed in the application interface: When friend requests are sent over the webSocket connection and the recipient of the request is connected via the webSocket, the request is displayed their screen. The same thing works with the calendar and the friend view. 
