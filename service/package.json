@@ -1,0 +1,22 @@
+{
+  "name": "startup",
+  "version": "1.0.0",
+  "description": "Muscle Genius is a lifting app designed for people who love working out. The main feature is the interactive calendar which allows you to plan workouts and track your progress seamlessly. To start, simply select a day on the calendar and choose from a list of exercises. When an exercise has been chosen, enter how many sets and reps you plan to do. Capture every set, rep, and weight while working out to share your achievements and workout plans with your lifting buddies. Your heaviest weight lifted will be recorded in your personal stats! Get ready to lift some weights! ### Design <img src=\"https://github.com/garretttolmanj/startup/assets/135668991/a15c7556-80dc-4cf7-8668-73da52949681\" width=\"500\">",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
+    "express": "^4.19.2",
+    "mongodb": "^6.5.0",
+    "multer": "^1.4.5-lts.1",
+    "url": "^0.11.3",
+    "uuid": "^9.0.1",
+    "ws": "^8.16.0"
+  }
+}
