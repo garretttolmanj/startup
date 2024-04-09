@@ -1,7 +1,7 @@
 import React from "react";
 
 
-export function createAccount() {
+export function CreateAccount() {
     return (
       <main className='container-fluid text-center'>
         Create Account Page
