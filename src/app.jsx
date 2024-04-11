@@ -79,7 +79,9 @@ export default function App() {
                 setUserName(userName);
               }} 
           />} />
-          <Route path='/calendar' element={<Calendar />} />
+          <Route path='/calendar' element={<Calendar 
+            userName={userName}
+          />} />
           <Route path='/stats' element={<Stats />} />
           <Route path='/friends' element={<Friends />} />
           <Route path='*' element={<NotFound />} />
