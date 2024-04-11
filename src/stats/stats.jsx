@@ -1,10 +1,9 @@
 import React from "react";
 
-
-export function CreateAccount() {
+export function Stats() {
     return (
       <main className='container-fluid text-center'>
-        Create Account Page
+        Stats Page
       </main>
     );
   }

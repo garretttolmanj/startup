@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
 import { Login } from './login/login';
-import { CreateAccount } from './createAccount/createAccount'; // Capitalize component name
+import { CreateAccount } from './login/createAccount'; // Capitalize component name
 import { Friends } from './friends/friends';
-import { FriendView } from './friendView/friendView'; // Capitalize component name
+import { Stats } from './stats/stats'; // Capitalize component name
 import { Calendar } from './calendar/calendar';
 import { AuthState } from './login/authState';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -32,18 +32,26 @@ export default function App() {
                   <NavLink className='nav-link' to='/'>
                     Home
                   </NavLink>
-                  <NavLink className='nav-link' to='/createAccount'>
-                    Create Account
-                  </NavLink>
-                  <NavLink className='nav-link' to='/calendar'>
-                    Calendar
-                  </NavLink>
-                  <NavLink className='nav-link' to='/friends'>
-                    Friends
-                  </NavLink>
-                  {/* <NavLink className='nav-link' to='/friendView'>
-                    Friend View
-                  </NavLink> */}
+                  {authState === AuthState.Unauthenticated && (
+                    <NavLink className='nav-link' to='/createAccount'>
+                      Create Account
+                    </NavLink>
+                  )}
+                  {authState === AuthState.Authenticated && (
+                    <NavLink className='nav-link' to='/calendar'>
+                      Calendar
+                    </NavLink>
+                  )}
+                  {authState === AuthState.Authenticated && (
+                    <NavLink className='nav-link' to='/stats'>
+                      Stats
+                    </NavLink>
+                  )}
+                  {authState === AuthState.Authenticated && (
+                    <NavLink className='nav-link' to='/friends'>
+                      Friends
+                    </NavLink>
+                  )}
                 </div>
               </div>
             </div>
@@ -61,10 +69,19 @@ export default function App() {
                 setUserName(userName);
               }} 
           />} />
-          <Route path='/createAccount' element={<CreateAccount />} /> {/* Adjusted component name */}
+          <Route 
+            path='/createAccount'
+            element={<CreateAccount
+              userName={userName}
+              authState={authState}
+              onAuthChange={(userName, authState) => {
+                setAuthState(authState);
+                setUserName(userName);
+              }} 
+          />} />
           <Route path='/calendar' element={<Calendar />} />
+          <Route path='/stats' element={<Stats />} />
           <Route path='/friends' element={<Friends />} />
-          <Route path='/friendView' element={<FriendView />} /> {/* Adjusted component name */}
           <Route path='*' element={<NotFound />} />
         </Routes>
 
@@ -80,6 +97,7 @@ export default function App() {
     </BrowserRouter>
   );
 }
+
 
 function NotFound() {
   return <main className='container-fluid'>404: Return to sender. Address unknown.</main>;

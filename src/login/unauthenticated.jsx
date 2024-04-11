@@ -5,7 +5,6 @@ import Button from 'react-bootstrap/Button';
 export function Unauthenticated(props) {
     const [userName, setUserName] = React.useState(props.userName);
     const [password, setPassword] = React.useState('');
-    const [displayError, setDisplayError] = React.useState(null);
     const navigate = useNavigate();
     
     async function loginUser() {
@@ -20,11 +19,17 @@ export function Unauthenticated(props) {
         if (response.ok) {
             localStorage.setItem('userName', userName);
             props.onLogin(userName);
-            
         } else {
             window.alert('Unrecognized Username or Password');        
         }
     }
+
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            loginUser();
+        }
+    }
+
     return (
         <div className='d-flex justify-content-center align-items-center flex-column'>
             <h1>unauthenticated</h1>
@@ -39,6 +44,7 @@ export function Unauthenticated(props) {
                         id="Username"
                         placeholder="Username"
                         onChange={(e) => setUserName(e.target.value)}
+                        onKeyPress={handleKeyPress}
                     />
                   </div>
                   <div className="mb-3">
@@ -49,6 +55,7 @@ export function Unauthenticated(props) {
                         id="Password"
                         placeholder="Password"
                         onChange={(e) => setPassword(e.target.value)}
+                        onKeyPress={handleKeyPress}
                     />
                   </div>
                   <Button variant='primary' className='d-flex justify-content' onClick={() => loginUser()}>
@@ -60,7 +67,6 @@ export function Unauthenticated(props) {
                 </form>
               </div>
             </div>
-
         </div>
     )
 }
