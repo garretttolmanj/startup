@@ -4,7 +4,7 @@ export function Exercises() {
     
     return (
       <main className='container-fluid text-center'>
-        Calendar Page
+        Exercise Page
       </main>
     );
   }

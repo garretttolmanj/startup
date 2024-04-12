@@ -14,6 +14,7 @@ export function Calendar(props) {
   const [modalShow, setModalShow] = useState(false);
   const [selectedDay, setSelectedDay] = useState(null);
 
+
   useEffect(() => {
     async function getUserAndSetUserName(username) {
       const user = await User.load(username);
@@ -92,7 +93,7 @@ export function Calendar(props) {
     <div className="container">
       <CalendarModal
         show={modalShow}
-        onHide={() => setModalShow(false)}
+        onHide={() => setModalShow(false)} // Pass a function reference
         currentUser={currentUser}
         selectedDay={selectedDay}
       />

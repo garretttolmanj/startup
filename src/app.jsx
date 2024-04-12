@@ -2,7 +2,8 @@ import React from 'react';
 import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
 import { Login } from './login/login';
 import { CreateAccount } from './login/createAccount'; // Capitalize component name
-import { Friends } from './friends/friends';
+// import { Friends } from './friends/friends';
+import { Exercises } from './exercises/exercises'
 import { Stats } from './stats/stats'; // Capitalize component name
 import { Calendar } from './calendar/calendar';
 import { AuthState } from './login/authState';
@@ -47,9 +48,14 @@ export default function App() {
                       Stats
                     </NavLink>
                   )}
-                  {authState === AuthState.Authenticated && (
+                  {/* {authState === AuthState.Authenticated && (
                     <NavLink className='nav-link' to='/friends'>
                       Friends
+                    </NavLink>
+                  )} */}
+                  {authState === AuthState.Authenticated && (
+                    <NavLink className='nav-link' to='/exercises'>
+                      Exercises
                     </NavLink>
                   )}
                 </div>
@@ -83,7 +89,8 @@ export default function App() {
             userName={userName}
           />} />
           <Route path='/stats' element={<Stats />} />
-          <Route path='/friends' element={<Friends />} />
+          {/* <Route path='/friends' element={<Friends />} /> */}
+          <Route path='/exercises' element= {<Exercises />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
 
