@@ -1,0 +1,298 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  *:before {
+    box-sizing: border-box;
+  }
+  
+  *:after {
+    box-sizing: border-box;
+  }
+
+  .container {
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1em;
+  }
+  .row:before {
+    display: table;
+    content: " ";
+  }
+
+
+  .grid-calendar {
+    min-width: 320px;
+    .row {
+      /*
+        override these from bootstrap
+  
+        margin-right: -15px;
+        margin-left: -15px;
+      */
+      margin: 0;
+      
+    }
+    
+    .calendar-week .grid-cell {
+      background-color: #f6f6f6;
+      border: 1px solid #fff;
+      width: calc(100% / 7);
+    }
+  
+    .calendar-week-header .grid-cell {
+      padding-bottom: 10px;
+      height: auto;
+      display: flex;
+      align-items: center;
+    }
+
+    .grid-cell-empty {
+        display: flex;
+        align-items: center;
+        float: left;
+        min-height: 1px;
+        padding: 0;
+        position: relative;
+        width: calc(100% / 7);
+    }
+    
+    .grid-cell {
+      display: flex;
+      align-items: center;
+      float: left;
+      min-height: 1px;
+      padding: 0;
+      position: relative;
+      width: calc(100% / 7);
+      &.previous-month {
+        color: #a6a6a6;
+      }
+      
+      &.next-month {
+        color: #a6a6a6;
+      }
+      
+      > div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 0;
+        padding: 50% 0;
+  
+      }
+    }
+    .calendar-week .grid-cell {
+      cursor: pointer;
+    }
+    .calendar-week .grid-cell:hover {
+      background-color: #bababa;
+    }
+  }
+.calendarHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content:space-between; 
+  align-items: center;
+  > div > span {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+  }
+}
+.nextMonth {
+  background-color: #fff;
+  border: none;
+  font-size: 2em;
+  font-family: 'Courier New', Courier, monospace;
+  margin-right: 20px; 
+}
+
+.prevMonth {
+  background-color: #fff;
+  border: none;
+  font-size: 2em;
+  font-family: 'Courier New', Courier, monospace;
+  margin-left: 20px;
+}
+.today {
+  color: #2121e4;
+  background-color: #eeab07;
+}
+.today:hover {
+  background-color: #bababa;
+}
+.calendar-week-header .grid-cell div::after {
+    content: attr(data-short-name); 
+}
+
+@media (min-width: 576px) {
+    .calendar-week-header .grid-cell div::after {
+        content: attr(data-full-name);
+    }
+}
+
+
+
+
+
+/* Exercise Modal Styling */
+.ExerciseModal {
+  display: none;
+  position: fixed;
+  z-index: 999; /* Ensure modal appears on top of other content */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+}
+
+.ExerciseModal-content {
+  background-color: #fefefe;
+  margin: 10% auto; /* Adjust modal position from top */
+  padding: 20px;
+  border: 1px solid #000; /* Set border */
+  width: 80%;
+  max-width: 600px; /* Limit maximum width */
+  border-radius: 10px; /* Optional: Add border radius */
+}
+
+.close {
+  color: #aaa;
+  padding-top: 0%;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  align-items: start;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#addExercise {
+  display: none;
+}
+
+
+
+.calendarModal{
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.calendarModal-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #000;
+  width: 80%;
+  max-height: 70%;
+  overflow-y: auto;
+  max-width: 800px;
+  border-radius: 10px;
+}
+
+.addWorkout{
+  justify-content: center;
+  margin-top: 0; /* Remove top margin */
+  margin-bottom: 0; /* Remove bottom margin */
+}
+.inputExercise {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 0 !important;
+
+}
+
+.inputSet {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.exercise {
+  cursor: pointer;
+}
+.remove-btn {
+  margin-left: 1em;
+}
+
+/* @media screen and (min-width: 600px) {
+    .special{
+      flex-basis: calc(50% - 10px);
+  }
+} */
+
+/* .workout {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  > li {
+    display: flex;
+    flex-direction: column;
+
+    > table {
+      flex: 1;
+    }
+    td {
+      border: 1px solid #dddddd;
+      text-align: center;
+      padding: 10px;
+    }
+    th {
+      border: 1px solid #dddddd;
+      text-align: right;
+      font-weight: lighter;
+      width: auto;
+    }
+  }
+
+} */
+.workout {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding-left: 0px;
+}
+
+.workout > li {
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* Fill the available vertical space */
+}
+
+.workout > li > table {
+  width: 100%; /* Expand to fill the width of the container */
+  border-collapse: collapse; /* Combine table borders */
+}
+
+.workout > li > table td,
+.workout > li > table th {
+  border: 1px solid #dddddd;
+  text-align: center;
+  padding: 10px; /* Adjust padding as needed */
+}
+
+.workout > li > table td:hover {
+  background-color: #bababa;
+  cursor: pointer;
+}
+
+.workout > li > table th {
+  font-weight: lighter;
+  text-align: left;
+}
