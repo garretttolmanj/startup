@@ -90,3 +90,16 @@ In this deliverable I used HTML to build the structure of my startup application
 + -done- 20% Frontend makes WebSocket connection in the calendar.js, friend_view.js, and friends.js.
 + -done 30% Data sent over WebSocket connection: Friend Request events and calendar updates are sent over the WebSocket connection.
 + -done- 30%  WebSocket data displayed in the application interface: When friend requests are sent over the webSocket connection and the recipient of the request is connected via the webSocket, the request is displayed their screen. The same thing works with the calendar and the friend view. 
+
+## React Deliverable
+
++ -done- Prerequisite: Simon React deployed to the production environment
++ -done- Prerequisite: A link to this GitHub startup repository prominently displayed on theapplication's home page
++ -done- Prerequisite: Notes in this startup Git repository README.md file
++ -done- Prerequisite: At least 10 git commits spread consistently throughout the assignment period.
++ -done- Application converted to use React
++ -done- 10% The application is bundled using Vite and runs React completely.
++ -done- 30% Multiple functional react components. There are functional components for logging in, creating an Account, the calendar, modals, stats, and others.
++ -done- 30% React router. I used BrowswerRouter, NavLinks, and Routes to make navigation on my application quick and simple.
++ -done 30% React hooks. I heavily relied on hooks for the the Calendar component and the CalendarModal component.
++ -note- for some reason my logo was not being render after deploying and I wasn't able to figure out what was going on.

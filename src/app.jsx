@@ -31,7 +31,7 @@ export default function App() {
           <nav className='navbar navbar-expand-lg navbar-dark bg-dark'>
             <div className='container-fluid'>
               <a className='navbar-brand' href='/'>
-                <img src='../image_123650291.JPG' width='30' className='d-inline-block align-text-top' alt='Muscle Genius Logo' />
+                <img src='./image_123650291.JPG' width='30' className='d-inline-block align-text-top' alt='Muscle Genius Logo' />
                 Muscle Genius
               </a>
               <button className='navbar-toggler' type='button' data-bs-toggle='collapse' data-bs-target='#navbarNavAltMarkup' aria-controls='navbarNavAltMarkup' aria-expanded='false' aria-label='Toggle navigation'>
