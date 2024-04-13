@@ -102,4 +102,4 @@ In this deliverable I used HTML to build the structure of my startup application
 + -done- 30% Multiple functional react components. There are functional components for logging in, creating an Account, the calendar, modals, stats, and others.
 + -done- 30% React router. I used BrowswerRouter, NavLinks, and Routes to make navigation on my application quick and simple.
 + -done 30% React hooks. I heavily relied on hooks for the the Calendar component and the CalendarModal component.
-+ -note- for some reason my logo was not being render after deploying and I wasn't able to figure out what was going on.
++ -note- While the logo was being rendered during development, for some reason it was not being rendered after deploying and I wasn't able to figure out how to fix it.
