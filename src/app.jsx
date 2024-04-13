@@ -1,19 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
 import { Login } from './login/login';
-import { CreateAccount } from './login/createAccount'; // Capitalize component name
-// import { Friends } from './friends/friends';
-import { Exercises } from './exercises/exercises'
-import { Stats } from './stats/stats'; // Capitalize component name
+import { CreateAccount } from './login/createAccount';
+import { Stats } from './stats/stats';
 import { Calendar } from './calendar/calendar';
 import { AuthState } from './login/authState';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
+import { Exercises } from './exercises/exercises';
+import { Modal } from 'react-bootstrap';
 
 export default function App() {
-  const [userName, setUserName] = React.useState(localStorage.getItem('userName') || '');
+  const [userName, setUserName] = useState(localStorage.getItem('userName') || '');
   const currentAuthState = userName ? AuthState.Authenticated : AuthState.Unauthenticated;
-  const [authState, setAuthState] = React.useState(currentAuthState);
+  const [authState, setAuthState] = useState(currentAuthState);
+  const [showExercisesModal, setShowExercisesModal] = useState(false); // State to control modal visibility
+
+  const openExercisesModal = () => {
+    setShowExercisesModal(true);
+  };
+
+  const closeExercisesModal = () => {
+    setShowExercisesModal(false);
+  };
 
   return (
     <BrowserRouter>
@@ -48,13 +57,8 @@ export default function App() {
                       Stats
                     </NavLink>
                   )}
-                  {/* {authState === AuthState.Authenticated && (
-                    <NavLink className='nav-link' to='/friends'>
-                      Friends
-                    </NavLink>
-                  )} */}
                   {authState === AuthState.Authenticated && (
-                    <NavLink className='nav-link' to='/exercises'>
+                    <NavLink className='nav-link' onClick={openExercisesModal}>
                       Exercises
                     </NavLink>
                   )}
@@ -88,9 +92,10 @@ export default function App() {
           <Route path='/calendar' element={<Calendar 
             userName={userName}
           />} />
-          <Route path='/stats' element={<Stats />} />
-          {/* <Route path='/friends' element={<Friends />} /> */}
-          <Route path='/exercises' element= {<Exercises />} />
+          <Route path='/stats' element={<Stats
+            userName={userName} 
+          />} />
+          <Route path='/exercises' element={<Exercises />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
 
@@ -102,11 +107,17 @@ export default function App() {
             </a>
           </div>
         </footer>
+
+        <Exercises
+          show={showExercisesModal}
+          onHide={closeExercisesModal} // Pass a function reference
+          userName={userName}
+        />
+
       </div>
     </BrowserRouter>
   );
 }
-
 
 function NotFound() {
   return <main className='container-fluid'>404: Return to sender. Address unknown.</main>;
