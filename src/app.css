@@ -1,3 +1,7 @@
+*{
+  font-family:Impact;
+}
+
 .body {
     display: flex;
     flex-direction: column;
@@ -18,7 +22,24 @@
   }
   
   footer {
-    flex: 0 30px;
+    display: flex;
+    background-color: #212529;
+    color: white;
+    align-items: center; /* Adjusted from "top" to "center" */
+    justify-content: center;
+    position: fixed; /* Added */
+    bottom: 0; /* Added */
+    width: 100%; /* Added */
+    height: 25px; /* Adjust the height as needed */
+}
+
+img {
+  border-radius: 50%;
+  margin-right: 0.25em;
+}  
+
+  .author {
+    margin-right: 1em;
   }
   
   menu {
@@ -31,16 +52,34 @@
   
   .navbar-brand {
     padding-left: 0.3em;
-    border-bottom: solid rgb(182, 182, 182) thin;
+    align-items: center;
   }
   
   menu .nav-item {
     padding: 0 0.3em;
   }
   
-  footer a {
-    float: right;
+  .black-line {
+    position: fixed;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: black;
   }
+  .ExerciseList {
+    font-size: large;
+  }
+  .ExerciseList:hover {
+    cursor: pointer;
+  }
+  .top-line {
+    top: 55px; /* Adjust this value to match the height of your header */
+  }
+  
+  .bottom-line {
+    bottom: 20px; /* Adjust this value to set the distance from the bottom */
+  }
+  
   
   @media (max-height: 600px) {
     header {

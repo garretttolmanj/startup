@@ -30,7 +30,7 @@ export default function App() {
         <header>
           <nav className='navbar navbar-expand-lg navbar-dark bg-dark'>
             <div className='container-fluid'>
-              <a className='navbar-brand' href='index.html'>
+              <a className='navbar-brand' href='/'>
                 <img src='image_123650291.JPG' width='30' className='d-inline-block align-text-top' alt='Muscle Genius Logo' />
                 Muscle Genius
               </a>
@@ -67,7 +67,7 @@ export default function App() {
             </div>
           </nav>
         </header>
-
+        <hr className="black-line top-line" />
         <Routes>
           <Route 
             path='/'
@@ -98,15 +98,13 @@ export default function App() {
           <Route path='/exercises' element={<Exercises />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
-
-        <footer className='bg-dark text-white-50'>
-          <div className='container-fluid'>
-            <span className='text-reset'>Author Name(s)</span>
-            <a className='text-reset' href='https://github.com/webprogramming260/simon-react'>
-              Source
-            </a>
-          </div>
+        <hr className="black-line bottom-line" />
+        <footer>
+            <span class="author">Garrett Johnson</span>
+            <a href="https://github.com/garretttolmanj/startup">GitHub</a>
         </footer>
+
+
 
         <Exercises
           show={showExercisesModal}

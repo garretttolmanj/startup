@@ -1,9 +1,8 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
-import { Unauthenticated } from './unauthenticated';
-import { Authenticated } from './authenticated';
 import { AuthState } from './authState';
+import './login.css'
 
 export function CreateAccount(props) {
     const [userName, setUserName] = React.useState(props.userName);
@@ -42,51 +41,54 @@ export function CreateAccount(props) {
         }
     }
     return (
-<div className='d-flex justify-content-center align-items-center flex-column'>
-            <h1>unauthenticated</h1>
-            <div className="bd">
-              <div className="container-fluid d-flex justify-content-center align-items-center">
-                <form id="loginForm" className="px-4 py-3">
-                  <div className="mb-3">
-                    <label htmlFor="Username" className="form-label">Username</label>
-                    <input 
-                        type="text"
-                        className="form-control"
-                        id="Username"
-                        placeholder="Username"
-                        onChange={(e) => setUserName(e.target.value)}
-                        onKeyPress={handleKeyPress}
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="Password" className="form-label">Password</label>
-                    <input
-                        type="password"
-                        className="form-control"
-                        id="Password"
-                        placeholder="Password"
-                        onChange={(e) => setPassword1(e.target.value)}
-                        onKeyPress={handleKeyPress}
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
-                    <input
-                        type="password"
-                        className="form-control"
-                        id="confirmPassword"
-                        placeholder="Confirm Password"
-                        onChange={(e) => setPassword2(e.target.value)}
-                        onKeyPress={handleKeyPress}
-                    />
-                  </div>
-
-                  <Button variant='primary' className='d-flex justify-content' onClick={() => createUser(userName, password1, password2)}>
-                    Create Account
-                  </Button>
-                </form>
-              </div>
+      <div className='d-flex justify-content-center align-items-center flex-column'>
+          <h1>
+            Muscle Genius <span><img src="image_123650291.JPG" width="80" alt="logo" /></span>
+          </h1>
+          <div className="bd">
+            <div className="container-fluid">
+              <form id="loginForm" className="px-4 py-3">
+                <div className="mb-3">
+                  <label htmlFor="Username" className="form-label">Username</label>
+                  <input 
+                      type="text"
+                      className="form-control"
+                      id="Username"
+                      placeholder="Username"
+                      onChange={(e) => setUserName(e.target.value)}
+                      onKeyPress={handleKeyPress}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="Password" className="form-label">Password</label>
+                  <input
+                      type="password"
+                      className="form-control"
+                      id="Password"
+                      placeholder="Password"
+                      onChange={(e) => setPassword1(e.target.value)}
+                      onKeyPress={handleKeyPress}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
+                  <input
+                      type="password"
+                      className="form-control"
+                      id="confirmPassword"
+                      placeholder="Confirm Password"
+                      onChange={(e) => setPassword2(e.target.value)}
+                      onKeyPress={handleKeyPress}
+                  />
+                </div>
+  
+                <Button variant='primary' className='d-flex justify-content-center' onClick={() => createUser(userName, password1, password2)}>
+                  Create Account
+                </Button>
+              </form>
             </div>
-        </div>
-    );
+          </div>
+      </div>
+  );
+  
   }

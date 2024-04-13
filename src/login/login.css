@@ -1,0 +1,19 @@
+.createAccount {
+    margin-left: 1em;
+}
+
+.container-fluid {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+}
+.grid-calendar {
+    max-width: 1000px;
+    margin: 0 auto; /* Centers the calendar horizontally */
+  }
+  
+
+
+.logout {
+    margin-left: 0.5em;
+}

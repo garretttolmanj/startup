@@ -142,7 +142,7 @@ export function CalendarModal(props) {
           <h3 className='exercise' onClick={() => toggleRemoveButton(i)}>
             {exercise} {sets} Sets {reps} Reps
             {showRemoveButton && (
-              <button className='remove-btn' onClick={() => handleRemoveClick(i)}>Remove</button>
+              <Button variant="danger" size="sm" className="remove-btn" onClick={() => handleRemoveClick(i)}>Remove</Button>
             )}
           </h3>
           <table>

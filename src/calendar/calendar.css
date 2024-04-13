@@ -10,12 +10,10 @@
     box-sizing: border-box;
   }
 
-  .container {
-    max-width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 1em;
+  .Month{
+    margin-right: 0.5em;
   }
+
   .row:before {
     display: table;
     content: " ";
@@ -96,6 +94,8 @@
   flex-direction: row;
   justify-content:space-between; 
   align-items: center;
+  width: 100%;
+  max-width: 1000px;
   > div > span {
     margin-left: 0.5em;
     margin-right: 0.5em;
@@ -126,6 +126,22 @@
 .calendar-week-header .grid-cell div::after {
     content: attr(data-short-name); 
 }
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center; /* Aligns text inside the container */
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1em;
+}
+
+.calendarTitle {
+  margin-bottom: 20px; /* Adjust margin as needed */
+}
+
 
 @media (min-width: 576px) {
     .calendar-week-header .grid-cell div::after {
@@ -231,37 +247,6 @@
   margin-left: 1em;
 }
 
-/* @media screen and (min-width: 600px) {
-    .special{
-      flex-basis: calc(50% - 10px);
-  }
-} */
-
-/* .workout {
-  display: flex;
-  flex-direction: column;
-  list-style: none;
-  > li {
-    display: flex;
-    flex-direction: column;
-
-    > table {
-      flex: 1;
-    }
-    td {
-      border: 1px solid #dddddd;
-      text-align: center;
-      padding: 10px;
-    }
-    th {
-      border: 1px solid #dddddd;
-      text-align: right;
-      font-weight: lighter;
-      width: auto;
-    }
-  }
-
-} */
 .workout {
   display: flex;
   flex-direction: column;
@@ -296,3 +281,48 @@
   font-weight: lighter;
   text-align: left;
 }
+
+.grid-calendar {
+  width: 100%; /* Fill the available space */
+  max-width: 1000px; /* Limit maximum width */
+}
+
+.calendar-week .grid-cell {
+  background-color: #f6f6f6;
+  border: 1px solid #fff;
+  /* Remove fixed width */
+}
+
+.calendar-week-header .grid-cell {
+  padding-bottom: 10px;
+  height: auto;
+  display: flex;
+  align-items: center;
+}
+
+.grid-cell-empty,
+.grid-cell {
+  display: flex;
+  align-items: center;
+  float: left;
+  min-height: 1px;
+  padding: 0;
+  position: relative;
+  /* Adjust width calculation */
+  width: calc(100% / 7);
+}
+.modal-body {
+  max-height: 60vh; /* Set maximum height for the modal body */
+  overflow-y: auto; /* Add vertical scrollbar if content exceeds modal height */
+}
+
+table {
+  width: 100%; /* Ensure table occupies full width of parent container */
+}
+th {
+  padding: 5px;
+}
+td {
+  padding: 0px; /* Adjust padding as needed */
+}
+

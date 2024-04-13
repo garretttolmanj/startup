@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { User } from '../calendar/user';
+import './stats.css'
 
 export function Stats({ userName }) {
   const [currentUser, setCurrentUser] = useState(null);
@@ -44,21 +45,26 @@ export function Stats({ userName }) {
   }, [currentUser]);
 
   return (
-    <table id="stats_table">
-      <thead>
-        <tr>
-          <th>Lift</th>
-          <th>Max</th>
-        </tr>
-      </thead>
-      <tbody>
-        {Object.entries(statsDict).map(([exercise, weight]) => (
-          <tr key={exercise}>
-            <td>{exercise}</td>
-            <td>{weight}</td>
+    <div className='d-flex justify-content-center align-items-center flex-column'>
+      <h1>
+        Muscle Genius <span><img src="image_123650291.JPG" width="80" alt="logo" /></span>
+      </h1>
+      <table id="stats_table">
+        <thead>
+          <tr>
+            <th>Lift</th>
+            <th>Max</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {Object.entries(statsDict).map(([exercise, weight]) => (
+            <tr key={exercise}>
+              <td>{exercise}</td>
+              <td>{weight}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }

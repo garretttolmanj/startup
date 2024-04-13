@@ -80,7 +80,7 @@ export function Exercises(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <ul>
+        <ul className='ExerciseList'>
           {exercises.map((exercise, index) => (
             <li key={index} onClick={() => toggleRemoveButton(index)}>
               {exercise}

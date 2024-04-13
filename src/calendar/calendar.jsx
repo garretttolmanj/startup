@@ -29,7 +29,13 @@ export function Calendar(props) {
 
   const renderCalendar = () => {
     const calendar = [];
-
+  
+    // Get today's date
+    const today = new Date();
+    const currentMonth = today.getMonth();
+    const currentYear = today.getFullYear();
+    const currentDate = today.getDate();
+  
     // Render weekdays row
     const weekdaysRow = weekdays.map((day, index) => (
       <div key={index} className="col-xs-1 grid-cell">
@@ -37,7 +43,7 @@ export function Calendar(props) {
       </div>
     ));
     calendar.push(<div key="weekdays" className="row calendar-week-header">{weekdaysRow}</div>);
-
+  
     // Render days
     let dayIndex = 1;
     for (let i = 0; i < 6; i++) {
@@ -49,10 +55,12 @@ export function Calendar(props) {
         } else {
           const currentDay = dayIndex; // Capture the current day in a separate variable
           const day = monthNames[currentMonth] + ' ' + currentDay + ' ' + currentYear;
+          const isToday = currentYear === today.getFullYear() && currentMonth === today.getMonth() && currentDay === currentDate;
+  
           daysRow.push(
             <div
               key={`${i}-${j}`}
-              className={`col-xs-1 grid-cell`}
+              className={`col-xs-1 grid-cell ${isToday ? 'today' : ''}`}
               onClick={() => {
                 setSelectedDay(day);
                 setModalShow(true);
@@ -67,9 +75,10 @@ export function Calendar(props) {
       calendar.push(<div key={i} className="row calendar-week">{daysRow}</div>);
       if (dayIndex > daysInMonth) break; // Break if all days are rendered
     }
-
+  
     return calendar;
   };
+  
 
   const handlePrevMonth = () => {
     if (currentMonth === 0) {
@@ -90,7 +99,10 @@ export function Calendar(props) {
   };
 
   return (
-    <div className="container">
+    <div className="calendar">
+      <h1 className='calendarTitle'>
+        Muscle Genius <span><img src="image_123650291.JPG" width="80" alt="logo" /></span>
+      </h1>
       <CalendarModal
         show={modalShow}
         onHide={() => setModalShow(false)} // Pass a function reference
@@ -100,8 +112,8 @@ export function Calendar(props) {
       <div className="calendarHeader">
         <button className="prevMonth" id="prev-month" onClick={handlePrevMonth}>&lt;</button>
         <div className="d-flex flex-row">
-          <span id="Month" className="Month">{new Date(currentYear, currentMonth).toLocaleDateString('default', { month: 'long' })}</span>
-          <span id="Year" className="Year">{currentYear}</span>
+          <h3 id="Month" className="Month">{new Date(currentYear, currentMonth).toLocaleDateString('default', { month: 'long' })}</h3>
+          <h3 id="Year" className="Year">{currentYear}</h3>
         </div>
         <button className="nextMonth" id="next-month" onClick={handleNextMonth}>&gt;</button>
       </div>
