@@ -52,7 +52,7 @@ export function Authenticated(props) {
         <>
             <div className="container">
                 <h1>
-                    Muscle Genius <span><img src="image_123650291.JPG" width="80" alt="logo" /></span>
+                    Muscle Genius <span><img src="../../image_123650291.JPG" width="80" alt="logo" /></span>
                 </h1>
                 <h2>{props.userName}</h2>
                 <Button variant='primary' onClick={() => navigate('/calendar')}>
