@@ -47,7 +47,7 @@ export function Stats({ userName }) {
   return (
     <div className='d-flex justify-content-center align-items-center flex-column'>
       <h1>
-        Muscle Genius <span><img src='src/image_123650291.JPG' width="80" alt="logo" /></span>
+        Muscle Genius <span><img src='/image_123650291.JPG' width="80" alt="logo" /></span>
       </h1>
       <table id="stats_table">
         <thead>

@@ -101,7 +101,7 @@ export function Calendar(props) {
   return (
     <div className="calendar">
       <h1 className='calendarTitle'>
-        Muscle Genius <span><img src='src/image_123650291.JPG' width="80" alt="logo" /></span>
+        Muscle Genius <span><img src='/image_123650291.JPG' width="80" alt="logo" /></span>
       </h1>
       <CalendarModal
         show={modalShow}
